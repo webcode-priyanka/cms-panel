@@ -1,0 +1,423 @@
+﻿
+@model CMSPanel.Models.Announcement
+
+@{
+    ViewData["Title"] = "Announcement Details";
+}
+
+<style>
+    .announcement-page {
+        background: #f5f7fb;
+        min-height: 100vh;
+        padding: 28px;
+        border-radius: 14px;
+    }
+
+    .page-title {
+        font-size: 27px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 6px;
+    }
+
+    .page-subtitle {
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+
+    .announcement-card {
+        background: #ffffff;
+        border: 1px solid #e8edf5;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+        overflow: hidden;
+    }
+
+    .announcement-card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f5;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .announcement-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: #eef2ff;
+        color: #4f46e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+    }
+
+    .announcement-card-body {
+        padding: 24px;
+    }
+
+    .section-heading {
+        font-size: 15px;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 18px;
+    }
+
+    .detail-label {
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        margin-bottom: 7px;
+    }
+
+    .detail-value {
+        color: #1e293b;
+        font-size: 14px;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+    }
+
+    .detail-box {
+        background: #f8fafc;
+        border: 1px solid #edf0f5;
+        border-radius: 10px;
+        padding: 15px 16px;
+        height: 100%;
+        min-height: 82px;
+    }
+
+    .description-box {
+        background: #f8fafc;
+        border: 1px solid #edf0f5;
+        border-radius: 10px;
+        padding: 18px;
+        color: #334155;
+        font-size: 14px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .status-active {
+        color: #15803d;
+        background: #dcfce7;
+    }
+
+    .status-inactive {
+        color: #64748b;
+        background: #e2e8f0;
+    }
+
+    .type-badge {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 7px;
+        color: #4338ca;
+        background: #eef2ff;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .section-divider {
+        border: 0;
+        border-top: 1px solid #edf0f5;
+        margin: 26px 0;
+    }
+
+    .btn-edit {
+        background: #4f46e5;
+        color: #ffffff;
+        border: 1px solid #4f46e5;
+        border-radius: 8px;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-edit:hover {
+            background: #4338ca;
+            color: #ffffff;
+            border-color: #4338ca;
+        }
+
+    .btn-back {
+        background: #ffffff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-back:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    @@media (max-width: 768px) {
+        .announcement-page {
+            padding: 15px;
+        }
+
+        .announcement-card-body {
+            padding: 18px;
+        }
+
+        .announcement-card-header {
+            padding: 18px;
+        }
+
+        .page-title {
+            font-size: 23px;
+        }
+    }
+</style>
+
+<div class="container-fluid announcement-page">
+
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="page-title">
+                <i class="bi bi-megaphone me-2" style="color:#4f46e5;"></i>
+                Announcement Details
+            </h1>
+            <p class="page-subtitle">
+                View announcement information, schedule and status.
+            </p>
+        </div>
+
+        <a asp-action="Announcements" class="btn btn-back">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to List
+        </a>
+    </div>
+
+    <!-- Main Details Card -->
+    <div class="announcement-card">
+
+        <div class="announcement-card-header">
+            <div class="announcement-icon">
+                <i class="bi bi-megaphone"></i>
+            </div>
+
+            <div class="flex-grow-1">
+                <h5 class="fw-bold mb-1" style="color:#1e293b;">
+                    @Model.Title
+                </h5>
+                <p class="text-muted small mb-0">
+                    Announcement ID: #@Model.Id
+                </p>
+            </div>
+
+            <div>
+                @if (Model.IsActive)
+                {
+                    <span class="status-badge status-active">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Active
+                    </span>
+                }
+                else
+                {
+                    <span class="status-badge status-inactive">
+                        <i class="bi bi-pause-circle-fill"></i>
+                        Inactive
+                    </span>
+                }
+            </div>
+        </div>
+
+        <div class="announcement-card-body">
+
+            <!-- Announcement Information -->
+            <h6 class="section-heading">
+                <i class="bi bi-info-circle me-2" style="color:#4f46e5;"></i>
+                Announcement Information
+            </h6>
+
+            <div class="row g-3">
+
+                <div class="col-12">
+                    <div class="detail-box">
+                        <div class="detail-label">Title</div>
+                        <div class="detail-value">
+                            @(string.IsNullOrWhiteSpace(Model.Title)
+                                ? "N/A" : Model.Title)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="detail-label">Description</div>
+                    <div class="description-box">
+                        @(string.IsNullOrWhiteSpace(Model.Description)
+                            ? "No description provided."
+                            : Model.Description)
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="detail-box">
+                        <div class="detail-label">Announcement Type</div>
+                        <div class="detail-value">
+                            @if (string.IsNullOrWhiteSpace(Model.Type))
+                            {
+                                <span class="text-muted">N/A</span>
+                            }
+                            else
+                            {
+                                <span class="type-badge">@Model.Type</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="detail-box">
+                        <div class="detail-label">Display Order</div>
+                        <div class="detail-value">
+                            <i class="bi bi-sort-numeric-down me-1"
+                               style="color:#64748b;"></i>
+                            @Model.DisplayOrder
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="detail-box">
+                        <div class="detail-label">Current Status</div>
+                        <div class="detail-value">
+                            @(Model.IsActive ? "Active" : "Inactive")
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="section-divider" />
+
+            <!-- Schedule Information -->
+            <h6 class="section-heading">
+                <i class="bi bi-calendar-event me-2" style="color:#4f46e5;"></i>
+                Schedule Information
+            </h6>
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="detail-label">
+                            <i class="bi bi-calendar-check me-1"></i>
+                            Start Date
+                        </div>
+                        <div class="detail-value">
+                            @Model.StartDate.ToString("dd MMM yyyy")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="detail-label">
+                            <i class="bi bi-calendar-x me-1"></i>
+                            End Date
+                        </div>
+                        <div class="detail-value">
+                            @(Model.EndDate.HasValue
+                                ? Model.EndDate.Value.ToString("dd MMM yyyy")
+                                : "No end date")
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="section-divider" />
+
+            <!-- Record Information -->
+            <h6 class="section-heading">
+                <i class="bi bi-clock-history me-2" style="color:#4f46e5;"></i>
+                Record Information
+            </h6>
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="detail-label">Created At</div>
+                        <div class="detail-value">
+                            <i class="bi bi-calendar3 me-1"
+                               style="color:#64748b;"></i>
+                            @Model.CreatedAt.ToString("dd MMM yyyy")
+                        </div>
+                        <div class="text-muted small mt-2">
+                            <i class="bi bi-clock me-1"></i>
+                            @Model.CreatedAt.ToString("hh:mm tt")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="detail-label">Updated At</div>
+                        @if (Model.UpdatedAt.HasValue)
+                        {
+                            <div class="detail-value">
+                                <i class="bi bi-calendar3 me-1"
+                                   style="color:#64748b;"></i>
+                                @Model.UpdatedAt.Value.ToString("dd MMM yyyy")
+                            </div>
+                            <div class="text-muted small mt-2">
+                                <i class="bi bi-clock me-1"></i>
+                                @Model.UpdatedAt.Value.ToString("hh:mm tt")
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="detail-value text-muted">
+                                Not updated yet
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex flex-wrap gap-2 mt-4 pt-3 border-top">
+                <a asp-action="EditAnnouncement"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-edit">
+                    <i class="bi bi-pencil-square me-1"></i>
+                    Edit Announcement
+                </a>
+
+                <a asp-action="Announcements"
+                   class="btn btn-back">
+                    <i class="bi bi-list-ul me-1"></i>
+                    Back to List
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+

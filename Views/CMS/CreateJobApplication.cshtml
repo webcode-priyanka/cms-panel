@@ -1,0 +1,289 @@
+﻿@model CMSPanel.Models.JobApplication
+
+@{
+    ViewData["Title"] = "Create Job Application";
+
+    var careers = ViewBag.Careers as IEnumerable<CMSPanel.Models.Career>;
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Create Job Application</h1>
+        <p class="text-muted mb-0">
+            Add a new applicant for a job opening
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <form asp-action="CreateJobApplication"
+                  method="post"
+                  enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <!-- Applicant Information -->
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-person me-2"></i>
+                    Applicant Information
+                </h5>
+
+                <div class="row g-3">
+
+                    <!-- Applicant Name -->
+                    <div class="col-md-6">
+
+                        <label asp-for="ApplicantName"
+                               class="form-label fw-semibold">
+                            Applicant Name
+                        </label>
+
+                        <input asp-for="ApplicantName"
+                               class="form-control"
+                               placeholder="Enter applicant name" />
+
+                        <span asp-validation-for="ApplicantName"
+                              class="text-danger"></span>
+
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Email"
+                               class="form-label fw-semibold">
+                            Email
+                        </label>
+
+                        <input asp-for="Email"
+                               type="email"
+                               class="form-control"
+                               placeholder="Enter email address" />
+
+                        <span asp-validation-for="Email"
+                              class="text-danger"></span>
+
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Phone"
+                               class="form-label fw-semibold">
+                            Phone
+                        </label>
+
+                        <input asp-for="Phone"
+                               class="form-control"
+                               placeholder="Enter phone number" />
+
+                        <span asp-validation-for="Phone"
+                              class="text-danger"></span>
+
+                    </div>
+
+                    <!-- Career -->
+                    <div class="col-md-6">
+
+                        <label asp-for="CareerId"
+                               class="form-label fw-semibold">
+                            Applied Job
+                        </label>
+
+                        <select asp-for="CareerId"
+                                class="form-select">
+
+                            <option value="">
+                                Select Job Opening
+                            </option>
+
+                            @if (careers != null)
+                            {
+                                foreach (var career in careers)
+                                {
+                                    <option value="@career.Id">
+                                        @career.JobTitle - @career.Location
+                                    </option>
+                                }
+                            }
+
+                        </select>
+
+                        <span asp-validation-for="CareerId"
+                              class="text-danger"></span>
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- Professional Information -->
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-person-workspace me-2"></i>
+                    Professional Information
+                </h5>
+
+                <!-- Skills -->
+                <div class="mb-3">
+
+                    <label asp-for="Skills"
+                           class="form-label fw-semibold">
+                        Skills
+                    </label>
+
+                    <textarea asp-for="Skills"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Enter applicant skills..."></textarea>
+
+                </div>
+
+                <!-- Experience -->
+                <div class="mb-3">
+
+                    <label asp-for="Experience"
+                           class="form-label fw-semibold">
+                        Experience
+                    </label>
+
+                    <input asp-for="Experience"
+                           class="form-control"
+                           placeholder="e.g. 2 Years / Fresher" />
+
+                </div>
+
+                <!-- Resume -->
+                <div class="mb-3">
+
+                    <label asp-for="ResumeUpload"
+                           class="form-label fw-semibold">
+                        Resume
+                    </label>
+
+                    <input asp-for="ResumeUpload"
+                           type="file"
+                           class="form-control"
+                           accept=".pdf,.doc,.docx" />
+
+                    <span asp-validation-for="ResumeUpload"
+                          class="text-danger"></span>
+
+                    <div class="form-text">
+                        Allowed formats: PDF, DOC, DOCX. Maximum size: 5 MB.
+                    </div>
+
+                </div>
+
+                <!-- Cover Letter -->
+                <div class="mb-3">
+
+                    <label asp-for="CoverLetter"
+                           class="form-label fw-semibold">
+                        Cover Letter
+                    </label>
+
+                    <textarea asp-for="CoverLetter"
+                              class="form-control"
+                              rows="6"
+                              placeholder="Enter cover letter..."></textarea>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- Application Status -->
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-clipboard-check me-2"></i>
+                    Application Status
+                </h5>
+
+                <div class="row g-3">
+
+                    <!-- Status -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Status"
+                               class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select asp-for="Status"
+                                class="form-select">
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="Shortlisted">
+                                Shortlisted
+                            </option>
+
+                            <option value="Rejected">
+                                Rejected
+                            </option>
+
+                            <option value="Hired">
+                                Hired
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Status"
+                              class="text-danger"></span>
+
+                    </div>
+
+                    <!-- Remarks -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Remarks"
+                               class="form-label fw-semibold">
+                            Remarks
+                        </label>
+
+                        <textarea asp-for="Remarks"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter admin remarks..."></textarea>
+
+                    </div>
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end gap-2 mt-4">
+
+                    <a asp-action="JobApplications"
+                       class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i>
+                        Create Application
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

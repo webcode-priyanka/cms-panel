@@ -1,0 +1,147 @@
+﻿@model CMSPanel.Models.FormSubmission
+
+@{
+    ViewData["Title"] = "Delete Form Submission";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Delete Form Submission</h1>
+        <p class="text-muted mb-0">
+            Confirm before deleting this submission
+        </p>
+    </div>
+
+
+    <!-- Delete Card -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle me-1"></i>
+                Are you sure you want to delete this form submission?
+            </div>
+
+
+            <!-- Submission Information -->
+            <div class="row g-4 mb-4">
+
+                <div class="col-md-6">
+
+                    <label class="form-label text-muted">
+                        Form
+                    </label>
+
+                    <div class="fw-semibold">
+                        @(Model.Form?.Name ?? "N/A")
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label class="form-label text-muted">
+                        Submission ID
+                    </label>
+
+                    <div class="fw-semibold">
+                        #@Model.Id
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label class="form-label text-muted">
+                        Name
+                    </label>
+
+                    <div class="fw-semibold">
+                        @Model.Name
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label class="form-label text-muted">
+                        Email
+                    </label>
+
+                    <div class="fw-semibold">
+                        @Model.Email
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label class="form-label text-muted">
+                        Status
+                    </label>
+
+                    <div class="fw-semibold">
+                        @Model.Status
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label class="form-label text-muted">
+                        Submitted At
+                    </label>
+
+                    <div class="fw-semibold">
+                        @Model.SubmittedAt.ToString("dd MMM yyyy hh:mm tt")
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <form asp-action="DeleteFormSubmission"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class="bi bi-trash me-1"></i>
+                        Yes, Delete
+
+                    </button>
+
+                    <a asp-action="FormSubmissions"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

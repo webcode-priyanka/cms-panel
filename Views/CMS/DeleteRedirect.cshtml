@@ -1,0 +1,154 @@
+﻿@model CMSPanel.Models.Redirect
+
+@{
+    ViewData["Title"] = "Delete Redirect";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Delete Redirect</h1>
+        <p class="text-muted mb-0">
+            Confirm deletion of this redirect.
+        </p>
+    </div>
+
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+
+                <i class="bi bi-exclamation-triangle me-2"></i>
+
+                Are you sure you want to delete this redirect?
+
+            </div>
+
+
+            <div class="row g-3">
+
+                <!-- Source URL -->
+                <div class="col-12">
+
+                    <label class="form-label fw-semibold">
+                        Source URL
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.SourceUrl
+                    </div>
+
+                </div>
+
+
+                <!-- Destination URL -->
+                <div class="col-12">
+
+                    <label class="form-label fw-semibold">
+                        Destination URL
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.DestinationUrl
+                    </div>
+
+                </div>
+
+
+                <!-- Type -->
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Redirect Type
+                    </label>
+
+                    <div>
+
+                        @if (Model.RedirectType == "301")
+                        {
+                            <span class="badge bg-primary">
+                                301 Permanent
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">
+                                302 Temporary
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- Status -->
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Status
+                    </label>
+
+                    <div>
+
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                Inactive
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Delete Form -->
+            <form asp-controller="CMS"
+                  asp-action="DeleteRedirect"
+                  method="post"
+                  class="mt-4">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class="bi bi-trash me-1"></i>
+                        Yes, Delete
+
+                    </button>
+
+                    <a asp-controller="CMS"
+                       asp-action="Redirects"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

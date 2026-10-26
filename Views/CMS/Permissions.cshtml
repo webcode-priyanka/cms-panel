@@ -1,0 +1,78 @@
+﻿@model IEnumerable<CMSPanel.Models.Permission>
+
+@{
+    ViewData["Title"] = "Permissions";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Permissions</h1>
+        <p class="text-muted">
+            Manage CMS panel permissions
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Permission Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{
+                            int count = 1;
+                        }
+
+                        @foreach (var permission in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+
+                                <td>
+                                    <span class="badge bg-primary">
+                                        @permission.Name
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @permission.Description
+                                </td>
+
+                                <td>
+                                    @if (permission.IsActive)
+                                    {
+                                        <span class="badge bg-success">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            Inactive
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+
+                            count++;
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

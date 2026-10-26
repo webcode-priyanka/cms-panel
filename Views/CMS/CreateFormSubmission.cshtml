@@ -1,0 +1,187 @@
+﻿
+@model CMSPanel.Models.FormSubmission
+
+@{
+    ViewData["Title"] = "Create Form Submission";
+    var forms = ViewBag.Forms as IEnumerable<CMSPanel.Models.Form>;
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Create Form Submission</h1>
+        <p class="text-muted mb-0">Add a new form submission</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-action="CreateFormSubmission" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row g-4">
+
+                    <!-- Form Dropdown -->
+                    <div class="col-md-6">
+
+                        <label asp-for="FormId" class="form-label">
+                            Form <span class="text-danger">*</span>
+                        </label>
+
+                        <select asp-for="FormId" class="form-select">
+
+                            <option value="">-- Select Form --</option>
+
+                            @if (forms != null)
+                            {
+                                foreach (var form in forms)
+                                {
+                                    <option value="@form.Id">
+                                        @form.Name
+                                    </option>
+                                }
+                            }
+
+                        </select>
+
+                        <span asp-validation-for="FormId"
+                              class="text-danger"></span>
+
+                        @if (forms == null || !forms.Any())
+                        {
+                            <small class="text-danger">
+                                No forms available. Please check whether
+                                the controller is loading saved forms.
+                            </small>
+                        }
+
+                    </div>
+
+                    <!-- Name -->
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="form-label">
+                            Name <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Name"
+                               class="form-control"
+                               placeholder="Enter submitter name" />
+
+                        <span asp-validation-for="Name"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label">
+                            Email <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Email"
+                               type="email"
+                               class="form-control"
+                               placeholder="Enter email address" />
+
+                        <span asp-validation-for="Email"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+                        <label asp-for="Phone" class="form-label">
+                            Phone
+                        </label>
+
+                        <input asp-for="Phone"
+                               class="form-control"
+                               placeholder="Enter phone number" />
+
+                        <span asp-validation-for="Phone"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Submission Data -->
+                    <div class="col-12">
+                        <label asp-for="SubmissionData"
+                               class="form-label">
+                            Submission Data
+                        </label>
+
+                        <textarea asp-for="SubmissionData"
+                                  class="form-control"
+                                  rows="6"
+                                  placeholder="Enter submitted form data"></textarea>
+
+                        <div class="form-text">
+                            Enter the submitted form information here.
+                        </div>
+
+                        <span asp-validation-for="SubmissionData"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-6">
+                        <label asp-for="Status" class="form-label">
+                            Status
+                        </label>
+
+                        <select asp-for="Status" class="form-select">
+                            <option value="New">New</option>
+                            <option value="Read">Read</option>
+                            <option value="Replied">Replied</option>
+                        </select>
+
+                        <span asp-validation-for="Status"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Remarks -->
+                    <div class="col-md-6">
+                        <label asp-for="Remarks" class="form-label">
+                            Remarks
+                        </label>
+
+                        <textarea asp-for="Remarks"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter remarks"></textarea>
+
+                        <span asp-validation-for="Remarks"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-4 d-flex gap-2">
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Save Submission
+                    </button>
+
+                    <a asp-action="FormSubmissions"
+                       class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Back
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

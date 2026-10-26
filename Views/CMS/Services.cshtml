@@ -1,0 +1,123 @@
+﻿@model IEnumerable<CMSPanel.Models.Service>
+
+@{
+    ViewData["Title"] = "Services";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Services</h1>
+            <p class="text-muted">Manage your services</p>
+        </div>
+
+        <a asp-action="CreateService" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Add Service
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <form asp-action="Services" method="get" class="row g-3 mb-4">
+                <div class="col-md-8">
+                    <input type="text"
+                           name="searchString"
+                           value="@ViewBag.SearchString"
+                           class="form-control"
+                           placeholder="Search by title or slug..." />
+                </div>
+
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+
+                    <a asp-action="Services" class="btn btn-secondary">
+                        Reset
+                    </a>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Slug</th>
+                            <th>Display Order</th>
+                            <th>Status</th>
+                            <th>Created Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var service in Model)
+                            {
+                                <tr>
+                                    <td>@service.Title</td>
+                                    <td>@service.Slug</td>
+                                    <td>@service.DisplayOrder</td>
+                                    <td>
+                                        @if (service.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>@service.CreatedAt.ToString("dd MMM yyyy")</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a asp-action="ServiceDetails"
+                                               asp-route-id="@service.Id"
+                                               class="btn btn-sm btn-outline-primary"
+                                               title="View">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+
+                                            <a asp-action="EditService"
+                                               asp-route-id="@service.Id"
+                                               class="btn btn-sm btn-outline-warning"
+                                               title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+
+                                            <form asp-action="DeleteService"
+                                                  asp-route-id="@service.Id"
+                                                  method="post"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Are you sure you want to delete this service?');">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                            
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    No services found.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,291 @@
+﻿@model CMSPanel.Models.Career
+
+@{
+    ViewData["Title"] = "Create Career";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Create Career</h1>
+        <p class="text-muted mb-0">Create a new job opening</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-action="CreateCareer" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <!-- Job Information -->
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-briefcase me-2"></i>
+                    Job Information
+                </h5>
+
+                <div class="row g-3">
+
+                    <!-- Job Title -->
+                    <div class="col-md-6">
+                        <label asp-for="JobTitle"
+                               class="form-label fw-semibold">
+                            Job Title
+                        </label>
+
+                        <input asp-for="JobTitle"
+                               class="form-control"
+                               placeholder="e.g. Senior .NET Developer" />
+
+                        <span asp-validation-for="JobTitle"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Department -->
+                    <div class="col-md-6">
+                        <label asp-for="Department"
+                               class="form-label fw-semibold">
+                            Department
+                        </label>
+
+                        <input asp-for="Department"
+                               class="form-control"
+                               placeholder="e.g. IT / Development" />
+
+                        <span asp-validation-for="Department"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="col-md-4">
+                        <label asp-for="Location"
+                               class="form-label fw-semibold">
+                            Location
+                        </label>
+
+                        <input asp-for="Location"
+                               class="form-control"
+                               placeholder="e.g. Lucknow" />
+
+                        <span asp-validation-for="Location"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Job Type -->
+                    <div class="col-md-4">
+                        <label asp-for="JobType"
+                               class="form-label fw-semibold">
+                            Job Type
+                        </label>
+
+                        <select asp-for="JobType"
+                                class="form-select">
+                            <option value="">Select Job Type</option>
+                            <option value="Full Time">Full Time</option>
+                            <option value="Part Time">Part Time</option>
+                            <option value="Internship">Internship</option>
+                            <option value="Contract">Contract</option>
+                            <option value="Remote">Remote</option>
+                        </select>
+
+                        <span asp-validation-for="JobType"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="col-md-4">
+                        <label asp-for="Experience"
+                               class="form-label fw-semibold">
+                            Experience
+                        </label>
+
+                        <input asp-for="Experience"
+                               class="form-control"
+                               placeholder="e.g. 2-4 Years" />
+
+                        <span asp-validation-for="Experience"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Salary -->
+                    <div class="col-md-6">
+                        <label asp-for="Salary"
+                               class="form-label fw-semibold">
+                            Salary
+                        </label>
+
+                        <input asp-for="Salary"
+                               class="form-control"
+                               placeholder="e.g. ₹5 LPA - ₹8 LPA" />
+                    </div>
+
+                    <!-- Last Date -->
+                    <div class="col-md-6">
+                        <label asp-for="LastDate"
+                               class="form-label fw-semibold">
+                            Application Last Date
+                        </label>
+
+                        <input asp-for="LastDate"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="LastDate"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- Description -->
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-file-text me-2"></i>
+                    Job Details
+                </h5>
+
+                <div class="mb-3">
+
+                    <label asp-for="Description"
+                           class="form-label fw-semibold">
+                        Job Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="5"
+                              placeholder="Enter detailed job description..."></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger"></span>
+
+                </div>
+
+                <!-- Requirements -->
+                <div class="mb-3">
+
+                    <label asp-for="Requirements"
+                           class="form-label fw-semibold">
+                        Requirements
+                    </label>
+
+                    <textarea asp-for="Requirements"
+                              class="form-control"
+                              rows="5"
+                              placeholder="Enter required skills, qualifications and experience..."></textarea>
+
+                </div>
+
+                <!-- Responsibilities -->
+                <div class="mb-3">
+
+                    <label asp-for="Responsibilities"
+                           class="form-label fw-semibold">
+                        Responsibilities
+                    </label>
+
+                    <textarea asp-for="Responsibilities"
+                              class="form-control"
+                              rows="5"
+                              placeholder="Enter job responsibilities..."></textarea>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- Publishing -->
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-globe2 me-2"></i>
+                    Publishing
+                </h5>
+
+                <div class="row g-3">
+
+                    <!-- Status -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Status"
+                               class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select asp-for="Status"
+                                class="form-select">
+
+                            <option value="Draft">
+                                Draft
+                            </option>
+
+                            <option value="Published">
+                                Published
+                            </option>
+
+                            <option value="Closed">
+                                Closed
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Status"
+                              class="text-danger"></span>
+
+                    </div>
+
+                    <!-- Published -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Visibility
+                        </label>
+
+                        <div class="form-check mt-2">
+
+                            <input asp-for="IsPublished"
+                                   class="form-check-input"
+                                   type="checkbox"
+                                   id="isPublished" />
+
+                            <label class="form-check-label"
+                                   for="isPublished">
+                                Publish this job opening
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-end gap-2 mt-4">
+
+                    <a asp-action="Careers"
+                       class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i>
+                        Create Career
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

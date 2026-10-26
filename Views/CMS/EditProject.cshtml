@@ -1,0 +1,665 @@
+﻿@model CMSPanel.Models.Project
+
+@{
+    ViewData["Title"] = "Edit Project";
+}
+
+<style>
+    .project-page {
+        min-height: 100vh;
+        padding: 24px;
+        background: #f8fafc;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .page-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 6px;
+    }
+
+    .page-subtitle {
+        font-size: 14px;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .project-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+        overflow: hidden;
+    }
+
+    .project-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 24px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .header-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 21px;
+        flex-shrink: 0;
+    }
+
+    .project-card-header h5 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .project-card-header p {
+        font-size: 13px;
+        color: #64748b;
+        margin: 4px 0 0;
+    }
+
+    .project-card-body {
+        padding: 28px;
+    }
+
+    .section-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 20px;
+    }
+
+        .section-heading i {
+            color: #2563eb;
+            font-size: 19px;
+        }
+
+    .section-divider {
+        border: 0;
+        border-top: 1px solid #e2e8f0;
+        margin: 28px 0;
+        opacity: 1;
+    }
+
+    .form-label {
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .required-mark {
+        color: #dc2626;
+    }
+
+    .form-control,
+    .form-select {
+        min-height: 44px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 13px;
+        font-size: 14px;
+        color: #1e293b;
+        background-color: #fff;
+    }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+    textarea.form-control {
+        min-height: 110px;
+        resize: vertical;
+    }
+
+    .form-text {
+        color: #64748b;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .form-check {
+        padding: 14px 16px 14px 42px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        background: #f8fafc;
+        min-height: 48px;
+    }
+
+    .form-check-input {
+        cursor: pointer;
+    }
+
+        .form-check-input:checked {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+
+    .form-check-label {
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .seo-section {
+        padding: 20px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding-top: 22px;
+        margin-top: 28px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .btn-custom {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 10px 19px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .2s ease;
+    }
+
+    .btn-update {
+        color: #fff;
+        background: #2563eb;
+        border: 1px solid #2563eb;
+    }
+
+        .btn-update:hover {
+            color: #fff;
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+    .btn-cancel {
+        color: #475569;
+        background: #fff;
+        border: 1px solid #cbd5e1;
+    }
+
+        .btn-cancel:hover {
+            color: #1e293b;
+            background: #f1f5f9;
+        }
+
+    .validation-summary-errors {
+        color: #dc2626;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 22px;
+        font-size: 13px;
+    }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+    .field-validation-error {
+        display: block;
+        color: #dc2626;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .input-validation-error {
+        border-color: #dc2626;
+    }
+
+    @@media (max-width: 576px) {
+        .project-page {
+            padding: 15px;
+        }
+
+        .project-card-body {
+            padding: 18px;
+        }
+
+        .project-card-header {
+            padding: 17px;
+        }
+
+        .page-title {
+            font-size: 22px;
+        }
+
+        .seo-section {
+            padding: 15px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+            .form-actions .btn-custom {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="container-fluid project-page">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">
+                <i class="bi bi-pencil-square text-primary me-2"></i>
+                Edit Project
+            </h2>
+            <p class="page-subtitle">
+                Update project information and manage its details.
+            </p>
+        </div>
+
+        <a asp-controller="CMS"
+           asp-action="Projects"
+           class="btn-custom btn-cancel">
+            <i class="bi bi-arrow-left"></i>
+            Back to Projects
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="project-card">
+
+                <!-- Card Header -->
+                <div class="project-card-header">
+                    <div class="header-icon">
+                        <i class="bi bi-briefcase"></i>
+                    </div>
+
+                    <div>
+                        <h5>Project Information</h5>
+                        <p>Update the details of your existing project.</p>
+                    </div>
+                </div>
+
+                <!-- Form Body -->
+                <div class="project-card-body">
+                    <form asp-controller="CMS"
+                          asp-action="EditProject"
+                          method="post"
+                          id="projectForm">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" asp-for="Id" />
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <!-- Basic Information -->
+                        <h5 class="section-heading">
+                            <i class="bi bi-info-circle"></i>
+                            Basic Information
+                        </h5>
+
+                        <div class="row g-4">
+
+                            <!-- Title -->
+                            <div class="col-md-6">
+                                <label asp-for="Title" class="form-label">
+                                    Project Title
+                                    <span class="required-mark">*</span>
+                                </label>
+
+                                <input asp-for="Title"
+                                       class="form-control"
+                                       placeholder="Enter project title" />
+
+                                <span asp-validation-for="Title"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Slug -->
+                            <div class="col-md-6">
+                                <label asp-for="Slug" class="form-label">
+                                    Project Slug
+                                    <span class="required-mark">*</span>
+                                </label>
+
+                                <input asp-for="Slug"
+                                       class="form-control"
+                                       placeholder="project-slug" />
+
+                                <div class="form-text">
+                                    Example: employee-management-system
+                                </div>
+
+                                <span asp-validation-for="Slug"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Short Description -->
+                            <div class="col-12">
+                                <label asp-for="ShortDescription"
+                                       class="form-label">
+                                    Short Description
+                                </label>
+
+                                <textarea asp-for="ShortDescription"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Enter a short project description"></textarea>
+
+                                <span asp-validation-for="ShortDescription"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Full Description -->
+                            <div class="col-12">
+                                <label asp-for="Description"
+                                       class="form-label">
+                                    Full Description
+                                </label>
+
+                                <textarea asp-for="Description"
+                                          class="form-control"
+                                          rows="6"
+                                          placeholder="Enter complete project description"></textarea>
+
+                                <span asp-validation-for="Description"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Client Name -->
+                            <div class="col-md-6">
+                                <label asp-for="ClientName"
+                                       class="form-label">
+                                    Client Name
+                                </label>
+
+                                <input asp-for="ClientName"
+                                       class="form-control"
+                                       placeholder="Enter client name" />
+
+                                <span asp-validation-for="ClientName"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Project Type -->
+                            <div class="col-md-6">
+                                <label asp-for="ProjectType"
+                                       class="form-label">
+                                    Project Type
+                                </label>
+
+                                <input asp-for="ProjectType"
+                                       class="form-control"
+                                       placeholder="Example: Web Application" />
+
+                                <span asp-validation-for="ProjectType"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Project Category -->
+                            <div class="col-md-6">
+                                <label asp-for="ProjectCategoryId"
+                                       class="form-label">
+                                    Project Category
+                                </label>
+
+                                <select asp-for="ProjectCategoryId"
+                                        asp-items="ViewBag.ProjectCategories"
+                                        class="form-select">
+                                    <option value="">-- Select Category --</option>
+                                </select>
+
+                                <span asp-validation-for="ProjectCategoryId"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Featured Image -->
+                            <div class="col-md-6">
+                                <label asp-for="FeaturedImage"
+                                       class="form-label">
+                                    Featured Image URL
+                                </label>
+
+                                <input asp-for="FeaturedImage"
+                                       class="form-control"
+                                       placeholder="Enter image URL" />
+
+                                <span asp-validation-for="FeaturedImage"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Technologies -->
+                            <div class="col-md-6">
+                                <label asp-for="Technologies"
+                                       class="form-label">
+                                    Technologies
+                                </label>
+
+                                <input asp-for="Technologies"
+                                       class="form-control"
+                                       placeholder="ASP.NET Core, SQL Server, Bootstrap" />
+
+                                <div class="form-text">
+                                    Separate technologies with commas.
+                                </div>
+
+                                <span asp-validation-for="Technologies"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Project URL -->
+                            <div class="col-md-6">
+                                <label asp-for="ProjectUrl"
+                                       class="form-label">
+                                    Project URL
+                                </label>
+
+                                <input asp-for="ProjectUrl"
+                                       class="form-control"
+                                       placeholder="https://example.com" />
+
+                                <span asp-validation-for="ProjectUrl"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <hr class="section-divider" />
+
+                        <!-- Project Settings -->
+                        <h5 class="section-heading">
+                            <i class="bi bi-sliders"></i>
+                            Project Settings
+                        </h5>
+
+                        <div class="row g-4">
+
+                            <!-- Status -->
+                            <div class="col-md-4">
+                                <label asp-for="Status"
+                                       class="form-label">
+                                    Project Status
+                                </label>
+
+                                <select asp-for="Status"
+                                        class="form-select">
+                                    <option value="Draft">Draft</option>
+                                    <option value="In Review">In Review</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Scheduled">Scheduled</option>
+                                    <option value="Published">Published</option>
+                                    <option value="Unpublished">Unpublished</option>
+                                    <option value="Archived">Archived</option>
+                                </select>
+
+                                <span asp-validation-for="Status"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Project Date -->
+                            <div class="col-md-4">
+                                <label asp-for="ProjectDate"
+                                       class="form-label">
+                                    Project Date
+                                </label>
+
+                                <input asp-for="ProjectDate"
+                                       type="date"
+                                       class="form-control" />
+
+                                <span asp-validation-for="ProjectDate"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Featured -->
+                            <div class="col-md-4">
+                                <label class="form-label">
+                                    Featured Project
+                                </label>
+
+                                <div class="form-check">
+                                    <input asp-for="IsFeatured"
+                                           class="form-check-input"
+                                           type="checkbox" />
+
+                                    <label asp-for="IsFeatured"
+                                           class="form-check-label">
+                                        Mark as featured
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <hr class="section-divider" />
+
+                        <!-- SEO Information -->
+                        <div class="seo-section">
+
+                            <h5 class="section-heading">
+                                <i class="bi bi-search"></i>
+                                SEO Information
+                            </h5>
+
+                            <p class="form-text mb-4">
+                                Manage the metadata used by search engines.
+                            </p>
+
+                            <div class="row g-4">
+
+                                <!-- Meta Title -->
+                                <div class="col-md-6">
+                                    <label asp-for="MetaTitle"
+                                           class="form-label">
+                                        Meta Title
+                                    </label>
+
+                                    <input asp-for="MetaTitle"
+                                           class="form-control"
+                                           placeholder="Enter SEO meta title" />
+
+                                    <span asp-validation-for="MetaTitle"
+                                          class="field-validation-error">
+                                    </span>
+                                </div>
+
+                                <!-- Meta Description -->
+                                <div class="col-md-6">
+                                    <label asp-for="MetaDescription"
+                                           class="form-label">
+                                        Meta Description
+                                    </label>
+
+                                    <textarea asp-for="MetaDescription"
+                                              class="form-control"
+                                              rows="3"
+                                              placeholder="Enter SEO meta description"></textarea>
+
+                                    <span asp-validation-for="MetaDescription"
+                                          class="field-validation-error">
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+
+                            <a asp-controller="CMS"
+                               asp-action="Projects"
+                               class="btn-custom btn-cancel">
+                                <i class="bi bi-x-circle"></i>
+                                Cancel
+                            </a>
+
+                            <button type="submit"
+                                    class="btn-custom btn-update">
+                                <i class="bi bi-check-circle"></i>
+                                Update Project
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

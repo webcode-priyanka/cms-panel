@@ -1,0 +1,609 @@
+﻿@model CMSPanel.Models.Project
+
+@{
+    ViewData["Title"] = "Project Details";
+}
+
+<style>
+    .project-details-container {
+        padding: 25px;
+        background: #f8fafc;
+        min-height: 80vh;
+    }
+
+    .details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+        .details-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .details-header p {
+            color: #64748b;
+            margin: 0;
+        }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn-edit-project {
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-edit-project:hover {
+            background: #1d4ed8;
+            color: #fff;
+        }
+
+    .btn-back-project {
+        background: #fff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-back-project:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    .details-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+
+    .details-card-header {
+        padding: 19px 22px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .details-card-header h5 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .details-card-header i {
+            color: #2563eb;
+            font-size: 19px;
+        }
+
+    .details-card-body {
+        padding: 24px;
+    }
+
+    .project-title {
+        font-size: 27px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 8px;
+        overflow-wrap: anywhere;
+    }
+
+    .project-slug {
+        color: #64748b;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+
+        .project-slug i {
+            color: #94a3b8;
+        }
+
+    .content-section {
+        margin-top: 25px;
+    }
+
+        .content-section h6 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 12px;
+        }
+
+    .content-text {
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+    }
+
+    .project-description {
+        color: #475569;
+        font-size: 14px;
+        line-height: 1.8;
+        white-space: pre-line;
+        overflow-wrap: anywhere;
+    }
+
+    .project-url {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #2563eb;
+        text-decoration: none;
+        font-size: 14px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+        .project-url:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+    .info-item {
+        padding: 13px 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+        .info-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+    .info-label {
+        display: block;
+        color: #94a3b8;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .info-value {
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .status-published {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-approved {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .status-review {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .status-archived {
+        background: #e2e8f0;
+        color: #475569;
+    }
+
+    .status-scheduled {
+        background: #cffafe;
+        color: #0e7490;
+    }
+
+    .status-unpublished {
+        background: #334155;
+        color: #fff;
+    }
+
+    .status-default {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+
+    .featured-badge {
+        display: inline-block;
+        background: #fef3c7;
+        color: #92400e;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .not-featured {
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .seo-item {
+        margin-bottom: 20px;
+    }
+
+        .seo-item:last-child {
+            margin-bottom: 0;
+        }
+
+    .seo-label {
+        display: block;
+        color: #94a3b8;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
+
+    .seo-value {
+        color: #475569;
+        font-size: 13px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+    }
+
+    .empty-value {
+        color: #94a3b8;
+        font-style: italic;
+        font-weight: 400;
+    }
+
+    @@media (max-width: 768px) {
+        .project-details-container {
+            padding: 15px;
+        }
+
+        .details-header h1 {
+            font-size: 23px;
+        }
+
+        .header-actions {
+            width: 100%;
+        }
+
+            .header-actions a {
+                flex: 1;
+                text-align: center;
+            }
+
+        .details-card-body {
+            padding: 18px;
+        }
+
+        .project-title {
+            font-size: 22px;
+        }
+    }
+</style>
+
+<div class="container-fluid project-details-container">
+
+    <!-- Header -->
+    <div class="details-header">
+        <div>
+            <h1>
+                <i class="bi bi-briefcase me-2 text-primary"></i>
+                Project Details
+            </h1>
+            <p>View complete project information and SEO details.</p>
+        </div>
+
+        <div class="header-actions">
+            <a asp-controller="CMS"
+               asp-action="EditProject"
+               asp-route-id="@Model.Id"
+               class="btn-edit-project">
+                <i class="bi bi-pencil me-1"></i>
+                Edit Project
+            </a>
+
+            <a asp-controller="CMS"
+               asp-action="Projects"
+               class="btn-back-project">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to Projects
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Main Project Information -->
+        <div class="col-lg-8">
+
+            <div class="details-card">
+                <div class="details-card-header">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <h5>Project Overview</h5>
+                </div>
+
+                <div class="details-card-body">
+
+                    <!-- Title and Slug -->
+                    <div>
+                        <h2 class="project-title">@Model.Title</h2>
+
+                        <div class="project-slug">
+                            <i class="bi bi-link-45deg me-1"></i>
+                            /@Model.Slug
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Short Description -->
+                    <div class="content-section mt-0">
+                        <h6>
+                            <i class="bi bi-card-text me-2 text-primary"></i>
+                            Short Description
+                        </h6>
+
+                        <p class="content-text mb-0">
+                            @(string.IsNullOrWhiteSpace(Model.ShortDescription)
+                                ? "No short description available."
+                                : Model.ShortDescription)
+                        </p>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="content-section">
+                        <h6>
+                            <i class="bi bi-file-text me-2 text-primary"></i>
+                            Description
+                        </h6>
+
+                        <div class="project-description">
+                            @(string.IsNullOrWhiteSpace(Model.Description)
+                                ? "No description available."
+                                : Model.Description)
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Technologies -->
+                    <div class="content-section mt-0">
+                        <h6>
+                            <i class="bi bi-code-slash me-2 text-primary"></i>
+                            Technologies
+                        </h6>
+
+                        <p class="content-text mb-0">
+                            @(string.IsNullOrWhiteSpace(Model.Technologies)
+                                ? "Not specified"
+                                : Model.Technologies)
+                        </p>
+                    </div>
+
+                    <!-- Project URL -->
+                    <div class="content-section">
+                        <h6>
+                            <i class="bi bi-link-45deg me-2 text-primary"></i>
+                            Project URL
+                        </h6>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.ProjectUrl))
+                        {
+                            <a href="@Model.ProjectUrl"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="project-url">
+                                <i class="bi bi-box-arrow-up-right"></i>
+                                @Model.ProjectUrl
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="empty-value">
+                                No project URL available.
+                            </span>
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+
+            <!-- Project Information -->
+            <div class="details-card">
+
+                <div class="details-card-header">
+                    <i class="bi bi-info-circle"></i>
+                    <h5>Project Information</h5>
+                </div>
+
+                <div class="details-card-body">
+
+                    <!-- Client -->
+                    <div class="info-item">
+                        <span class="info-label">Client Name</span>
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(Model.ClientName)
+                                ? "-"
+                                : Model.ClientName)
+                        </div>
+                    </div>
+
+                    <!-- Project Type -->
+                    <div class="info-item">
+                        <span class="info-label">Project Type</span>
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(Model.ProjectType)
+                                ? "-"
+                                : Model.ProjectType)
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="info-item">
+                        <span class="info-label">Status</span>
+
+                        @if (Model.Status == "Published")
+                        {
+                            <span class="status-badge status-published">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Published
+                            </span>
+                        }
+                        else if (Model.Status == "Approved")
+                        {
+                            <span class="status-badge status-approved">
+                                <i class="bi bi-patch-check me-1"></i>
+                                Approved
+                            </span>
+                        }
+                        else if (Model.Status == "In Review")
+                        {
+                            <span class="status-badge status-review">
+                                <i class="bi bi-clock me-1"></i>
+                                In Review
+                            </span>
+                        }
+                        else if (Model.Status == "Archived")
+                        {
+                            <span class="status-badge status-archived">
+                                <i class="bi bi-archive me-1"></i>
+                                Archived
+                            </span>
+                        }
+                        else if (Model.Status == "Scheduled")
+                        {
+                            <span class="status-badge status-scheduled">
+                                <i class="bi bi-calendar-event me-1"></i>
+                                Scheduled
+                            </span>
+                        }
+                        else if (Model.Status == "Unpublished")
+                        {
+                            <span class="status-badge status-unpublished">
+                                Unpublished
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-default">
+                                @(string.IsNullOrWhiteSpace(Model.Status)
+                                    ? "Not specified"
+                                    : Model.Status)
+                            </span>
+                        }
+                    </div>
+
+                    <!-- Featured -->
+                    <div class="info-item">
+                        <span class="info-label">Featured</span>
+
+                        @if (Model.IsFeatured)
+                        {
+                            <span class="featured-badge">
+                                <i class="bi bi-star-fill me-1"></i>
+                                Featured
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="not-featured">No</span>
+                        }
+                    </div>
+
+                    <!-- Project Date -->
+                    <div class="info-item">
+                        <span class="info-label">Project Date</span>
+                        <div class="info-value">
+                            @(Model.ProjectDate.HasValue
+                                ? Model.ProjectDate.Value.ToString("dd MMM yyyy")
+                                : "-")
+                        </div>
+                    </div>
+
+                    <!-- Created At -->
+                    <div class="info-item">
+                        <span class="info-label">Created At</span>
+                        <div class="info-value">
+                            @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                        </div>
+                    </div>
+
+                    <!-- Updated At -->
+                    <div class="info-item">
+                        <span class="info-label">Last Updated</span>
+                        <div class="info-value">
+                            @(Model.UpdatedAt.HasValue
+                                ? Model.UpdatedAt.Value.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                                : "Not updated yet")
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SEO Information -->
+            <div class="details-card">
+
+                <div class="details-card-header">
+                    <i class="bi bi-search"></i>
+                    <h5>SEO Information</h5>
+                </div>
+
+                <div class="details-card-body">
+
+                    <div class="seo-item">
+                        <span class="seo-label">Meta Title</span>
+
+                        <div class="seo-value">
+                            @(string.IsNullOrWhiteSpace(Model.MetaTitle)
+                                ? "Not specified"
+                                : Model.MetaTitle)
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="seo-item">
+                        <span class="seo-label">Meta Description</span>
+
+                        <div class="seo-value">
+                            @(string.IsNullOrWhiteSpace(Model.MetaDescription)
+                                ? "Not specified"
+                                : Model.MetaDescription)
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

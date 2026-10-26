@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Users</h1>
+        <p class="text-muted">
+            Manage CMS panel users
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form method="get" class="row g-2 mb-4">
+
+                <div class="col-md-8">
+                    <input type="text"
+                           name="searchString"
+                           value="@ViewBag.SearchString"
+                           class="form-control"
+                           placeholder="Search by email or username..." />
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Search
+                    </button>
+                </div>
+
+                <div class="col-md-2">
+                    <a href="/CMS/Users" class="btn btn-secondary w-100">
+                        Clear
+                    </a>
+                </div>
+
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Email</th>
+                            <th>User Name</th>
+                            <th>Email Confirmed</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{
+                            int count = 1;
+                        }
+
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@user.Email</td>
+                                <td>@user.UserName</td>
+                                <td>
+                                    @if (user.EmailConfirmed)
+                                    {
+                                        <span class="badge bg-success">Confirmed</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    }
+                                </td>
+                            </tr>
+
+                            count++;
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

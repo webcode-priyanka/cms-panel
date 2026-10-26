@@ -1,0 +1,166 @@
+﻿@model CMSPanel.Models.Form
+
+@{
+    ViewData["Title"] = "Create Form";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+
+        <h1 class="fw-bold mb-1">
+            Create Form
+        </h1>
+
+        <p class="text-muted mb-0">
+            Create a new website form.
+        </p>
+
+    </div>
+
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <form asp-controller="CMS"
+                  asp-action="CreateForm"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <!-- Name -->
+                <div class="mb-3">
+
+                    <label asp-for="Name"
+                           class="form-label fw-semibold">
+                        Form Name
+                    </label>
+
+                    <input asp-for="Name"
+                           class="form-control"
+                           placeholder="Contact Form" />
+
+                    <span asp-validation-for="Name"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Slug -->
+                <div class="mb-3">
+
+                    <label asp-for="Slug"
+                           class="form-label fw-semibold">
+                        Slug
+                    </label>
+
+                    <input asp-for="Slug"
+                           class="form-control"
+                           placeholder="contact-form" />
+
+                    <small class="text-muted">
+                        Use a simple URL-friendly value.
+                    </small>
+
+                    <span asp-validation-for="Slug"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Description -->
+                <div class="mb-3">
+
+                    <label asp-for="Description"
+                           class="form-label fw-semibold">
+                        Description
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="5"
+                              placeholder="Enter form description...">
+                    </textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Status -->
+                <div class="mb-3">
+
+                    <label asp-for="Status"
+                           class="form-label fw-semibold">
+                        Status
+                    </label>
+
+                    <select asp-for="Status"
+                            class="form-select">
+
+                        <option value="Active">
+                            Active
+                        </option>
+
+                        <option value="Inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="Status"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2 mt-4">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="bi bi-check-lg me-1"></i>
+                        Create Form
+
+                    </button>
+
+
+                    <a asp-controller="CMS"
+                       asp-action="Forms"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Back
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

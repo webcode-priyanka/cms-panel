@@ -1,0 +1,457 @@
+﻿@model CMSPanel.Models.ProjectCategory
+
+@{
+    ViewData["Title"] = "Create Project Category";
+}
+
+<style>
+    .category-page {
+        min-height: 100vh;
+        padding: 24px;
+        background: #f8fafc;
+    }
+
+    .category-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+        .category-header h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .category-header p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+    .category-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+        overflow: hidden;
+    }
+
+    .category-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 24px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .header-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eff6ff;
+        color: #2563eb;
+        border-radius: 10px;
+        font-size: 21px;
+        flex-shrink: 0;
+    }
+
+    .category-card-header h5 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .category-card-header p {
+        color: #64748b;
+        font-size: 13px;
+        margin: 4px 0 0;
+    }
+
+    .category-card-body {
+        padding: 28px;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 20px;
+    }
+
+        .section-title i {
+            font-size: 19px;
+            color: #2563eb;
+        }
+
+    .form-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+    }
+
+    .required-mark {
+        color: #dc2626;
+    }
+
+    .form-control {
+        min-height: 44px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 14px;
+        padding: 10px 13px;
+        color: #1e293b;
+    }
+
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-text {
+        color: #64748b;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .section-divider {
+        border: 0;
+        border-top: 1px solid #e2e8f0;
+        margin: 28px 0;
+        opacity: 1;
+    }
+
+    .status-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        padding: 15px 18px;
+    }
+
+    .form-check-input {
+        cursor: pointer;
+    }
+
+        .form-check-input:checked {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+
+    .form-check-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        cursor: pointer;
+    }
+
+    .status-description {
+        font-size: 12px;
+        color: #64748b;
+        margin: 5px 0 0 32px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 22px;
+        margin-top: 28px;
+    }
+
+    .btn-custom {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 10px 19px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .2s ease;
+    }
+
+    .btn-create {
+        color: #fff;
+        background: #2563eb;
+        border: 1px solid #2563eb;
+    }
+
+        .btn-create:hover {
+            color: #fff;
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+    .btn-cancel {
+        color: #475569;
+        background: #fff;
+        border: 1px solid #cbd5e1;
+    }
+
+        .btn-cancel:hover {
+            color: #1e293b;
+            background: #f1f5f9;
+        }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .validation-summary-errors {
+        color: #dc2626;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 22px;
+        font-size: 13px;
+    }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+    .field-validation-error {
+        display: block;
+        color: #dc2626;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .input-validation-error {
+        border-color: #dc2626;
+    }
+
+    @@media (max-width: 576px) {
+        .category-page {
+            padding: 15px;
+        }
+
+        .category-header h2 {
+            font-size: 22px;
+        }
+
+        .category-card-body {
+            padding: 18px;
+        }
+
+        .category-card-header {
+            padding: 17px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+            .form-actions .btn-custom {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="container-fluid category-page">
+
+    <!-- Page Header -->
+    <div class="category-header">
+        <div>
+            <h2>
+                <i class="bi bi-folder-plus text-primary me-2"></i>
+                Create Project Category
+            </h2>
+
+            <p>
+                Add a new category to organize your projects.
+            </p>
+        </div>
+
+        <a asp-action="ProjectCategories"
+           class="btn-custom btn-cancel">
+            <i class="bi bi-arrow-left"></i>
+            Back to Categories
+        </a>
+    </div>
+
+    <!-- Main Card -->
+    <div class="row">
+        <div class="col-12 col-xl-9 col-xxl-8">
+
+            <div class="category-card">
+
+                <!-- Card Header -->
+                <div class="category-card-header">
+                    <div class="header-icon">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+
+                    <div>
+                        <h5>Category Information</h5>
+                        <p>
+                            Enter the details to create a new project category.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card Body -->
+                <div class="category-card-body">
+
+                    <form asp-action="CreateProjectCategory"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <!-- Basic Information -->
+                        <h5 class="section-title">
+                            <i class="bi bi-info-circle"></i>
+                            Basic Information
+                        </h5>
+
+                        <div class="row g-4">
+
+                            <!-- Category Name -->
+                            <div class="col-md-6">
+                                <label asp-for="Name"
+                                       class="form-label">
+                                    Category Name
+                                    <span class="required-mark">*</span>
+                                </label>
+
+                                <input asp-for="Name"
+                                       class="form-control"
+                                       placeholder="Enter category name" />
+
+                                <span asp-validation-for="Name"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Slug -->
+                            <div class="col-md-6">
+                                <label asp-for="Slug"
+                                       class="form-label">
+                                    Slug
+                                    <span class="required-mark">*</span>
+                                </label>
+
+                                <input asp-for="Slug"
+                                       class="form-control"
+                                       placeholder="e.g. web-development" />
+
+                                <div class="form-text">
+                                    Example: web-development
+                                </div>
+
+                                <span asp-validation-for="Slug"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12">
+                                <label asp-for="Description"
+                                       class="form-label">
+                                    Description
+                                </label>
+
+                                <textarea asp-for="Description"
+                                          class="form-control"
+                                          rows="5"
+                                          placeholder="Enter category description"></textarea>
+
+                                <span asp-validation-for="Description"
+                                      class="field-validation-error">
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <hr class="section-divider" />
+
+                        <!-- Category Settings -->
+                        <h5 class="section-title">
+                            <i class="bi bi-gear"></i>
+                            Category Settings
+                        </h5>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    Category Status
+                                </label>
+
+                                <div class="status-box">
+                                    <div class="form-check form-switch">
+                                        <input asp-for="IsActive"
+                                               class="form-check-input"
+                                               type="checkbox"
+                                               role="switch" />
+
+                                        <label asp-for="IsActive"
+                                               class="form-check-label">
+                                            Active Category
+                                        </label>
+                                    </div>
+
+                                    <p class="status-description">
+                                        Enable this option to mark the category as active.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+
+                            <a asp-action="ProjectCategories"
+                               class="btn-custom btn-cancel">
+                                <i class="bi bi-x-circle"></i>
+                                Cancel
+                            </a>
+
+                            <button type="submit"
+                                    class="btn-custom btn-create">
+                                <i class="bi bi-check-circle"></i>
+                                Create Category
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

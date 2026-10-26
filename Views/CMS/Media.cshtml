@@ -1,0 +1,758 @@
+﻿@model IEnumerable<CMSPanel.Models.Media>
+
+@{
+    ViewData["Title"] = "Media Library";
+    var mediaList = Model?.ToList() ?? new List<CMSPanel.Models.Media>();
+    var totalMedia = mediaList.Count;
+    var activeMedia = mediaList.Count(x => x.IsActive);
+    var inactiveMedia = totalMedia - activeMedia;
+    var totalSize = mediaList.Sum(x => (long)x.FileSize);
+}
+
+<style>
+    .media-page {
+        padding: 24px;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
+
+    .media-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+    }
+
+    .media-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 5px;
+    }
+
+    .media-subtitle {
+        color: #64748b;
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .btn-add-media {
+        background: #4f46e5;
+        color: white;
+        border: none;
+        border-radius: 9px;
+        padding: 11px 18px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-add-media:hover {
+            background: #4338ca;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+    .media-stat-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        height: 100%;
+        transition: 0.2s;
+    }
+
+        .media-stat-card:hover {
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
+            transform: translateY(-2px);
+        }
+
+    .media-stat-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+    }
+
+    .icon-purple {
+        background: #eef2ff;
+        color: #4f46e5;
+    }
+
+    .icon-green {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+
+    .icon-orange {
+        background: #ffedd5;
+        color: #ea580c;
+    }
+
+    .icon-blue {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+
+    .media-stat-label {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .media-stat-value {
+        color: #1e293b;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .media-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 24px;
+    }
+
+    .media-card-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .media-card-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .media-search {
+        padding: 22px;
+    }
+
+        .media-search .form-label {
+            color: #334155;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .media-search .form-control,
+        .media-search .form-select {
+            min-height: 43px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+            .media-search .form-control:focus,
+            .media-search .form-select:focus {
+                border-color: #6366f1;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+            }
+
+    .btn-search {
+        background: #4f46e5;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 18px;
+        font-weight: 600;
+        min-height: 43px;
+    }
+
+        .btn-search:hover {
+            background: #4338ca;
+            color: white;
+        }
+
+    .btn-reset {
+        border: 1px solid #cbd5e1;
+        color: #475569;
+        background: white;
+        border-radius: 8px;
+        padding: 10px 16px;
+        min-height: 43px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .btn-reset:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    .media-table {
+        margin: 0;
+        white-space: nowrap;
+    }
+
+        .media-table thead th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            padding: 15px 14px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .media-table tbody td {
+            padding: 14px;
+            color: #475569;
+            font-size: 13px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        .media-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .media-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+    .media-preview {
+        width: 65px;
+        height: 55px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+    }
+
+    .media-file-icon {
+        width: 65px;
+        height: 55px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f1f5f9;
+        font-size: 25px;
+    }
+
+    .media-name {
+        color: #1e293b;
+        font-weight: 600;
+        font-size: 13px;
+        max-width: 220px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .media-description {
+        color: #94a3b8;
+        font-size: 11px;
+        display: block;
+        max-width: 220px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-top: 4px;
+    }
+
+    .media-category {
+        display: inline-block;
+        padding: 5px 10px;
+        background: #eff6ff;
+        color: #2563eb;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .media-status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .status-active {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-inactive {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    .media-actions {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+    }
+
+        .media-actions .btn {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 7px;
+        }
+
+    .empty-media {
+        padding: 65px 20px;
+        text-align: center;
+    }
+
+    .empty-media-icon {
+        width: 75px;
+        height: 75px;
+        border-radius: 50%;
+        background: #eef2ff;
+        color: #6366f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        margin: 0 auto 18px;
+    }
+
+    .empty-media h5 {
+        color: #1e293b;
+        font-weight: 700;
+    }
+
+    .empty-media p {
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    @@media (max-width: 768px) {
+        .media-page {
+            padding: 15px;
+        }
+
+        .media-title {
+            font-size: 23px;
+        }
+
+        .media-search {
+            padding: 16px;
+        }
+
+        .media-stat-card {
+            padding: 15px;
+        }
+    }
+</style>
+
+<div class="media-page">
+
+    <!-- Header -->
+    <div class="media-header">
+        <div>
+            <h1 class="media-title">
+                <i class="bi bi-collection me-2 text-primary"></i>
+                Media Library
+            </h1>
+            <p class="media-subtitle">
+                Manage uploaded images, documents and media files
+            </p>
+        </div>
+
+        <a asp-action="CreateMedia" class="btn-add-media">
+            <i class="bi bi-plus-lg me-1"></i>
+            Add Media
+        </a>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-xl-3 col-md-6">
+            <div class="media-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="media-stat-label">Total Media</div>
+                        <h3 class="media-stat-value">@totalMedia</h3>
+                    </div>
+                    <div class="media-stat-icon icon-purple">
+                        <i class="bi bi-collection"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="media-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="media-stat-label">Active Media</div>
+                        <h3 class="media-stat-value">@activeMedia</h3>
+                    </div>
+                    <div class="media-stat-icon icon-green">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="media-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="media-stat-label">Inactive Media</div>
+                        <h3 class="media-stat-value">@inactiveMedia</h3>
+                    </div>
+                    <div class="media-stat-icon icon-orange">
+                        <i class="bi bi-pause-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="media-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="media-stat-label">Total File Size</div>
+                        <h3 class="media-stat-value">
+                            @(totalSize >= 1024 * 1024
+                                ? $"{totalSize / (1024.0 * 1024.0):F2} MB"
+                                : totalSize >= 1024
+                                ? $"{totalSize / 1024.0:F2} KB"
+                                : $"{totalSize} B")
+                        </h3>
+                    </div>
+                    <div class="media-stat-icon icon-blue">
+                        <i class="bi bi-hdd"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="media-card">
+        <div class="media-card-header">
+            <h5 class="media-card-title">
+                <i class="bi bi-funnel me-2 text-primary"></i>
+                Search & Filter
+            </h5>
+        </div>
+
+        <div class="media-search">
+            <form asp-action="Media" method="get">
+                <div class="row g-3">
+
+                    <div class="col-lg-5 col-md-6">
+                        <label class="form-label">Search Media</label>
+                        <input type="text"
+                               name="searchString"
+                               value="@ViewBag.SearchString"
+                               class="form-control"
+                               placeholder="Search by title, file name or description..." />
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <label class="form-label">Category</label>
+                        <select name="category" class="form-select">
+                            <option value="">All Categories</option>
+
+                            @if (ViewBag.Categories != null)
+                            {
+                                foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category"
+                                            selected="@(ViewBag.Category == category ? "selected" : null)">
+                                        @category
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn-search flex-grow-1">
+                            <i class="bi bi-search me-1"></i>
+                            Search
+                        </button>
+
+                        <a asp-action="Media" class="btn-reset">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>
+                            Reset
+                        </a>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Media Table -->
+    <div class="media-card">
+
+        <div class="media-card-header">
+            <h5 class="media-card-title">
+                <i class="bi bi-images me-2 text-primary"></i>
+                Media Files
+            </h5>
+
+            <span class="badge bg-light text-dark border">
+                @totalMedia Files
+            </span>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table media-table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Preview</th>
+                            <th>Title</th>
+                            <th>File Name</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var media in Model)
+                        {
+                            <tr>
+                                <!-- Preview -->
+                                <td class="ps-4">
+                                    @if (!string.IsNullOrWhiteSpace(media.FileUrl))
+                                    {
+                                        @if (media.FileType == "Image")
+                                        {
+                                            <img src="@media.FileUrl"
+                                                 alt="@media.AltText"
+                                                 class="media-preview"
+                                                 onerror="this.style.display='none';" />
+                                        }
+                                        else if (media.FileType == "Document")
+                                        {
+                                            <a href="@media.FileUrl"
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                               title="Open Document">
+                                                <div class="media-file-icon text-danger">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </div>
+                                            </a>
+                                        }
+                                        else if (media.FileType == "Video")
+                                        {
+                                            <div class="media-file-icon text-primary">
+                                                <i class="bi bi-play-circle"></i>
+                                            </div>
+                                        }
+                                        else if (media.FileType == "Audio")
+                                        {
+                                            <div class="media-file-icon text-success">
+                                                <i class="bi bi-music-note-beamed"></i>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="media-file-icon text-secondary">
+                                                <i class="bi bi-file-earmark"></i>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="media-file-icon text-secondary">
+                                            <i class="bi bi-file-earmark"></i>
+                                        </div>
+                                    }
+                                </td>
+
+                                <!-- Title -->
+                                <td>
+                                    <div class="media-name" title="@media.Title">
+                                        @media.Title
+                                    </div>
+
+                                    @if (!string.IsNullOrWhiteSpace(media.Description))
+                                    {
+                                        <span class="media-description"
+                                              title="@media.Description">
+                                            @(media.Description.Length > 60
+                                                ? media.Description.Substring(0, 60) + "..."
+                                                : media.Description)
+                                        </span>
+                                    }
+                                </td>
+
+                                <!-- File Name -->
+                                <td>
+                                    <span class="text-muted">
+                                        @media.FileName
+                                    </span>
+                                </td>
+
+                                <!-- Type -->
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(media.FileType))
+                                    {
+                                        <span class="badge bg-secondary">
+                                            @media.FileType
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">-</span>
+                                    }
+                                </td>
+
+                                <!-- Size -->
+                                <td>
+                                    @if (media.FileSize > 0)
+                                    {
+                                        if (media.FileSize < 1024)
+                                        {
+                                            @($"{media.FileSize} B")
+                                        }
+                                        else if (media.FileSize < 1024 * 1024)
+                                        {
+                                            @($"{media.FileSize / 1024.0:F2} KB")
+                                        }
+                                        else
+                                        {
+                                            @($"{media.FileSize / (1024.0 * 1024.0):F2} MB")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">-</span>
+                                    }
+                                </td>
+
+                                <!-- Category -->
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(media.Category))
+                                    {
+                                        <span class="media-category">
+                                            @media.Category
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">-</span>
+                                    }
+                                </td>
+
+                                <!-- Status -->
+                                <td>
+                                    @if (media.IsActive)
+                                    {
+                                        <span class="media-status status-active">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="media-status status-inactive">
+                                            <i class="bi bi-pause-circle me-1"></i>
+                                            Inactive
+                                        </span>
+                                    }
+                                </td>
+
+                                <!-- Created -->
+                                <td>
+                                    <span class="text-muted">
+                                        @media.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")
+                                    </span>
+                                </td>
+
+                                <!-- Actions -->
+                                <td>
+                                    <div class="media-actions">
+
+                                        @if (!string.IsNullOrWhiteSpace(media.FileUrl))
+                                        {
+                                            <a href="@media.FileUrl"
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                               class="btn btn-sm btn-outline-success"
+                                               title="Open File">
+                                                <i class="bi bi-box-arrow-up-right"></i>
+                                            </a>
+                                        }
+
+                                        <a asp-action="MediaDetails"
+                                           asp-route-id="@media.Id"
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="View">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        <a asp-action="EditMedia"
+                                           asp-route-id="@media.Id"
+                                           class="btn btn-sm btn-outline-warning"
+                                           title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+
+                                        <a asp-action="DeleteMedia"
+                                           asp-route-id="@media.Id"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-media">
+                <div class="empty-media-icon">
+                    <i class="bi bi-images"></i>
+                </div>
+
+                <h5>No Media Found</h5>
+
+                <p>
+                    There are no media files matching your search.
+                </p>
+
+                <a asp-action="CreateMedia" class="btn-add-media d-inline-block mt-2">
+                    <i class="bi bi-plus-lg me-1"></i>
+                    Add Media
+                </a>
+            </div>
+        }
+
+    </div>
+
+</div>

@@ -1,0 +1,711 @@
+﻿@model IEnumerable<CMSPanel.Models.Page>
+
+@{
+    ViewData["Title"] = "Pages";
+    var pages = Model?.ToList() ?? new List<CMSPanel.Models.Page>();
+}
+
+<style>
+    .pages-container {
+        padding: 28px;
+        background: #f5f7fb;
+        min-height: 100vh;
+    }
+
+    .pages-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 28px;
+    }
+
+    .pages-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 6px;
+    }
+
+    .pages-subtitle {
+        color: #64748b;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .btn-create-page {
+        background: #4f46e5;
+        color: #fff;
+        border: none;
+        padding: 11px 20px;
+        border-radius: 9px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-create-page:hover {
+            background: #4338ca;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .page-stat-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 12px;
+        padding: 20px;
+        height: 100%;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+    }
+
+    .stat-label {
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .stat-value {
+        font-size: 27px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .stat-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+    }
+
+    .icon-purple {
+        background: #eef2ff;
+        color: #4f46e5;
+    }
+
+    .icon-green {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .icon-yellow {
+        background: #fef3c7;
+        color: #b45309;
+    }
+
+    .icon-blue {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+
+    .pages-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 13px;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+        margin-bottom: 22px;
+        overflow: hidden;
+    }
+
+    .pages-card-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid #edf0f5;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+        .pages-card-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+    .pages-card-body {
+        padding: 22px;
+    }
+
+    .form-label {
+        font-size: 13px;
+        color: #475569;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid #dbe2ea;
+        border-radius: 8px;
+        padding: 10px 13px;
+        font-size: 14px;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+    .btn-search {
+        background: #4f46e5;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-search:hover {
+            background: #4338ca;
+            color: #fff;
+        }
+
+    .btn-reset {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+        .btn-reset:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+    .pages-table {
+        margin-bottom: 0;
+        white-space: nowrap;
+    }
+
+        .pages-table thead th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 15px 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .pages-table tbody td {
+            padding: 15px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #475569;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .pages-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .pages-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+    .page-number {
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #eef2ff;
+        color: #4f46e5;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .page-name {
+        color: #1e293b;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .page-slug {
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .status-published {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-archived {
+        background: #e2e8f0;
+        color: #475569;
+    }
+
+    .status-draft {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .status-yes {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-no {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 6px;
+    }
+
+    .action-btn {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .btn-view {
+        background: #e0f2fe;
+        color: #0284c7;
+    }
+
+        .btn-view:hover {
+            background: #0284c7;
+            color: #fff;
+        }
+
+    .btn-edit {
+        background: #fef3c7;
+        color: #b45309;
+    }
+
+        .btn-edit:hover {
+            background: #f59e0b;
+            color: #fff;
+        }
+
+    .btn-delete {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+        .btn-delete:hover {
+            background: #dc2626;
+            color: #fff;
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 55px 20px !important;
+    }
+
+        .empty-state i {
+            font-size: 42px;
+            color: #cbd5e1;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h6 {
+            color: #334155;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+            font-size: 13px;
+            margin: 0;
+        }
+
+    @@media (max-width: 768px) {
+        .pages-container {
+            padding: 16px;
+        }
+
+        .pages-title {
+            font-size: 23px;
+        }
+
+        .pages-card-body {
+            padding: 16px;
+        }
+
+        .pages-header {
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="container-fluid pages-container">
+
+    <!-- Header -->
+    <div class="pages-header">
+        <div>
+            <h1 class="pages-title">
+                <i class="bi bi-file-earmark-text me-2"></i>
+                Pages
+            </h1>
+            <p class="pages-subtitle">
+                Create, manage and organize your website pages
+            </p>
+        </div>
+
+        <a asp-action="CreatePage" class="btn-create-page">
+            <i class="bi bi-plus-lg me-1"></i>
+            Create Page
+        </a>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="page-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Total Pages</div>
+                        <h3 class="stat-value">@pages.Count</h3>
+                    </div>
+                    <div class="stat-icon icon-purple">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="page-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Published</div>
+                        <h3 class="stat-value">
+                            @pages.Count(p => p.Status == "Published")
+                        </h3>
+                    </div>
+                    <div class="stat-icon icon-green">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="page-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Drafts</div>
+                        <h3 class="stat-value">
+                            @pages.Count(p => p.Status == "Draft")
+                        </h3>
+                    </div>
+                    <div class="stat-icon icon-yellow">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="page-stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Visible Pages</div>
+                        <h3 class="stat-value">
+                            @pages.Count(p => p.IsVisible)
+                        </h3>
+                    </div>
+                    <div class="stat-icon icon-blue">
+                        <i class="bi bi-eye"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Search & Filter -->
+    <div class="pages-card">
+        <div class="pages-card-header">
+            <h5>
+                <i class="bi bi-funnel me-2 text-primary"></i>
+                Search & Filter
+            </h5>
+        </div>
+
+        <div class="pages-card-body">
+            <form asp-action="Pages" method="get">
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label">Search Pages</label>
+                        <input type="text"
+                               name="searchString"
+                               value="@ViewBag.SearchString"
+                               class="form-control"
+                               placeholder="Search by title or slug..." />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select">
+                            <option value="">All Status</option>
+
+                            @if (ViewBag.Status == "Draft")
+                            {
+                                <option value="Draft" selected>Draft</option>
+                            }
+                            else
+                            {
+                                <option value="Draft">Draft</option>
+                            }
+
+                            @if (ViewBag.Status == "Published")
+                            {
+                                <option value="Published" selected>Published</option>
+                            }
+                            else
+                            {
+                                <option value="Published">Published</option>
+                            }
+
+                            @if (ViewBag.Status == "Archived")
+                            {
+                                <option value="Archived" selected>Archived</option>
+                            }
+                            else
+                            {
+                                <option value="Archived">Archived</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn-search w-100">
+                            <i class="bi bi-search me-1"></i>
+                            Search
+                        </button>
+                    </div>
+
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(ViewBag.SearchString as string)
+                || !string.IsNullOrWhiteSpace(ViewBag.Status as string))
+                {
+                    <div class="mt-3">
+                        <a asp-action="Pages" class="btn-reset">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>
+                            Clear Filters
+                        </a>
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+
+    <!-- Pages Table -->
+    <div class="pages-card">
+
+        <div class="pages-card-header">
+            <h5>
+                <i class="bi bi-table me-2 text-primary"></i>
+                All Pages
+            </h5>
+
+            <span class="badge bg-light text-dark border">
+                @pages.Count pages
+            </span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table pages-table align-middle">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Page Information</th>
+                        <th>Status</th>
+                        <th>Published</th>
+                        <th>Visible</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (pages.Any())
+                    {
+                        int count = 1;
+
+                        foreach (var item in pages)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="page-number">@count</span>
+                                </td>
+
+                                <td>
+                                    <div class="page-name">@item.Title</div>
+                                    <div class="page-slug">
+                                        <i class="bi bi-link-45deg"></i>
+                                        @item.Slug
+                                    </div>
+                                </td>
+
+                                <td>
+                                    @if (item.Status == "Published")
+                                    {
+                                        <span class="status-badge status-published">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Published
+                                        </span>
+                                    }
+                                    else if (item.Status == "Archived")
+                                    {
+                                        <span class="status-badge status-archived">
+                                            <i class="bi bi-archive me-1"></i>
+                                            Archived
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge status-draft">
+                                            <i class="bi bi-pencil me-1"></i>
+                                            @(string.IsNullOrWhiteSpace(item.Status)
+                                                ? "Draft"
+                                                : item.Status)
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (item.IsPublished)
+                                    {
+                                        <span class="status-badge status-yes">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Yes
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge status-no">
+                                            <i class="bi bi-x-circle me-1"></i>
+                                            No
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (item.IsVisible)
+                                    {
+                                        <span class="status-badge status-yes">
+                                            <i class="bi bi-eye me-1"></i>
+                                            Yes
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge status-no">
+                                            <i class="bi bi-eye-slash me-1"></i>
+                                            No
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <span class="text-muted">
+                                        <i class="bi bi-calendar3 me-1"></i>
+                                        @item.CreatedAt.ToLocalTime().ToString("dd-MM-yyyy")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="action-buttons">
+
+                                        @* View Page *@
+                                        <a asp-action="PageDetails"
+                                           asp-route-id="@item.Id"
+                                           class="action-btn btn-view"
+                                           title="View Page"
+                                           aria-label="View Page">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        @* Edit Page *@
+                                        <a asp-action="EditPage"
+                                           asp-route-id="@item.Id"
+                                           class="action-btn btn-edit"
+                                           title="Edit Page"
+                                           aria-label="Edit Page">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+
+                                        @* Delete Page: POST only *@
+                                        <form asp-action="DeletePage"
+                                              method="post"
+                                              class="d-inline"
+                                              onsubmit="return confirm('Are you sure you want to delete this page?');">
+
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.Id" />
+
+                                            <button type="submit"
+                                                    class="action-btn btn-delete"
+                                                    title="Delete Page"
+                                                    aria-label="Delete Page"
+                                                    style="border:none; cursor:pointer;">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+                            </tr>
+
+                            count++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <i class="bi bi-file-earmark-x"></i>
+                                <h6>No Pages Found</h6>
+                                <p>Try changing your search or create a new page.</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,576 @@
+﻿@model CMSPanel.Models.Project
+
+@{
+    ViewData["Title"] = "Create Project";
+}
+
+<style>
+    .project-page {
+        padding: 25px;
+    }
+
+    .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+        .project-header h1 {
+            font-size: 27px;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 5px;
+        }
+
+        .project-header p {
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+
+    .project-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+    }
+
+    .project-card-header {
+        background: #fff;
+        padding: 20px 25px;
+        border-bottom: 1px solid #edf0f2;
+    }
+
+        .project-card-header h5 {
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #212529;
+        }
+
+        .project-card-header p {
+            color: #6c757d;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+    .project-card-body {
+        padding: 25px;
+    }
+
+    .section-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: #212529;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+        .section-title i {
+            color: #0d6efd;
+            font-size: 19px;
+        }
+
+    .form-label {
+        font-size: 14px;
+        color: #343a40;
+        margin-bottom: 7px;
+    }
+
+    .form-control,
+    .form-select {
+        min-height: 43px;
+        border: 1px solid #dee2e6;
+        border-radius: 7px;
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    textarea.form-control {
+        min-height: auto;
+        resize: vertical;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+    }
+
+    .form-text {
+        font-size: 12px;
+    }
+
+    .form-check {
+        padding: 12px 15px 12px 35px;
+        border: 1px solid #dee2e6;
+        border-radius: 7px;
+        background: #f8f9fa;
+    }
+
+    .form-check-input {
+        margin-top: 4px;
+        cursor: pointer;
+    }
+
+    .form-check-label {
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .section-divider {
+        border-top: 1px solid #edf0f2;
+        margin: 28px 0;
+        opacity: 1;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        border-top: 1px solid #edf0f2;
+        padding-top: 22px;
+        margin-top: 28px;
+    }
+
+        .form-actions .btn {
+            padding: 9px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .validation-summary-errors {
+        margin-bottom: 20px;
+    }
+
+    .field-validation-error {
+        display: block;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    @@media (max-width: 576px) {
+        .project-page {
+            padding: 15px;
+        }
+
+        .project-card-body {
+            padding: 18px;
+        }
+
+        .project-header h1 {
+            font-size: 23px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="container-fluid project-page">
+
+    <!-- Page Header -->
+    <div class="project-header">
+        <div>
+            <h1>
+                <i class="bi bi-folder-plus text-primary me-2"></i>
+                Create Project
+            </h1>
+            <p>Add a new project to your portfolio.</p>
+        </div>
+
+        <a asp-controller="CMS"
+           asp-action="Projects"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Projects
+        </a>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card project-card">
+
+        <div class="project-card-header">
+            <h5>
+                <i class="bi bi-pencil-square text-primary me-2"></i>
+                Project Information
+            </h5>
+            <p>Fill in the details below to create a new project.</p>
+        </div>
+
+        <div class="project-card-body">
+
+            <form asp-controller="CMS"
+                  asp-action="CreateProject"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger">
+                </div>
+
+                <!-- Basic Information -->
+                <div class="section-title">
+                    <i class="bi bi-info-circle"></i>
+                    Basic Information
+                </div>
+
+                <div class="row g-3">
+
+                    <!-- Title -->
+                    <div class="col-md-6">
+                        <label asp-for="Title"
+                               class="form-label fw-semibold">
+                            Project Title
+                        </label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               placeholder="Enter project title" />
+
+                        <span asp-validation-for="Title"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Slug -->
+                    <div class="col-md-6">
+                        <label asp-for="Slug"
+                               class="form-label fw-semibold">
+                            Slug
+                        </label>
+
+                        <input asp-for="Slug"
+                               class="form-control"
+                               placeholder="project-slug" />
+
+                        <small class="form-text text-muted">
+                            Example: employee-management-system
+                        </small>
+
+                        <span asp-validation-for="Slug"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Short Description -->
+                    <div class="col-12">
+                        <label asp-for="ShortDescription"
+                               class="form-label fw-semibold">
+                            Short Description
+                        </label>
+
+                        <textarea asp-for="ShortDescription"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter a short project description"></textarea>
+
+                        <span asp-validation-for="ShortDescription"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12">
+                        <label asp-for="Description"
+                               class="form-label fw-semibold">
+                            Full Description
+                        </label>
+                        <textarea asp-for="Description"
+                                  id="Description"
+                                  class="form-control"
+                                  rows="6"
+                                  placeholder="Enter complete project description"></textarea>
+                        <span asp-validation-for="Description"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr class="section-divider" />
+
+                <!-- Project Details -->
+                <div class="section-title">
+                    <i class="bi bi-gear"></i>
+                    Project Details
+                </div>
+
+                <div class="row g-3">
+
+                    <!-- Client Name -->
+                    <div class="col-md-6">
+                        <label asp-for="ClientName"
+                               class="form-label fw-semibold">
+                            Client Name
+                        </label>
+
+                        <input asp-for="ClientName"
+                               class="form-control"
+                               placeholder="Enter client name" />
+
+                        <span asp-validation-for="ClientName"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Project Type -->
+                    <div class="col-md-6">
+                        <label asp-for="ProjectType"
+                               class="form-label fw-semibold">
+                            Project Type
+                        </label>
+
+                        <input asp-for="ProjectType"
+                               class="form-control"
+                               placeholder="Example: Web Application" />
+
+                        <span asp-validation-for="ProjectType"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Project Category -->
+                    <div class="col-md-6">
+                        <label asp-for="ProjectCategoryId"
+                               class="form-label fw-semibold">
+                            Project Category
+                        </label>
+
+                        <select asp-for="ProjectCategoryId"
+                                asp-items="ViewBag.ProjectCategories"
+                                class="form-select">
+                            <option value="">-- Select Category --</option>
+                        </select>
+
+                        <span asp-validation-for="ProjectCategoryId"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Project Date -->
+                    <div class="col-md-6">
+                        <label asp-for="ProjectDate"
+                               class="form-label fw-semibold">
+                            Project Date
+                        </label>
+
+                        <input asp-for="ProjectDate"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="ProjectDate"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Technologies -->
+                    <div class="col-md-6">
+                        <label asp-for="Technologies"
+                               class="form-label fw-semibold">
+                            Technologies
+                        </label>
+
+                        <input asp-for="Technologies"
+                               class="form-control"
+                               placeholder="ASP.NET Core, SQL Server, Bootstrap" />
+
+                        <span asp-validation-for="Technologies"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Project URL -->
+                    <div class="col-md-6">
+                        <label asp-for="ProjectUrl"
+                               class="form-label fw-semibold">
+                            Project URL
+                        </label>
+
+                        <input asp-for="ProjectUrl"
+                               class="form-control"
+                               placeholder="https://example.com" />
+
+                        <span asp-validation-for="ProjectUrl"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Featured Image -->
+                    <div class="col-12">
+                        <label asp-for="FeaturedImage"
+                               class="form-label fw-semibold">
+                            Featured Image URL
+                        </label>
+
+                        <input asp-for="FeaturedImage"
+                               class="form-control"
+                               placeholder="Enter image URL" />
+
+                        <span asp-validation-for="FeaturedImage"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr class="section-divider" />
+
+                <!-- Publishing Settings -->
+                <div class="section-title">
+                    <i class="bi bi-globe"></i>
+                    Publishing Settings
+                </div>
+
+                <div class="row g-3">
+
+                    <!-- Status -->
+                    <div class="col-md-6">
+                        <label asp-for="Status"
+                               class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select asp-for="Status"
+                                class="form-select">
+                            <option value="Draft">Draft</option>
+                            <option value="In Review">In Review</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Scheduled">Scheduled</option>
+                            <option value="Published">Published</option>
+                            <option value="Unpublished">Unpublished</option>
+                            <option value="Archived">Archived</option>
+                        </select>
+
+                        <span asp-validation-for="Status"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Featured -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            Featured Project
+                        </label>
+
+                        <div class="form-check">
+                            <input asp-for="IsFeatured"
+                                   class="form-check-input"
+                                   type="checkbox" />
+
+                            <label asp-for="IsFeatured"
+                                   class="form-check-label">
+                                Mark this project as featured
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr class="section-divider" />
+
+                <!-- SEO Information -->
+                <div class="section-title">
+                    <i class="bi bi-search"></i>
+                    SEO Information
+                </div>
+
+                <div class="row g-3">
+
+                    <!-- Meta Title -->
+                    <div class="col-md-6">
+                        <label asp-for="MetaTitle"
+                               class="form-label fw-semibold">
+                            Meta Title
+                        </label>
+
+                        <input asp-for="MetaTitle"
+                               class="form-control"
+                               placeholder="Enter SEO meta title" />
+
+                        <span asp-validation-for="MetaTitle"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Meta Description -->
+                    <div class="col-md-6">
+                        <label asp-for="MetaDescription"
+                               class="form-label fw-semibold">
+                            Meta Description
+                        </label>
+
+                        <textarea asp-for="MetaDescription"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter SEO meta description"></textarea>
+
+                        <span asp-validation-for="MetaDescription"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <!-- Form Buttons -->
+                <div class="form-actions">
+
+                    <a asp-controller="CMS"
+                       asp-action="Projects"
+                       class="btn btn-outline-secondary">
+                        <i class="bi bi-x-lg me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i>
+                        Create Project
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    
+@@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+    <script>
+        let projectDescriptionEditor;
+
+        ClassicEditor
+            .create(document.querySelector('#Description'))
+            .then(editor => {
+                projectDescriptionEditor = editor;
+            })
+            .catch(error => {
+                console.error('CKEditor initialization failed:', error);
+            });
+
+        const projectForm = document.querySelector(
+            'form[asp-action="CreateProject"]'
+        );
+
+        document.querySelector('form').addEventListener('submit', function () {
+            if (projectDescriptionEditor) {
+                document.querySelector('#Description').value =
+                    projectDescriptionEditor.getData();
+            }
+        });
+    </script>
+}
+}

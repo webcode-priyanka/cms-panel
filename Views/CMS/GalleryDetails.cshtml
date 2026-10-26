@@ -1,0 +1,508 @@
+﻿@model CMSPanel.Models.Gallery
+
+@{
+    ViewData["Title"] = "Edit Gallery";
+}
+
+<style>
+    .edit-gallery-page {
+        padding: 10px 4px 30px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        gap: 15px;
+    }
+
+        .page-header h2 {
+            color: #172033;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: #778196;
+            font-size: 14px;
+            margin: 0;
+        }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #475569;
+        background: #fff;
+        border: 1px solid #dfe5ee;
+        border-radius: 8px;
+        padding: 9px 15px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .back-link:hover {
+            background: #f8fafc;
+            color: #2563eb;
+        }
+
+    .edit-card {
+        background: #fff;
+        border: 1px solid #e9edf5;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+        overflow: hidden;
+    }
+
+    .edit-card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f5;
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .header-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #e8efff;
+        color: #2563eb;
+        font-size: 20px;
+    }
+
+    .edit-card-header h5 {
+        color: #172033;
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0 0 4px;
+    }
+
+    .edit-card-header p {
+        color: #8791a3;
+        font-size: 12px;
+        margin: 0;
+    }
+
+    .edit-card-body {
+        padding: 25px;
+    }
+
+    .form-label {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .required-mark {
+        color: #dc2626;
+    }
+
+    .form-control {
+        min-height: 43px;
+        border: 1px solid #dfe5ee;
+        border-radius: 7px;
+        color: #334155;
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+        .form-control:focus {
+            border-color: #93b4ff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+    textarea.form-control {
+        min-height: 130px;
+        resize: vertical;
+    }
+
+    .form-text {
+        color: #94a3b8;
+        font-size: 11px;
+        margin-top: 6px;
+    }
+
+    .field-validation-error {
+        display: block;
+        color: #dc2626;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .validation-summary-errors {
+        color: #dc2626;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+    .image-preview-card {
+        margin-top: 15px;
+        padding: 15px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+        border-radius: 9px;
+    }
+
+    .image-preview-title {
+        color: #475569;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .current-image {
+        display: block;
+        width: 200px;
+        height: 140px;
+        object-fit: cover;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    .image-note {
+        color: #94a3b8;
+        font-size: 11px;
+        margin-top: 8px;
+    }
+
+    .status-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 17px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        background: #f8fafc;
+    }
+
+    .status-title {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .status-description {
+        color: #94a3b8;
+        font-size: 11px;
+        margin: 0;
+    }
+
+    .status-box .form-check {
+        margin: 0;
+        padding-left: 2.8em;
+    }
+
+    .status-box .form-check-input {
+        width: 2.5em;
+        height: 1.3em;
+        margin-left: -2.8em;
+        cursor: pointer;
+    }
+
+        .status-box .form-check-input:checked {
+            background-color: #16a34a;
+            border-color: #16a34a;
+        }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #edf0f5;
+    }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 17px;
+        border: 1px solid #dfe5ee;
+        border-radius: 7px;
+        background: #fff;
+        color: #475569;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+    .btn-update {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 19px;
+        border: 1px solid #2563eb;
+        border-radius: 7px;
+        background: #2563eb;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-update:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+    @@media (max-width: 600px) {
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .edit-card-body {
+            padding: 18px;
+        }
+
+        .edit-card-header {
+            padding: 17px 18px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+            .form-actions .btn {
+                justify-content: center;
+                width: 100%;
+            }
+
+        .current-image {
+            width: 100%;
+            max-width: 250px;
+        }
+    }
+</style>
+
+<div class="container-fluid edit-gallery-page">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h2>Edit Gallery</h2>
+            <p>Update your gallery image and information</p>
+        </div>
+
+        <a asp-controller="CMS"
+           asp-action="Gallery"
+           class="back-link">
+            <i class="bi bi-arrow-left"></i>
+            Back to Gallery
+        </a>
+    </div>
+
+    <!-- Edit Form Card -->
+    <div class="edit-card">
+
+        <div class="edit-card-header">
+            <div class="header-icon">
+                <i class="bi bi-pencil-square"></i>
+            </div>
+
+            <div>
+                <h5>Edit Gallery Information</h5>
+                <p>Update the details of your gallery item</p>
+            </div>
+        </div>
+
+        <div class="edit-card-body">
+
+            <form asp-controller="CMS"
+                  asp-action="EditGallery"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-4">
+                </div>
+
+                <div class="row g-4">
+
+                    <!-- Title -->
+                    <div class="col-md-6">
+                        <label asp-for="Title" class="form-label">
+                            Gallery Title <span class="required-mark">*</span>
+                        </label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               placeholder="Enter gallery title" />
+
+                        <span asp-validation-for="Title"
+                              class="field-validation-error">
+                        </span>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="col-md-6">
+                        <label asp-for="Category" class="form-label">
+                            Category
+                        </label>
+
+                        <input asp-for="Category"
+                               class="form-control"
+                               placeholder="Enter category name" />
+
+                        <span asp-validation-for="Category"
+                              class="field-validation-error">
+                        </span>
+
+                        <div class="form-text">
+                            Enter the category for this gallery image.
+                        </div>
+                    </div>
+
+                    <!-- Image URL -->
+                    <div class="col-12">
+                        <label asp-for="ImageUrl" class="form-label">
+                            Image URL <span class="required-mark">*</span>
+                        </label>
+
+                        <input asp-for="ImageUrl"
+                               id="imageUrl"
+                               class="form-control"
+                               placeholder="Enter image URL" />
+
+                        <span asp-validation-for="ImageUrl"
+                              class="field-validation-error">
+                        </span>
+
+                        <div class="form-text">
+                            Provide the URL of the gallery image.
+                        </div>
+
+                        <!-- Current Image -->
+                        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                        {
+                            <div class="image-preview-card">
+                                <div class="image-preview-title">
+                                    <i class="bi bi-image me-1"></i>
+                                    Current Image
+                                </div>
+
+                                <img src="@Model.ImageUrl"
+                                     id="currentImage"
+                                     alt="@Model.Title"
+                                     class="current-image"
+                                     onerror="this.style.display='none'; document.getElementById('imageError').style.display='block';" />
+
+                                <div id="imageError"
+                                     class="text-danger small mt-2"
+                                     style="display:none;">
+                                    Image could not be loaded.
+                                </div>
+
+                                <div class="image-note">
+                                    This is the currently saved gallery image.
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12">
+                        <label asp-for="Description" class="form-label">
+                            Description
+                        </label>
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="5"
+                                  placeholder="Enter gallery description..."></textarea>
+
+                        <span asp-validation-for="Description"
+                              class="field-validation-error">
+                        </span>
+
+                        <div class="form-text">
+                            Add a short description about this gallery image.
+                        </div>
+                    </div>
+
+                    <!-- Active Status -->
+                    <div class="col-12">
+                        <div class="status-box">
+
+                            <div>
+                                <div class="status-title">
+                                    <i class="bi bi-toggle-on me-1"></i>
+                                    Gallery Status
+                                </div>
+
+                                <p class="status-description">
+                                    Enable or disable this gallery item.
+                                </p>
+                            </div>
+
+                            <div class="form-check form-switch">
+                                <input asp-for="IsActive"
+                                       class="form-check-input"
+                                       type="checkbox"
+                                       role="switch" />
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+
+                    <a asp-controller="CMS"
+                       asp-action="Gallery"
+                       class="btn btn-cancel">
+                        <i class="bi bi-x-circle"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-update">
+                        <i class="bi bi-check-circle"></i>
+                        Update Gallery
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

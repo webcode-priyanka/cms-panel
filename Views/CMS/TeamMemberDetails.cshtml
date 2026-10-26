@@ -1,0 +1,583 @@
+﻿
+@model CMSPanel.Models.TeamMember
+
+@{
+    ViewData["Title"] = "Team Member Details";
+}
+
+<style>
+    .team-details-page {
+        background: #f5f7fb;
+        min-height: calc(100vh - 70px);
+        padding: 28px;
+        color: #172033;
+    }
+
+    .team-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .team-breadcrumb {
+        color: #8993a7;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+        .team-breadcrumb span {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+    .team-page-title {
+        font-size: 25px;
+        font-weight: 750;
+        margin: 0 0 6px;
+        color: #172033;
+    }
+
+    .team-page-subtitle {
+        color: #788399;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .team-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: .2s ease;
+    }
+
+    .team-btn-primary {
+        background: #4f46e5;
+        color: #fff;
+        border: 1px solid #4f46e5;
+    }
+
+        .team-btn-primary:hover {
+            background: #4338ca;
+            color: #fff;
+        }
+
+    .team-btn-light {
+        background: #fff;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+
+        .team-btn-light:hover {
+            background: #f8fafc;
+            color: #172033;
+        }
+
+    .team-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(23, 32, 51, .035);
+        margin-bottom: 22px;
+        overflow: hidden;
+    }
+
+    .team-card-heading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f6;
+    }
+
+    .team-card-icon {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        background: #eeedff;
+        color: #4f46e5;
+        font-size: 19px;
+    }
+
+    .team-card-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0;
+        color: #172033;
+    }
+
+    .team-card-subtitle {
+        font-size: 12px;
+        color: #8993a7;
+        margin: 4px 0 0;
+    }
+
+    .team-card-body {
+        padding: 24px;
+    }
+
+    .team-profile-banner {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 28px;
+        background: linear-gradient(120deg, #f5f5ff, #fff);
+        border-bottom: 1px solid #edf0f6;
+    }
+
+    .team-avatar {
+        width: 112px;
+        height: 112px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #fff;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, .14);
+        flex-shrink: 0;
+    }
+
+    .team-avatar-placeholder {
+        width: 112px;
+        height: 112px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eeedff;
+        color: #4f46e5;
+        border: 4px solid #fff;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, .12);
+        font-size: 42px;
+        flex-shrink: 0;
+    }
+
+    .team-member-name {
+        font-size: 27px;
+        font-weight: 750;
+        margin: 0 0 6px;
+        color: #172033;
+        overflow-wrap: anywhere;
+    }
+
+    .team-member-designation {
+        font-size: 15px;
+        color: #68758b;
+        margin-bottom: 12px;
+    }
+
+    .team-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .team-status-active {
+        background: #e9f9ef;
+        color: #16834a;
+    }
+
+    .team-status-inactive {
+        background: #f0f2f6;
+        color: #647084;
+    }
+
+    .team-info-item {
+        height: 100%;
+        padding: 17px;
+        border: 1px solid #edf0f6;
+        border-radius: 11px;
+        background: #fff;
+    }
+
+    .team-info-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #8993a7;
+        margin-bottom: 10px;
+    }
+
+        .team-info-label i {
+            color: #4f46e5;
+            font-size: 15px;
+        }
+
+    .team-info-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: #263247;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+    }
+
+    .team-link {
+        color: #4f46e5;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+    }
+
+        .team-link:hover {
+            text-decoration: underline;
+        }
+
+    .team-record-box {
+        padding: 18px;
+        background: #fafbfe;
+        border: 1px solid #edf0f6;
+        border-radius: 11px;
+        height: 100%;
+    }
+
+    .team-record-label {
+        font-size: 12px;
+        color: #8993a7;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    .team-record-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: #263247;
+        overflow-wrap: anywhere;
+    }
+
+    .team-footer-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 4px;
+    }
+
+    @@media (max-width: 767px) {
+        .team-details-page {
+            padding: 16px;
+        }
+
+        .team-profile-banner {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 22px;
+            gap: 16px;
+        }
+
+        .team-member-name {
+            font-size: 23px;
+        }
+
+        .team-card-heading,
+        .team-card-body {
+            padding: 18px;
+        }
+
+        .team-page-title {
+            font-size: 22px;
+        }
+    }
+</style>
+
+<div class="team-details-page">
+
+    <!-- Page Header -->
+    <div class="team-page-header">
+        <div>
+            <div class="team-breadcrumb">
+                CMS Panel <span>/ Team / Member Details</span>
+            </div>
+
+            <h2 class="team-page-title">Team Member Details</h2>
+
+            <p class="team-page-subtitle">
+                View and manage team member information.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a asp-action="TeamMembers"
+               class="team-btn team-btn-light">
+                <i class="bi bi-arrow-left"></i>
+                Back to List
+            </a>
+
+            <a asp-action="EditTeamMember"
+               asp-route-id="@Model.Id"
+               class="team-btn team-btn-primary">
+                <i class="bi bi-pencil-square"></i>
+                Edit Member
+            </a>
+        </div>
+    </div>
+
+    <!-- Profile Overview -->
+    <div class="team-card">
+        <div class="team-profile-banner">
+
+            @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl"
+                     alt="@Model.Name"
+                     class="team-avatar"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+
+                <div class="team-avatar-placeholder" style="display:none;">
+                    <i class="bi bi-person"></i>
+                </div>
+            }
+            else
+            {
+                <div class="team-avatar-placeholder">
+                    <i class="bi bi-person"></i>
+                </div>
+            }
+
+            <div>
+                <h3 class="team-member-name">@Model.Name</h3>
+
+                <div class="team-member-designation">
+                    @(string.IsNullOrWhiteSpace(Model.Designation)
+                        ? "Designation not provided"
+                        : Model.Designation)
+                </div>
+
+                @if (Model.IsActive)
+                {
+                    <span class="team-status team-status-active">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Active Member
+                    </span>
+                }
+                else
+                {
+                    <span class="team-status team-status-inactive">
+                        <i class="bi bi-pause-circle-fill"></i>
+                        Inactive Member
+                    </span>
+                }
+            </div>
+        </div>
+
+        <div class="team-card-body">
+            <div class="row g-3">
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="team-info-item">
+                        <div class="team-info-label">
+                            <i class="bi bi-person"></i> Full Name
+                        </div>
+                        <div class="team-info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Name)
+                                ? "Not provided"
+                                : Model.Name)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="team-info-item">
+                        <div class="team-info-label">
+                            <i class="bi bi-briefcase"></i> Designation
+                        </div>
+                        <div class="team-info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Designation)
+                                ? "Not provided"
+                                : Model.Designation)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="team-info-item">
+                        <div class="team-info-label">
+                            <i class="bi bi-envelope"></i> Email Address
+                        </div>
+                        <div class="team-info-value">
+                            @if (!string.IsNullOrWhiteSpace(Model.Email))
+                            {
+                                <a href="mailto:@Model.Email" class="team-link">
+                                    @Model.Email
+                                </a>
+                            }
+                            else
+                            {
+                                <span>Not provided</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="team-info-item">
+                        <div class="team-info-label">
+                            <i class="bi bi-linkedin"></i> LinkedIn URL
+                        </div>
+                        <div class="team-info-value">
+                            @if (!string.IsNullOrWhiteSpace(Model.LinkedInUrl))
+                            {
+                                <a href="@Model.LinkedInUrl"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="team-link">
+                                    View LinkedIn Profile
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <span>Not provided</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="team-info-item">
+                        <div class="team-info-label">
+                            <i class="bi bi-twitter-x"></i> Twitter URL
+                        </div>
+                        <div class="team-info-value">
+                            @if (!string.IsNullOrWhiteSpace(Model.TwitterUrl))
+                            {
+                                <a href="@Model.TwitterUrl"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="team-link">
+                                    View Twitter Profile
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <span>Not provided</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="team-info-item">
+                        <div class="team-info-label">
+                            <i class="bi bi-sort-numeric-down"></i> Display Order
+                        </div>
+                        <div class="team-info-value">
+                            #@Model.DisplayOrder
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="team-card">
+        <div class="team-card-heading">
+            <div class="team-card-icon">
+                <i class="bi bi-card-text"></i>
+            </div>
+            <div>
+                <h5 class="team-card-title">About the Team Member</h5>
+                <p class="team-card-subtitle">
+                    Profile description and additional information
+                </p>
+            </div>
+        </div>
+
+        <div class="team-card-body">
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <div class="text-secondary"
+                     style="font-size:14px; line-height:1.9; white-space:pre-wrap; overflow-wrap:anywhere;">
+                    @Model.Description
+                </div>
+            }
+            else
+            {
+                <p class="text-muted mb-0">
+                    No description has been added.
+                </p>
+            }
+        </div>
+    </div>
+
+    <!-- Record Information -->
+    <div class="team-card">
+        <div class="team-card-heading">
+            <div class="team-card-icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <div>
+                <h5 class="team-card-title">Record Information</h5>
+                <p class="team-card-subtitle">
+                    Record creation and last modification details
+                </p>
+            </div>
+        </div>
+
+        <div class="team-card-body">
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="team-record-box">
+                        <div class="team-record-label">
+                            <i class="bi bi-calendar-plus me-1"></i>
+                            Created At
+                        </div>
+                        <div class="team-record-value">
+                            @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="team-record-box">
+                        <div class="team-record-label">
+                            <i class="bi bi-calendar-check me-1"></i>
+                            Updated At
+                        </div>
+                        <div class="team-record-value">
+                            @(Model.UpdatedAt.HasValue
+                                ? Model.UpdatedAt.Value.ToString("dd MMM yyyy, hh:mm tt")
+                                : "Not updated yet")
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="team-footer-actions">
+        <a asp-action="TeamMembers"
+           class="team-btn team-btn-light">
+            <i class="bi bi-arrow-left"></i>
+            Back to List
+        </a>
+
+        <a asp-action="EditTeamMember"
+           asp-route-id="@Model.Id"
+           class="team-btn team-btn-primary">
+            <i class="bi bi-pencil-square"></i>
+            Edit Member
+        </a>
+    </div>
+
+</div>

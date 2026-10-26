@@ -1,0 +1,477 @@
+﻿ @model CMSPanel.Models.MenuItem
+
+@{
+    ViewData["Title"] = "Menu Item Details";
+    var isNewTab = string.Equals(Model.Target, "_blank", StringComparison.OrdinalIgnoreCase);
+}
+
+<style>
+    .menu-details-page {
+        color: #243247;
+    }
+
+    .menu-breadcrumb {
+        font-size: .875rem;
+        color: #718096;
+    }
+
+        .menu-breadcrumb a {
+            color: #5269d8;
+            text-decoration: none;
+        }
+
+    .menu-details-card {
+        background: #fff;
+        border: 1px solid #e8edf3;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(25, 42, 70, .045);
+        overflow: hidden;
+    }
+
+    .menu-card-heading {
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .menu-card-content {
+        padding: 24px;
+    }
+
+    .menu-field {
+        height: 100%;
+        padding: 15px 16px;
+        border: 1px solid #edf0f5;
+        border-radius: 10px;
+        background: #fbfcfe;
+        overflow-wrap: anywhere;
+    }
+
+    .menu-field-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #778398;
+        font-size: .78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .045em;
+    }
+
+    .menu-field-value {
+        color: #26364b;
+        font-weight: 600;
+        line-height: 1.6;
+    }
+
+    .menu-icon-box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: #edf1ff;
+        color: #5269d8;
+        font-size: 1.35rem;
+    }
+
+    .menu-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 11px;
+        border-radius: 30px;
+        font-size: .8rem;
+        font-weight: 700;
+    }
+
+    .menu-status-visible {
+        color: #18794e;
+        background: #e8f7ef;
+    }
+
+    .menu-status-hidden {
+        color: #596579;
+        background: #eef1f5;
+    }
+
+    .menu-description {
+        min-height: 90px;
+        padding: 16px;
+        border: 1px solid #edf0f5;
+        border-radius: 10px;
+        background: #fbfcfe;
+        overflow-wrap: anywhere;
+    }
+
+        .menu-description img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .menu-description table {
+            max-width: 100%;
+        }
+
+    .menu-meta {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .menu-meta-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: #f0f3f8;
+        color: #526078;
+    }
+
+    @@media (max-width: 767px) {
+        .menu-card-content {
+            padding: 16px;
+        }
+
+        .menu-card-heading {
+            padding: 16px;
+        }
+    }
+</style>
+
+<div class="container-fluid py-4 menu-details-page">
+
+    <!-- BREADCRUMB -->
+    <div class="menu-breadcrumb mb-3">
+        <a asp-controller="CMS" asp-action="Index">Dashboard</a>
+        <i class="bi bi-chevron-right mx-2"></i>
+        <a asp-controller="CMS" asp-action="MenuItems">Menus / Navigation</a>
+        <i class="bi bi-chevron-right mx-2"></i>
+        <span>Menu Details</span>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+        <div class="d-flex align-items-center gap-3">
+            <div class="menu-icon-box">
+                <i class="bi bi-menu-button-wide"></i>
+            </div>
+
+            <div>
+                <h2 class="fw-bold mb-1">Menu Item Details</h2>
+                <p class="text-muted mb-0">
+                    View navigation settings and menu information.
+                </p>
+            </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-controller="CMS"
+               asp-action="MenuItems"
+               class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to Menus
+            </a>
+
+            <a asp-controller="CMS"
+               asp-action="EditMenuItem"
+               asp-route-id="@Model.Id"
+               class="btn btn-primary">
+                <i class="bi bi-pencil-square me-1"></i>
+                Edit Menu
+            </a>
+        </div>
+    </div>
+
+    <!-- MENU SUMMARY -->
+    <div class="menu-details-card mb-4">
+        <div class="menu-card-content">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+
+                <div class="d-flex align-items-start gap-3">
+                    <div class="menu-icon-box">
+                        <i class="bi bi-link-45deg"></i>
+                    </div>
+
+                    <div>
+                        <h4 class="fw-bold mb-2">@Model.Title</h4>
+
+                        <div class="text-muted small mb-2">
+                            Menu ID: #@Model.Id
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-light text-dark border px-3 py-2">
+                                <i class="bi bi-geo-alt me-1"></i>
+                                @Model.Location
+                            </span>
+
+                            @if (Model.IsVisible)
+                            {
+                                <span class="menu-status menu-status-visible">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Visible
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="menu-status menu-status-hidden">
+                                    <i class="bi bi-eye-slash-fill"></i>
+                                    Hidden
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-md-end">
+                    <span class="menu-field-label">Display Order</span>
+                    <span class="fs-4 fw-bold">@Model.DisplayOrder</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- MAIN INFORMATION -->
+        <div class="col-lg-8">
+
+            <div class="menu-details-card mb-4">
+
+                <div class="menu-card-heading">
+                    <h5 class="fw-bold mb-1">
+                        <i class="bi bi-info-circle me-2 text-primary"></i>
+                        General Information
+                    </h5>
+                    <p class="text-muted small mb-0">
+                        Basic details configured for this navigation item.
+                    </p>
+                </div>
+
+                <div class="menu-card-content">
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <div class="menu-field">
+                                <span class="menu-field-label">Menu Title</span>
+                                <div class="menu-field-value">@Model.Title</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="menu-field">
+                                <span class="menu-field-label">Menu Location</span>
+                                <div class="menu-field-value">
+                                    @if (Model.Location == "Header")
+                                    {
+                                        <i class="bi bi-layout-text-window me-2 text-primary"></i>
+                                    }
+                                    else if (Model.Location == "Footer")
+                                    {
+                                        <i class="bi bi-layout-text-window-reverse me-2 text-secondary"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-grid me-2 text-info"></i>
+                                    }
+                                    @Model.Location
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="menu-field">
+                                <span class="menu-field-label">Destination URL</span>
+                                <div class="menu-field-value">
+                                    <i class="bi bi-link-45deg me-1 text-primary"></i>
+                                    @Model.Url
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="menu-field">
+                                <span class="menu-field-label">Parent Menu</span>
+                                <div class="menu-field-value">
+                                    @if (Model.Parent != null)
+                                    {
+                                        <i class="bi bi-diagram-3 me-1 text-primary"></i>
+                                        @Model.Parent.Title
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-house-door me-1 text-primary"></i>
+                                        <span>Main Menu</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="menu-field">
+                                <span class="menu-field-label">Link Target</span>
+                                <div class="menu-field-value">
+                                    @if (isNewTab)
+                                    {
+                                        <i class="bi bi-box-arrow-up-right me-1 text-primary"></i>
+                                        <span>New Tab</span>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-window me-1 text-secondary"></i>
+                                        <span>Same Tab</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div class="menu-details-card">
+
+                <div class="menu-card-heading">
+                    <h5 class="fw-bold mb-1">
+                        <i class="bi bi-card-text me-2 text-primary"></i>
+                        Description
+                    </h5>
+                    <p class="text-muted small mb-0">
+                        Additional information about this menu item.
+                    </p>
+                </div>
+
+                <div class="menu-card-content">
+                    <div class="menu-description">
+                        @if (!string.IsNullOrWhiteSpace(Model.Description))
+                        {
+                            @* Render plain text safely; encode stored content. *@
+                            @Model.Description
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                <i class="bi bi-info-circle me-1"></i>
+                                No description has been added.
+                            </span>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+
+            <!-- STATUS CARD -->
+            <div class="menu-details-card mb-4">
+
+                <div class="menu-card-heading">
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-toggles me-2 text-primary"></i>
+                        Menu Status
+                    </h5>
+                </div>
+
+                <div class="menu-card-content">
+
+                    <div class="menu-meta mb-4">
+                        <div class="menu-meta-icon">
+                            <i class="bi bi-eye"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold mb-1">Visibility</div>
+                            <div class="text-muted small">
+                                @if (Model.IsVisible)
+                                {
+                                    <span>Menu is enabled for display.</span>
+                                }
+                                else
+                                {
+                                    <span>Menu is currently hidden.</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-meta">
+                        <div class="menu-meta-icon">
+                            <i class="bi bi-sort-numeric-down"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold mb-1">Display Priority</div>
+                            <div class="text-muted small">
+                                Order value: @Model.DisplayOrder
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RECORD HISTORY -->
+            <div class="menu-details-card">
+
+                <div class="menu-card-heading">
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-clock-history me-2 text-primary"></i>
+                        Record History
+                    </h5>
+                </div>
+
+                <div class="menu-card-content">
+
+                    <div class="menu-meta mb-4">
+                        <div class="menu-meta-icon">
+                            <i class="bi bi-calendar-plus"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold mb-1">Created At</div>
+                            <div class="text-muted small">
+                                @Model.CreatedAt.ToString("dd MMM yyyy")
+                            </div>
+                            <div class="text-muted small">
+                                @Model.CreatedAt.ToString("hh:mm tt")
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-meta">
+                        <div class="menu-meta-icon">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold mb-1">Last Updated</div>
+
+                            @if (Model.UpdatedAt.HasValue)
+                            {
+                                <div class="text-muted small">
+                                    @Model.UpdatedAt.Value.ToString("dd MMM yyyy")
+                                </div>
+                                <div class="text-muted small">
+                                    @Model.UpdatedAt.Value.ToString("hh:mm tt")
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-muted small">
+                                    No updates recorded
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

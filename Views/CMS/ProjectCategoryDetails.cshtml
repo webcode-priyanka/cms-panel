@@ -1,0 +1,449 @@
+﻿@model CMSPanel.Models.ProjectCategory
+
+@{
+    ViewData["Title"] = "Project Category Details";
+}
+
+<style>
+    .category-details-page {
+        min-height: 100vh;
+        padding: 24px;
+        background: #f8fafc;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .page-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 6px;
+    }
+
+    .page-subtitle {
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 0;
+    }
+
+    .details-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+        overflow: hidden;
+    }
+
+    .details-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 24px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .header-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 21px;
+    }
+
+    .details-card-header h5 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .details-card-header p {
+        font-size: 13px;
+        color: #64748b;
+        margin: 4px 0 0;
+    }
+
+    .details-card-body {
+        padding: 26px;
+    }
+
+    .category-summary {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px;
+        margin-bottom: 25px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+    }
+
+    .category-icon {
+        width: 55px;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 12px;
+        background: #dbeafe;
+        color: #2563eb;
+        font-size: 27px;
+    }
+
+    .category-summary h4 {
+        color: #1e293b;
+        font-size: 19px;
+        font-weight: 700;
+        margin: 0 0 5px;
+        overflow-wrap: anywhere;
+    }
+
+    .category-summary p {
+        color: #64748b;
+        font-size: 13px;
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .section-heading {
+        font-size: 15px;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 16px;
+    }
+
+    .detail-item {
+        height: 100%;
+        padding: 15px 17px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        background: #fff;
+    }
+
+    .detail-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+    .detail-value {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1e293b;
+        overflow-wrap: anywhere;
+        white-space: pre-line;
+    }
+
+    .description-box {
+        padding: 17px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        background: #fff;
+        color: #475569;
+        font-size: 14px;
+        line-height: 1.7;
+        white-space: pre-line;
+        overflow-wrap: anywhere;
+        min-height: 80px;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .status-active {
+        color: #15803d;
+        background: #dcfce7;
+    }
+
+    .status-inactive {
+        color: #64748b;
+        background: #e2e8f0;
+    }
+
+    .details-actions {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding-top: 22px;
+        margin-top: 25px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .btn-custom {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .2s ease;
+    }
+
+    .btn-edit {
+        color: #fff;
+        background: #2563eb;
+        border: 1px solid #2563eb;
+    }
+
+        .btn-edit:hover {
+            color: #fff;
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+    .btn-back {
+        color: #475569;
+        background: #fff;
+        border: 1px solid #cbd5e1;
+    }
+
+        .btn-back:hover {
+            color: #1e293b;
+            background: #f1f5f9;
+        }
+
+    @@media (max-width: 576px) {
+        .category-details-page {
+            padding: 15px;
+        }
+
+        .details-card-body {
+            padding: 18px;
+        }
+
+        .details-card-header {
+            padding: 17px;
+        }
+
+        .page-title {
+            font-size: 22px;
+        }
+
+        .category-summary {
+            padding: 15px;
+        }
+
+        .details-actions {
+            flex-direction: column-reverse;
+        }
+
+            .details-actions .btn-custom {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="container-fluid category-details-page">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">
+                <i class="bi bi-folder2-open text-primary me-2"></i>
+                Project Category Details
+            </h2>
+            <p class="page-subtitle">
+                View complete information about this project category.
+            </p>
+        </div>
+
+        <a asp-action="ProjectCategories"
+           class="btn-custom btn-back">
+            <i class="bi bi-arrow-left"></i>
+            Back to Categories
+        </a>
+    </div>
+
+    <!-- Details Card -->
+    <div class="row">
+        <div class="col-12 col-xl-9 col-xxl-8">
+
+            <div class="details-card">
+
+                <!-- Card Header -->
+                <div class="details-card-header">
+                    <div class="header-icon">
+                        <i class="bi bi-info-circle"></i>
+                    </div>
+
+                    <div>
+                        <h5>Category Information</h5>
+                        <p>Overview of the selected project category.</p>
+                    </div>
+                </div>
+
+                <!-- Card Body -->
+                <div class="details-card-body">
+
+                    <!-- Category Summary -->
+                    <div class="category-summary">
+                        <div class="category-icon">
+                            <i class="bi bi-folder-fill"></i>
+                        </div>
+
+                        <div>
+                            <h4>@Model.Name</h4>
+                            <p>
+                                <i class="bi bi-link-45deg me-1"></i>
+                                @Model.Slug
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Basic Information -->
+                    <h6 class="section-heading">
+                        <i class="bi bi-card-text me-2 text-primary"></i>
+                        Basic Information
+                    </h6>
+
+                    <div class="row g-3 mb-4">
+
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <span class="detail-label">
+                                    Category Name
+                                </span>
+                                <span class="detail-value">
+                                    @Model.Name
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <span class="detail-label">
+                                    Slug
+                                </span>
+                                <span class="detail-value">
+                                    @Model.Slug
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <span class="detail-label">
+                                    Status
+                                </span>
+
+                                @if (Model.IsActive)
+                                {
+                                    <span class="status-badge status-active">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-inactive">
+                                        <i class="bi bi-x-circle-fill"></i>
+                                        Inactive
+                                    </span>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Description -->
+                    <h6 class="section-heading">
+                        <i class="bi bi-text-paragraph me-2 text-primary"></i>
+                        Description
+                    </h6>
+
+                    <div class="description-box mb-4">
+                        @(string.IsNullOrWhiteSpace(Model.Description)
+                            ? "No description available."
+                            : Model.Description)
+                    </div>
+
+                    <!-- Date Information -->
+                    <h6 class="section-heading">
+                        <i class="bi bi-calendar3 me-2 text-primary"></i>
+                        Date Information
+                    </h6>
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <span class="detail-label">
+                                    <i class="bi bi-calendar-plus me-1"></i>
+                                    Created Date
+                                </span>
+
+                                <span class="detail-value">
+                                    @Model.CreatedAt.ToString("dd MMM yyyy")
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <span class="detail-label">
+                                    <i class="bi bi-calendar-check me-1"></i>
+                                    Updated Date
+                                </span>
+
+                                <span class="detail-value">
+                                    @(Model.UpdatedAt.HasValue
+                                        ? Model.UpdatedAt.Value.ToString("dd MMM yyyy")
+                                        : "Not updated")
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="details-actions">
+
+                        <a asp-action="ProjectCategories"
+                           class="btn-custom btn-back">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to Categories
+                        </a>
+
+                        <a asp-action="EditProjectCategory"
+                           asp-route-id="@Model.Id"
+                           class="btn-custom btn-edit">
+                            <i class="bi bi-pencil-square"></i>
+                            Edit Category
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

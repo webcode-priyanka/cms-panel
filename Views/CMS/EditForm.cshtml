@@ -1,0 +1,369 @@
+﻿
+@model CMSPanel.Models.Form
+
+@{
+    ViewData["Title"] = "Edit Form";
+}
+
+<style>
+    .edit-form-page {
+        min-height: 100vh;
+        padding: 28px;
+        background: #f5f7fb;
+    }
+
+    .edit-form-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 26px;
+    }
+
+    .edit-form-title {
+        color: #1e293b;
+        font-size: 28px;
+        font-weight: 750;
+        margin-bottom: 6px;
+    }
+
+    .edit-form-subtitle {
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+
+    .edit-form-card {
+        background: #fff;
+        border: 1px solid #e8edf4;
+        border-radius: 14px;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, .04);
+        overflow: hidden;
+    }
+
+    .edit-form-card-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 22px 26px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .edit-form-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 12px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 22px;
+    }
+
+    .edit-form-card-header h5 {
+        color: #1e293b;
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .edit-form-card-header p {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+
+    .edit-form-card-body {
+        padding: 28px 26px;
+    }
+
+    .edit-form-page .form-label {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .edit-form-page .form-control,
+    .edit-form-page .form-select {
+        min-height: 44px;
+        border: 1px solid #dbe2ea;
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: #1e293b;
+        background-color: #fff;
+        font-size: 14px;
+        box-shadow: none;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+    .edit-form-page textarea.form-control {
+        min-height: 140px;
+        resize: vertical;
+    }
+
+    .edit-form-page .form-control:focus,
+    .edit-form-page .form-select:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, .12);
+    }
+
+    .edit-form-page .field-hint {
+        color: #94a3b8;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .edit-form-page .text-danger {
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .edit-form-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 20px 26px;
+        border-top: 1px solid #edf0f5;
+        background: #fcfdff;
+    }
+
+        .edit-form-footer .btn {
+            min-height: 42px;
+            padding: 9px 17px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .edit-form-footer .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+    .edit-form-id {
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    @@media (max-width: 576px) {
+        .edit-form-page {
+            padding: 15px;
+        }
+
+        .edit-form-card-header,
+        .edit-form-card-body,
+        .edit-form-footer {
+            padding: 18px;
+        }
+
+        .edit-form-title {
+            font-size: 23px;
+        }
+
+        .edit-form-footer .action-buttons {
+            width: 100%;
+        }
+
+            .edit-form-footer .action-buttons .btn {
+                flex: 1;
+            }
+    }
+</style>
+
+<div class="edit-form-page">
+
+    <!-- Page Header -->
+    <div class="edit-form-header">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <i class="bi bi-ui-checks-grid text-primary fs-5"></i>
+                <span class="text-muted small fw-semibold">
+                    CMS / Forms / Edit
+                </span>
+            </div>
+
+            <h1 class="edit-form-title">Edit Form</h1>
+
+            <p class="edit-form-subtitle">
+                Update form details, description and publishing status.
+            </p>
+        </div>
+
+        <a asp-controller="CMS"
+           asp-action="Forms"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Forms
+        </a>
+    </div>
+
+    <!-- Edit Form Card -->
+    <div class="edit-form-card">
+
+        <div class="edit-form-card-header">
+            <div class="edit-form-icon">
+                <i class="bi bi-pencil-square"></i>
+            </div>
+
+            <div>
+                <h5>Form Information</h5>
+                <p>Update the information in the fields below.</p>
+            </div>
+        </div>
+
+        <form asp-controller="CMS"
+              asp-action="EditForm"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="edit-form-card-body">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger"
+                     role="alert">
+                </div>
+
+                <div class="row g-4">
+
+                    <!-- Form Name -->
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="form-label">
+                            Form Name <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Name"
+                               class="form-control"
+                               placeholder="Enter form name" />
+
+                        <span asp-validation-for="Name"
+                              class="text-danger"></span>
+
+                        <div class="field-hint">
+                            Enter a clear name for this form.
+                        </div>
+                    </div>
+
+                    <!-- Slug -->
+                    <div class="col-md-6">
+                        <label asp-for="Slug" class="form-label">
+                            Form Slug <span class="text-danger">*</span>
+                        </label>
+
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="bi bi-link-45deg"></i>
+                            </span>
+
+                            <input asp-for="Slug"
+                                   class="form-control"
+                                   placeholder="e.g. contact-us" />
+                        </div>
+
+                        <span asp-validation-for="Slug"
+                              class="text-danger"></span>
+
+                        <div class="field-hint">
+                            A short identifier used for the form URL.
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12">
+                        <label asp-for="Description" class="form-label">
+                            Description
+                        </label>
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="5"
+                                  placeholder="Describe the purpose of this form..."></textarea>
+
+                        <span asp-validation-for="Description"
+                              class="text-danger"></span>
+
+                        <div class="field-hint">
+                            Add instructions or details to help administrators identify this form.
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-6">
+                        <label asp-for="Status" class="form-label">
+                            Form Status
+                        </label>
+
+                        <select asp-for="Status" class="form-select">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+
+                        <span asp-validation-for="Status"
+                              class="text-danger"></span>
+
+                        <div class="field-hint">
+                            Choose whether this form should be active or inactive.
+                        </div>
+                    </div>
+
+                    <!-- Record ID -->
+                    <div class="col-md-6">
+                        <label class="form-label">Record ID</label>
+
+                        <div class="form-control bg-light d-flex align-items-center">
+                            <i class="bi bi-hash text-muted me-2"></i>
+                            <span class="fw-semibold">@Model.Id</span>
+                        </div>
+
+                        <div class="field-hint">
+                            This ID is assigned automatically and cannot be changed here.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="edit-form-footer">
+
+                <span class="edit-form-id">
+                    <i class="bi bi-shield-check me-1"></i>
+                    Changes will be saved when you click Update Form.
+                </span>
+
+                <div class="action-buttons">
+
+                    <a asp-controller="CMS"
+                       asp-action="Forms"
+                       class="btn btn-light border">
+                        <i class="bi bi-x-lg me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i>
+                        Update Form
+                    </button>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

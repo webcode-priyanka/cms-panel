@@ -1,0 +1,735 @@
+﻿@model CMSPanel.Models.Media
+
+@{
+    ViewData["Title"] = "Upload Media";
+}
+
+<style>
+    .upload-page {
+        padding: 28px;
+        background: #f5f7fb;
+        min-height: calc(100vh - 70px);
+    }
+
+    .upload-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 25px;
+    }
+
+        .upload-header h1 {
+            font-size: 27px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .upload-header p {
+            color: #64748b;
+            margin: 0;
+            font-size: 14px;
+        }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 16px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        background: #fff;
+        color: #475569;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .back-btn:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    .upload-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+        overflow: hidden;
+    }
+
+    .upload-card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+        .upload-card-header h5 {
+            color: #1e293b;
+            font-size: 17px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .upload-card-header p {
+            color: #64748b;
+            font-size: 13px;
+            margin: 5px 0 0;
+        }
+
+    .upload-card-body {
+        padding: 25px;
+    }
+
+    .section-title {
+        color: #1e293b;
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 18px;
+    }
+
+    .form-label {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        min-height: 43px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 13px;
+        font-size: 14px;
+        color: #334155;
+        box-shadow: none;
+    }
+
+    textarea.form-control {
+        min-height: 115px;
+        resize: vertical;
+    }
+
+    .form-control:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    }
+
+    .form-text {
+        color: #64748b;
+        font-size: 12px;
+        margin-top: 7px;
+    }
+
+    .upload-dropzone {
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        background: #f8fafc;
+        padding: 25px 15px;
+        text-align: center;
+        transition: 0.2s;
+        cursor: pointer;
+    }
+
+        .upload-dropzone:hover,
+        .upload-dropzone.dragover {
+            border-color: #6366f1;
+            background: #eef2ff;
+        }
+
+    .upload-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 12px;
+        border-radius: 15px;
+        background: #e0e7ff;
+        color: #4f46e5;
+        font-size: 26px;
+    }
+
+    .upload-dropzone h6 {
+        color: #334155;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .upload-dropzone p {
+        color: #64748b;
+        font-size: 12px;
+        margin: 0;
+    }
+
+    .file-input {
+        display: none;
+    }
+
+    .file-preview {
+        display: none;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        margin-top: 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        background: #fff;
+        text-align: left;
+    }
+
+    .file-preview-icon {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: #eef2ff;
+        color: #4f46e5;
+        font-size: 21px;
+    }
+
+    .file-preview-info {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .file-preview-name {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .file-preview-size {
+        color: #64748b;
+        font-size: 11px;
+        margin-top: 3px;
+    }
+
+    .preview-image {
+        display: none;
+        max-width: 100%;
+        max-height: 180px;
+        object-fit: contain;
+        margin: 15px auto 0;
+        border-radius: 8px;
+    }
+
+    .remove-file {
+        border: none;
+        background: transparent;
+        color: #dc2626;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    .active-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        background: #f8fafc;
+    }
+
+        .active-box .form-check-input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+            .active-box .form-check-input:checked {
+                background-color: #4f46e5;
+                border-color: #4f46e5;
+            }
+
+        .active-box label {
+            color: #334155;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .active-box small {
+            display: block;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 400;
+            margin-top: 3px;
+        }
+
+    .upload-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 20px 25px;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .footer-note {
+        color: #64748b;
+        font-size: 12px;
+        margin: 0;
+    }
+
+    .footer-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-cancel {
+        padding: 10px 17px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #fff;
+        color: #475569;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-cancel:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    .btn-upload {
+        padding: 10px 18px;
+        border: 1px solid #4f46e5;
+        border-radius: 8px;
+        background: #4f46e5;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-upload:hover {
+            background: #4338ca;
+            border-color: #4338ca;
+            color: #fff;
+        }
+
+    .validation-message {
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    @@media (max-width: 767px) {
+        .upload-page {
+            padding: 16px;
+        }
+
+        .upload-header h1 {
+            font-size: 23px;
+        }
+
+        .upload-card-body {
+            padding: 18px;
+        }
+
+        .upload-footer {
+            align-items: stretch;
+        }
+
+        .footer-actions {
+            width: 100%;
+        }
+
+            .footer-actions button,
+            .footer-actions a {
+                flex: 1;
+                text-align: center;
+            }
+    }
+</style>
+
+<div class="upload-page">
+
+    <!-- Page Header -->
+    <div class="upload-header">
+        <div>
+            <h1>
+                <i class="bi bi-cloud-arrow-up text-primary me-2"></i>
+                Upload Media
+            </h1>
+            <p>Upload and manage images, documents and other media files.</p>
+        </div>
+
+        <a asp-action="Media" class="back-btn">
+            <i class="bi bi-arrow-left"></i>
+            Back to Media
+        </a>
+    </div>
+
+    <!-- Main Card -->
+    <div class="upload-card">
+
+        <div class="upload-card-header">
+            <h5>
+                <i class="bi bi-file-earmark-plus me-2 text-primary"></i>
+                Media Details
+            </h5>
+            <p>Enter the media information and select a file to upload.</p>
+        </div>
+
+        <form asp-action="CreateMedia"
+              method="post"
+              enctype="multipart/form-data">
+
+            @Html.AntiForgeryToken()
+
+            <div class="upload-card-body">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger"
+                     role="alert"></div>
+
+                <div class="row g-4">
+
+                    <!-- Left Column -->
+                    <div class="col-lg-7">
+
+                        <h6 class="section-title">
+                            <i class="bi bi-card-text text-primary me-2"></i>
+                            Basic Information
+                        </h6>
+
+                        <!-- Title -->
+                        <div class="mb-4">
+                            <label asp-for="Title" class="form-label">
+                                Media Title
+                            </label>
+
+                            <input asp-for="Title"
+                                   class="form-control"
+                                   placeholder="Enter media title" />
+
+                            <span asp-validation-for="Title"
+                                  class="text-danger validation-message"></span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label">
+                                Description
+                            </label>
+
+                            <textarea asp-for="Description"
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Enter a short description for this media"></textarea>
+
+                            <span asp-validation-for="Description"
+                                  class="text-danger validation-message"></span>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-4">
+                            <label asp-for="Category" class="form-label">
+                                Category
+                            </label>
+
+                            <input asp-for="Category"
+                                   class="form-control"
+                                   placeholder="e.g. Banner, Blog, Document" />
+
+                            <span asp-validation-for="Category"
+                                  class="text-danger validation-message"></span>
+
+                            <div class="form-text">
+                                Organize your media by category.
+                            </div>
+                        </div>
+
+                        <!-- Alt Text -->
+                        <div class="mb-4">
+                            <label asp-for="AltText" class="form-label">
+                                Alt Text
+                            </label>
+
+                            <input asp-for="AltText"
+                                   class="form-control"
+                                   placeholder="Enter image alt text" />
+
+                            <span asp-validation-for="AltText"
+                                  class="text-danger validation-message"></span>
+
+                            <div class="form-text">
+                                Describe the image for accessibility.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-lg-5">
+
+                        <h6 class="section-title">
+                            <i class="bi bi-cloud-upload text-primary me-2"></i>
+                            File Upload
+                        </h6>
+
+                        <div class="upload-dropzone" id="uploadDropzone">
+
+                            <input type="file"
+                                   id="uploadFile"
+                                   name="uploadFile"
+                                   class="file-input"
+                                   accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.mp4,.mp3"
+                                   required />
+
+                            <div class="upload-icon">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                            </div>
+
+                            <h6>Choose a file to upload</h6>
+                            <p>Click here or drag and drop your file</p>
+                            <p class="mt-2">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Maximum file size: 5 MB
+                            </p>
+
+                            <div class="file-preview" id="filePreview">
+                                <div class="file-preview-icon" id="fileIcon">
+                                    <i class="bi bi-file-earmark"></i>
+                                </div>
+
+                                <div class="file-preview-info">
+                                    <div class="file-preview-name" id="fileName"></div>
+                                    <div class="file-preview-size" id="fileSize"></div>
+                                </div>
+
+                                <button type="button"
+                                        class="remove-file"
+                                        id="removeFile"
+                                        aria-label="Remove selected file">
+                                    <i class="bi bi-x-circle"></i>
+                                </button>
+                            </div>
+
+                            <img id="imagePreview"
+                                 class="preview-image"
+                                 alt="Selected image preview" />
+
+                        </div>
+
+                        <span class="text-danger validation-message">
+                            @Html.ValidationMessage("uploadFile")
+                        </span>
+
+                        <!-- Active -->
+                        <div class="mt-4">
+                            <div class="active-box">
+                                <input asp-for="IsActive"
+                                       class="form-check-input" />
+
+                                <div>
+                                    <label asp-for="IsActive">
+                                        Active
+                                    </label>
+                                    <small>
+                                        Make this media available in the CMS.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="upload-footer">
+
+                <p class="footer-note">
+                    <i class="bi bi-shield-check me-1"></i>
+                    Make sure the selected file is correct before uploading.
+                </p>
+
+                <div class="footer-actions">
+                    <a asp-action="Media" class="btn-cancel">
+                        <i class="bi bi-x-lg me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn-upload">
+                        <i class="bi bi-cloud-arrow-up me-1"></i>
+                        Upload Media
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const fileInput = document.getElementById("uploadFile");
+        const dropzone = document.getElementById("uploadDropzone");
+        const filePreview = document.getElementById("filePreview");
+        const fileName = document.getElementById("fileName");
+        const fileSize = document.getElementById("fileSize");
+        const fileIcon = document.getElementById("fileIcon");
+        const imagePreview = document.getElementById("imagePreview");
+        const removeFile = document.getElementById("removeFile");
+
+        const maxSize = 5 * 1024 * 1024;
+        let previewUrl = null;
+
+        function clearPreview() {
+            if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+                previewUrl = null;
+            }
+
+            filePreview.style.display = "none";
+            imagePreview.style.display = "none";
+            imagePreview.removeAttribute("src");
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) {
+                return bytes + " Bytes";
+            }
+
+            if (bytes < 1024 * 1024) {
+                return (bytes / 1024).toFixed(1) + " KB";
+            }
+
+            return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+        }
+
+        function updatePreview(file) {
+            clearPreview();
+
+            if (!file) {
+                return;
+            }
+
+            fileName.textContent = file.name;
+            fileSize.textContent = formatSize(file.size);
+
+            const extension = file.name.split(".").pop().toLowerCase();
+
+            let icon = "bi-file-earmark";
+            let iconColor = "#4f46e5";
+
+            if (file.type.startsWith("image/")) {
+                icon = "bi-file-earmark-image";
+                iconColor = "#0d9488";
+            } else if (file.type.startsWith("video/")) {
+                icon = "bi-file-earmark-play";
+                iconColor = "#2563eb";
+            } else if (file.type.startsWith("audio/")) {
+                icon = "bi-file-earmark-music";
+                iconColor = "#16a34a";
+            } else if (extension === "pdf") {
+                icon = "bi-file-earmark-pdf";
+                iconColor = "#dc2626";
+            } else if (["doc", "docx"].includes(extension)) {
+                icon = "bi-file-earmark-word";
+                iconColor = "#2563eb";
+            } else if (["xls", "xlsx"].includes(extension)) {
+                icon = "bi-file-earmark-excel";
+                iconColor = "#16a34a";
+            }
+
+            fileIcon.innerHTML = `<i class="bi ${icon}"></i>`;
+            fileIcon.style.color = iconColor;
+            filePreview.style.display = "flex";
+
+            if (file.type.startsWith("image/")) {
+                previewUrl = URL.createObjectURL(file);
+                imagePreview.src = previewUrl;
+                imagePreview.style.display = "block";
+            }
+        }
+
+        dropzone.addEventListener("click", function (event) {
+            if (event.target.closest("#removeFile")) {
+                return;
+            }
+
+            fileInput.click();
+        });
+
+        fileInput.addEventListener("change", function () {
+            const file = fileInput.files[0];
+
+            if (!file) {
+                clearPreview();
+                return;
+            }
+
+            if (file.size > maxSize) {
+                alert("File size must not exceed 5 MB.");
+                fileInput.value = "";
+                clearPreview();
+                return;
+            }
+
+            updatePreview(file);
+        });
+
+        removeFile.addEventListener("click", function (event) {
+            event.stopPropagation();
+            fileInput.value = "";
+            clearPreview();
+        });
+
+        dropzone.addEventListener("dragover", function (event) {
+            event.preventDefault();
+            dropzone.classList.add("dragover");
+        });
+
+        dropzone.addEventListener("dragleave", function () {
+            dropzone.classList.remove("dragover");
+        });
+
+        dropzone.addEventListener("drop", function (event) {
+            event.preventDefault();
+            dropzone.classList.remove("dragover");
+
+            const files = event.dataTransfer.files;
+
+            if (!files.length) {
+                return;
+            }
+
+            const file = files[0];
+
+            if (file.size > maxSize) {
+                alert("File size must not exceed 5 MB.");
+                return;
+            }
+
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            fileInput.files = dataTransfer.files;
+
+            updatePreview(file);
+        });
+    });
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

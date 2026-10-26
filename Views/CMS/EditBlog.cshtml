@@ -1,0 +1,638 @@
+﻿@model CMSPanel.Models.Blog
+
+@{
+    ViewData["Title"] = "Edit Blog";
+}
+
+<style>
+    .edit-blog-page {
+        background: #f5f7fb;
+        min-height: 100%;
+        padding: 28px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .page-title {
+        font-size: 27px;
+        font-weight: 700;
+        color: #172033;
+        margin-bottom: 5px;
+    }
+
+    .page-subtitle {
+        font-size: 14px;
+        color: #8490a3;
+        margin: 0;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 16px;
+        border: 1px solid #dce2eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #475569;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+        .back-btn:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    .form-card {
+        background: #fff;
+        border: 1px solid #e9edf4;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, .04);
+        margin-bottom: 22px;
+        overflow: hidden;
+    }
+
+    .form-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 19px 23px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .section-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .section-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #172033;
+        margin: 0;
+    }
+
+    .section-description {
+        font-size: 12px;
+        color: #94a3b8;
+        margin: 3px 0 0;
+    }
+
+    .form-card-body {
+        padding: 23px;
+    }
+
+    .form-label {
+        color: #344054;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-control,
+    .form-select {
+        border: 1px solid #dce2eb;
+        border-radius: 7px;
+        min-height: 43px;
+        font-size: 13px;
+        color: #334155;
+        box-shadow: none;
+    }
+
+    textarea.form-control {
+        min-height: auto;
+        resize: vertical;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, .10);
+    }
+
+    .form-control::placeholder {
+        color: #a0a9b8;
+    }
+
+    .field-help {
+        color: #94a3b8;
+        font-size: 11px;
+        margin-top: 6px;
+        display: block;
+    }
+
+    .text-danger {
+        font-size: 12px;
+    }
+
+    .content-textarea {
+        min-height: 260px !important;
+        line-height: 1.7;
+    }
+
+    /* CKEditor styling */
+    .ck-editor__editable {
+        min-height: 260px;
+        color: #334155;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .ck.ck-editor {
+        width: 100%;
+    }
+
+    .featured-checkbox,
+    .published-checkbox {
+        border: 1px solid #e7ebf2;
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 13px 15px;
+    }
+
+    .form-check-input {
+        width: 17px;
+        height: 17px;
+        margin-top: 3px;
+        cursor: pointer;
+    }
+
+        .form-check-input:checked {
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+
+    .form-check-label {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .form-check-description {
+        color: #94a3b8;
+        font-size: 11px;
+        margin: 3px 0 0 25px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        padding: 18px 23px;
+        background: #fff;
+        border: 1px solid #e9edf4;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, .04);
+    }
+
+    .btn-update-blog {
+        background: #2563eb;
+        border: 1px solid #2563eb;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+        .btn-update-blog:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, .2);
+        }
+
+    .btn-cancel {
+        background: #fff;
+        border: 1px solid #dce2eb;
+        color: #475569;
+        padding: 10px 20px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+        .btn-cancel:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    .validation-summary-errors {
+        color: #b91c1c;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+
+        .validation-summary-errors ul {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+
+    @@media (max-width: 768px) {
+        .edit-blog-page {
+            padding: 16px;
+        }
+
+        .page-title {
+            font-size: 23px;
+        }
+
+        .form-card-header {
+            padding: 16px;
+        }
+
+        .form-card-body {
+            padding: 17px;
+        }
+
+        .form-actions {
+            padding: 15px;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .form-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+            .form-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+    }
+</style>
+
+<div class="edit-blog-page">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">
+                <i class="bi bi-pencil-square text-primary me-2"></i>
+                Edit Blog
+            </h1>
+            <p class="page-subtitle">
+                Update and manage your existing blog post.
+            </p>
+        </div>
+
+        <a asp-action="Blogs" class="back-btn">
+            <i class="bi bi-arrow-left"></i>
+            Back to Blogs
+        </a>
+    </div>
+
+    <form asp-action="EditBlog" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3">
+        </div>
+
+        <div class="row">
+
+            <!-- LEFT COLUMN -->
+            <div class="col-lg-8">
+
+                <!-- BASIC INFORMATION -->
+                <div class="form-card">
+
+                    <div class="form-card-header">
+                        <div class="section-icon">
+                            <i class="bi bi-info-circle"></i>
+                        </div>
+                        <div>
+                            <h5 class="section-title">Basic Information</h5>
+                            <p class="section-description">
+                                Update the title and URL of your blog.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-card-body">
+                        <div class="row">
+
+                            <!-- Title -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Title" class="form-label">
+                                    Blog Title
+                                </label>
+
+                                <input asp-for="Title"
+                                       class="form-control"
+                                       placeholder="Enter blog title" />
+
+                                <span asp-validation-for="Title"
+                                      class="text-danger"></span>
+                            </div>
+
+                            <!-- Slug -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Slug" class="form-label">
+                                    URL Slug
+                                </label>
+
+                                <input asp-for="Slug"
+                                       class="form-control"
+                                       placeholder="example-blog" />
+
+                                <span asp-validation-for="Slug"
+                                      class="text-danger"></span>
+
+                                <small class="field-help">
+                                    The slug must be unique.
+                                </small>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOG CONTENT -->
+                <div class="form-card">
+
+                    <div class="form-card-header">
+                        <div class="section-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div>
+                            <h5 class="section-title">Blog Content</h5>
+                            <p class="section-description">
+                                Edit the main content of your blog.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-card-body">
+
+                        <div class="mb-0">
+                            <label asp-for="Content" class="form-label">
+                                Content
+                            </label>
+
+                            <textarea asp-for="Content"
+                                      id="blogContentEditor"
+                                      class="form-control content-textarea"
+                                      placeholder="Enter blog content"></textarea>
+
+                            <span asp-validation-for="Content"
+                                  class="text-danger"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SEO SETTINGS -->
+                <div class="form-card">
+
+                    <div class="form-card-header">
+                        <div class="section-icon">
+                            <i class="bi bi-search"></i>
+                        </div>
+                        <div>
+                            <h5 class="section-title">SEO Settings</h5>
+                            <p class="section-description">
+                                Manage search engine metadata for this blog.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-card-body">
+
+                        <!-- Meta Title -->
+                        <div class="mb-4">
+                            <label asp-for="MetaTitle" class="form-label">
+                                Meta Title
+                            </label>
+
+                            <input asp-for="MetaTitle"
+                                   class="form-control"
+                                   placeholder="Enter SEO meta title" />
+
+                            <span asp-validation-for="MetaTitle"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <!-- Meta Description -->
+                        <div class="mb-0">
+                            <label asp-for="MetaDescription"
+                                   class="form-label">
+                                Meta Description
+                            </label>
+
+                            <textarea asp-for="MetaDescription"
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Enter SEO meta description"></textarea>
+
+                            <span asp-validation-for="MetaDescription"
+                                  class="text-danger"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="col-lg-4">
+
+                <!-- BLOG STATUS -->
+                <div class="form-card">
+
+                    <div class="form-card-header">
+                        <div class="section-icon">
+                            <i class="bi bi-send"></i>
+                        </div>
+                        <div>
+                            <h5 class="section-title">Publishing</h5>
+                            <p class="section-description">
+                                Manage the publication status.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-card-body">
+
+                        <!-- Status -->
+                        <div class="mb-4">
+                            <label asp-for="Status" class="form-label">
+                                Blog Status
+                            </label>
+
+                            <select asp-for="Status" class="form-select">
+                                <option value="Draft">Draft</option>
+                                <option value="Published">Published</option>
+                                <option value="Archived">Archived</option>
+                            </select>
+
+                            <span asp-validation-for="Status"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <!-- Published -->
+                        <div class="published-checkbox">
+                            <div class="form-check">
+                                <input asp-for="IsPublished"
+                                       class="form-check-input"
+                                       type="checkbox" />
+
+                                <label asp-for="IsPublished"
+                                       class="form-check-label">
+                                    <i class="bi bi-check-circle me-1 text-success"></i>
+                                    Published
+                                </label>
+                            </div>
+
+                            <p class="form-check-description">
+                                Enable this option to publish the blog.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- FEATURED IMAGE -->
+                <div class="form-card">
+
+                    <div class="form-card-header">
+                        <div class="section-icon">
+                            <i class="bi bi-image"></i>
+                        </div>
+                        <div>
+                            <h5 class="section-title">Featured Image</h5>
+                            <p class="section-description">
+                                Update the blog image URL.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-card-body">
+
+                        <div class="mb-0">
+                            <label asp-for="FeaturedImage"
+                                   class="form-label">
+                                Image URL
+                            </label>
+
+                            <input asp-for="FeaturedImage"
+                                   class="form-control"
+                                   placeholder="Enter image URL" />
+
+                            <span asp-validation-for="FeaturedImage"
+                                  class="text-danger"></span>
+
+                            <small class="field-help">
+                                Enter the URL of the featured image.
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FORM ACTIONS -->
+        <div class="form-actions">
+
+            <a asp-action="Blogs" class="btn btn-cancel">
+                <i class="bi bi-x-circle me-1"></i>
+                Cancel
+            </a>
+
+            <button type="submit" class="btn btn-update-blog">
+                <i class="bi bi-save me-1"></i>
+                Update Blog
+            </button>
+
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const contentElement =
+                document.querySelector('#blogContentEditor');
+
+            if (!contentElement) {
+                return;
+            }
+
+            ClassicEditor
+                .create(contentElement, {
+                    toolbar: [
+                        'heading',
+                        '|',
+                        'bold',
+                        'italic',
+                        'underline',
+                        '|',
+                        'link',
+                        'bulletedList',
+                        'numberedList',
+                        '|',
+                        'blockQuote',
+                        'insertTable',
+                        '|',
+                        'undo',
+                        'redo'
+                    ]
+                })
+                .then(editor => {
+                    const form = contentElement.closest('form');
+
+                    if (form) {
+                        form.addEventListener('submit', function () {
+                            contentElement.value = editor.getData();
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error(
+                        'CKEditor initialization failed:',
+                        error
+                    );
+                });
+        });
+    </script>
+}

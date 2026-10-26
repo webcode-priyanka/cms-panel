@@ -1,0 +1,596 @@
+﻿
+@model CMSPanel.Models.SeoSetting
+
+@{
+    ViewData["Title"] = "SEO Setting Details";
+}
+
+<style>
+    .seo-page {
+        color: #253047;
+    }
+
+    .seo-breadcrumb {
+        font-size: .875rem;
+        color: #778196;
+    }
+
+        .seo-breadcrumb a {
+            color: #5968d9;
+            text-decoration: none;
+        }
+
+    .seo-heading {
+        font-size: 1.65rem;
+        font-weight: 750;
+        letter-spacing: -.5px;
+        color: #202b42;
+    }
+
+    .seo-subtitle {
+        color: #7a8497;
+        font-size: .94rem;
+    }
+
+    .seo-card {
+        background: #fff;
+        border: 1px solid #e8ecf3;
+        border-radius: 12px;
+        box-shadow: 0 3px 14px rgba(31, 45, 70, .035);
+        overflow: hidden;
+    }
+
+    .seo-card-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid #edf0f5;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .seo-icon {
+        width: 39px;
+        height: 39px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #eef0ff;
+        color: #5865d8;
+        font-size: 1.15rem;
+        flex-shrink: 0;
+    }
+
+    .seo-section-title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0;
+        color: #263149;
+    }
+
+    .seo-section-subtitle {
+        font-size: .8rem;
+        color: #8992a3;
+        margin: 3px 0 0;
+    }
+
+    .seo-card-body {
+        padding: 23px;
+    }
+
+    .seo-field {
+        height: 100%;
+        padding: 15px 16px;
+        background: #f8f9fc;
+        border: 1px solid #edf0f5;
+        border-radius: 9px;
+        overflow-wrap: anywhere;
+    }
+
+    .seo-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #7c8799;
+        font-size: .76rem;
+        font-weight: 700;
+        letter-spacing: .45px;
+        text-transform: uppercase;
+    }
+
+    .seo-value {
+        color: #29354c;
+        font-size: .93rem;
+        font-weight: 600;
+        line-height: 1.65;
+        overflow-wrap: anywhere;
+    }
+
+    .seo-muted {
+        color: #a0a8b6;
+        font-weight: 400;
+        font-style: italic;
+    }
+
+    .seo-title-preview {
+        padding: 19px;
+        background: #f5f7ff;
+        border: 1px solid #e5e9ff;
+        border-radius: 10px;
+    }
+
+        .seo-title-preview .seo-value {
+            font-size: 1.15rem;
+            color: #3949ab;
+        }
+
+    .seo-badge {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 6px;
+        font-size: .78rem;
+        font-weight: 700;
+        background: #e9edff;
+        color: #4d5bd1;
+    }
+
+    .seo-link {
+        color: #5262d5;
+        text-decoration: none;
+        word-break: break-all;
+    }
+
+        .seo-link:hover {
+            text-decoration: underline;
+        }
+
+    .seo-action {
+        border-radius: 8px;
+        padding: 9px 15px;
+        font-weight: 600;
+        font-size: .88rem;
+    }
+
+    .seo-timeline {
+        position: relative;
+        padding-left: 18px;
+        border-left: 2px solid #e6eaff;
+    }
+
+    .seo-timeline-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #6472df;
+        position: absolute;
+        left: -6px;
+        top: 5px;
+    }
+
+    .seo-meta-note {
+        font-size: .82rem;
+        color: #8992a3;
+    }
+
+    @@media (max-width: 767px) {
+        .seo-card-body {
+            padding: 16px;
+        }
+
+        .seo-card-header {
+            padding: 15px 16px;
+        }
+
+        .seo-heading {
+            font-size: 1.4rem;
+        }
+
+        .seo-page-actions {
+            width: 100%;
+        }
+
+            .seo-page-actions a {
+                flex: 1;
+            }
+    }
+</style>
+
+<div class="container-fluid py-4 seo-page">
+
+    <!-- Breadcrumb -->
+    <div class="seo-breadcrumb mb-3">
+        <a asp-controller="CMS" asp-action="Index">
+            <i class="bi bi-house-door me-1"></i>Dashboard
+        </a>
+        <i class="bi bi-chevron-right mx-2"></i>
+        <a asp-controller="CMS" asp-action="SeoSettings">
+            SEO Management
+        </a>
+        <i class="bi bi-chevron-right mx-2"></i>
+        <span>Details</span>
+    </div>
+
+    <!-- Page Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="seo-icon">
+                    <i class="bi bi-search"></i>
+                </span>
+                <span class="seo-meta-note fw-semibold">
+                    SEO RECORD #@Model.Id
+                </span>
+            </div>
+
+            <h1 class="seo-heading mb-1">SEO Setting Details</h1>
+
+            <p class="seo-subtitle mb-0">
+                Review search engine metadata and social sharing information.
+            </p>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 seo-page-actions">
+
+            <a asp-controller="CMS"
+               asp-action="SeoSettings"
+               class="btn btn-outline-secondary seo-action">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back to List
+            </a>
+
+            <a asp-controller="CMS"
+               asp-action="EditSeoSetting"
+               asp-route-id="@Model.Id"
+               class="btn btn-primary seo-action">
+                <i class="bi bi-pencil-square me-1"></i>
+                Edit SEO
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Main Column -->
+        <div class="col-xl-8">
+
+            <!-- Basic SEO Information -->
+            <div class="seo-card mb-4">
+
+                <div class="seo-card-header">
+                    <span class="seo-icon">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </span>
+
+                    <div>
+                        <h2 class="seo-section-title">Basic SEO Information</h2>
+                        <p class="seo-section-subtitle">
+                            Search engine title, description and indexing settings.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="seo-card-body">
+
+                    <div class="seo-title-preview mb-4">
+                        <span class="seo-label">SEO Title</span>
+
+                        <div class="seo-value">
+                            @(string.IsNullOrWhiteSpace(Model.SeoTitle)
+                                ? "Not set"
+                                : Model.SeoTitle)
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+
+                        <div class="col-sm-6">
+                            <div class="seo-field">
+                                <span class="seo-label">SEO ID</span>
+                                <div class="seo-value">#@Model.Id</div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="seo-field">
+                                <span class="seo-label">Content Type</span>
+                                <div>
+                                    <span class="seo-badge">
+                                        @(string.IsNullOrWhiteSpace(Model.ContentType)
+                                            ? "Not set"
+                                            : Model.ContentType)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="seo-field">
+                                <span class="seo-label">Content ID</span>
+                                <div class="seo-value">@Model.ContentId</div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="seo-field">
+                                <span class="seo-label">Robots Directive</span>
+                                <div class="seo-value">
+                                    @if (!string.IsNullOrWhiteSpace(Model.Robots))
+                                    {
+                                        @Model.Robots
+                                    }
+                                    else
+                                    {
+                                        <span class="seo-muted">Not set</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="seo-field">
+                                <span class="seo-label">Meta Description</span>
+                                <div class="seo-value">
+                                    @if (!string.IsNullOrWhiteSpace(Model.MetaDescription))
+                                    {
+                                        @Model.MetaDescription
+                                    }
+                                    else
+                                    {
+                                        <span class="seo-muted">No meta description added.</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="seo-field">
+                                <span class="seo-label">Meta Keywords</span>
+                                <div class="seo-value">
+                                    @if (!string.IsNullOrWhiteSpace(Model.MetaKeywords))
+                                    {
+                                        @Model.MetaKeywords
+                                    }
+                                    else
+                                    {
+                                        <span class="seo-muted">No keywords added.</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="seo-field">
+                                <span class="seo-label">Canonical URL</span>
+                                <div class="seo-value">
+                                    @if (!string.IsNullOrWhiteSpace(Model.CanonicalUrl))
+                                    {
+                                        <a class="seo-link"
+                                           href="@Model.CanonicalUrl"
+                                           target="_blank"
+                                           rel="noopener noreferrer">
+                                            @Model.CanonicalUrl
+                                            <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="seo-muted">No canonical URL configured.</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Social Media Metadata -->
+            <div class="seo-card mb-4">
+
+                <div class="seo-card-header">
+                    <span class="seo-icon">
+                        <i class="bi bi-share"></i>
+                    </span>
+
+                    <div>
+                        <h2 class="seo-section-title">Social Media Metadata</h2>
+                        <p class="seo-section-subtitle">
+                            Open Graph information used when content is shared.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="seo-card-body">
+
+                    <div class="row g-3">
+
+                        <div class="col-12">
+                            <div class="seo-field">
+                                <span class="seo-label">Open Graph Title</span>
+                                <div class="seo-value">
+                                    @if (!string.IsNullOrWhiteSpace(Model.OgTitle))
+                                    {
+                                        @Model.OgTitle
+                                    }
+                                    else
+                                    {
+                                        <span class="seo-muted">Not set</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="seo-field">
+                                <span class="seo-label">Open Graph Description</span>
+                                <div class="seo-value">
+                                    @if (!string.IsNullOrWhiteSpace(Model.OgDescription))
+                                    {
+                                        @Model.OgDescription
+                                    }
+                                    else
+                                    {
+                                        <span class="seo-muted">Not set</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="seo-field">
+                                <span class="seo-label">Open Graph Image URL</span>
+                                <div class="seo-value">
+                                    @if (!string.IsNullOrWhiteSpace(Model.OgImage))
+                                    {
+                                        <a class="seo-link"
+                                           href="@Model.OgImage"
+                                           target="_blank"
+                                           rel="noopener noreferrer">
+                                            @Model.OgImage
+                                            <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="seo-muted">No social image configured.</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-xl-4">
+
+            <!-- Record Status -->
+            <div class="seo-card mb-4">
+
+                <div class="seo-card-header">
+                    <span class="seo-icon">
+                        <i class="bi bi-info-circle"></i>
+                    </span>
+
+                    <div>
+                        <h2 class="seo-section-title">Record Overview</h2>
+                        <p class="seo-section-subtitle">
+                            Reference information for this record.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="seo-card-body">
+
+                    <div class="seo-field mb-3">
+                        <span class="seo-label">Record ID</span>
+                        <div class="seo-value">#@Model.Id</div>
+                    </div>
+
+                    <div class="seo-field mb-3">
+                        <span class="seo-label">Content Type</span>
+                        <div class="seo-value">
+                            @(string.IsNullOrWhiteSpace(Model.ContentType)
+                                ? "Not set"
+                                : Model.ContentType)
+                        </div>
+                    </div>
+
+                    <div class="seo-field">
+                        <span class="seo-label">Content Reference</span>
+                        <div class="seo-value">
+                            @Model.ContentId
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Record History -->
+            <div class="seo-card">
+
+                <div class="seo-card-header">
+                    <span class="seo-icon">
+                        <i class="bi bi-clock-history"></i>
+                    </span>
+
+                    <div>
+                        <h2 class="seo-section-title">Record History</h2>
+                        <p class="seo-section-subtitle">
+                            Creation and last modification dates.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="seo-card-body">
+
+                    <div class="seo-timeline mb-4">
+                        <span class="seo-timeline-dot"></span>
+
+                        <span class="seo-label">Created At</span>
+
+                        <div class="seo-value">
+                            @Model.CreatedAt.ToString("dd MMM yyyy")
+                        </div>
+
+                        <div class="seo-meta-note mt-1">
+                            <i class="bi bi-clock me-1"></i>
+                            @Model.CreatedAt.ToString("hh:mm tt")
+                        </div>
+                    </div>
+
+                    <div class="seo-timeline">
+                        <span class="seo-timeline-dot"></span>
+
+                        <span class="seo-label">Last Updated</span>
+
+                        @if (Model.UpdatedAt.HasValue)
+                        {
+                            <div class="seo-value">
+                                @Model.UpdatedAt.Value.ToString("dd MMM yyyy")
+                            </div>
+
+                            <div class="seo-meta-note mt-1">
+                                <i class="bi bi-clock me-1"></i>
+                                @Model.UpdatedAt.Value.ToString("hh:mm tt")
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="seo-value seo-muted">
+                                Not updated yet
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-4 pt-3 border-top">
+        <span class="seo-meta-note">
+            <i class="bi bi-shield-check me-1"></i>
+            SEO Management
+        </span>
+
+        <a asp-controller="CMS"
+           asp-action="SeoSettings"
+           class="btn btn-light border seo-action">
+            <i class="bi bi-arrow-left me-1"></i>
+            Return to SEO Management
+        </a>
+    </div>
+
+</div>
+

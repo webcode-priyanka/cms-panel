@@ -1,0 +1,118 @@
+﻿@model CMSPanel.Models.TeamMember
+
+@{
+    ViewData["Title"] = "Create Team Member";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Add Team Member</h2>
+        <p class="text-muted">Add a new team member or leader.</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-action="CreateTeamMember" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Name" class="form-label">Name</label>
+                        <input asp-for="Name" class="form-control"
+                               placeholder="Enter name" />
+                        <span asp-validation-for="Name"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Designation" class="form-label">Designation</label>
+                        <input asp-for="Designation" class="form-control"
+                               placeholder="Enter designation" />
+                        <span asp-validation-for="Designation"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label asp-for="Description" class="form-label">Description</label>
+                        <textarea asp-for="Description" class="form-control"
+                                  rows="4"
+                                  placeholder="Enter description"></textarea>
+                        <span asp-validation-for="Description"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                        <input asp-for="ImageUrl" class="form-control"
+                               placeholder="Enter image URL" />
+                        <span asp-validation-for="ImageUrl"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control"
+                               placeholder="Enter email" />
+                        <span asp-validation-for="Email"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="LinkedInUrl" class="form-label">LinkedIn URL</label>
+                        <input asp-for="LinkedInUrl" class="form-control"
+                               placeholder="Enter LinkedIn URL" />
+                        <span asp-validation-for="LinkedInUrl"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TwitterUrl" class="form-label">Twitter URL</label>
+                        <input asp-for="TwitterUrl" class="form-control"
+                               placeholder="Enter Twitter URL" />
+                        <span asp-validation-for="TwitterUrl"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DisplayOrder" class="form-label">Display Order</label>
+                        <input asp-for="DisplayOrder" type="number"
+                               class="form-control" />
+                        <span asp-validation-for="DisplayOrder"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3 d-flex align-items-center">
+                        <div class="form-check mt-4">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label">
+                                Active
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Save
+                    </button>
+
+                    <a asp-action="TeamMembers" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

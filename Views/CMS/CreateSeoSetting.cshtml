@@ -1,0 +1,294 @@
+﻿@model CMSPanel.Models.SeoSetting
+
+@{
+    ViewData["Title"] = "Create SEO Setting";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Create SEO Setting</h1>
+        <p class="text-muted mb-0">
+            Add SEO information for your website content.
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-action="CreateSeoSetting"
+                  asp-controller="CMS"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="row g-4">
+
+                    <!-- Content Type -->
+                    <div class="col-md-6">
+
+                        <label asp-for="ContentType"
+                               class="form-label fw-semibold">
+                            Content Type
+                        </label>
+
+                        <select asp-for="ContentType"
+                                class="form-select">
+
+                            <option value="Page">Page</option>
+                            <option value="Blog">Blog</option>
+                            <option value="Project">Project</option>
+                            <option value="Service">Service</option>
+                            <option value="Product">Product</option>
+
+                        </select>
+
+                        <span asp-validation-for="ContentType"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Content ID -->
+                    <div class="col-md-6">
+
+                        <label asp-for="ContentId"
+                               class="form-label fw-semibold">
+                            Content ID
+                        </label>
+
+                        <input asp-for="ContentId"
+                               type="number"
+                               class="form-control"
+                               placeholder="Enter content ID" />
+
+                        <div class="form-text">
+                            Enter the ID of the selected content.
+                        </div>
+
+                        <span asp-validation-for="ContentId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- SEO Title -->
+                    <div class="col-12">
+
+                        <label asp-for="SeoTitle"
+                               class="form-label fw-semibold">
+                            SEO Title
+                        </label>
+
+                        <input asp-for="SeoTitle"
+                               class="form-control"
+                               maxlength="200"
+                               placeholder="Enter SEO title" />
+
+                        <span asp-validation-for="SeoTitle"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Meta Description -->
+                    <div class="col-12">
+
+                        <label asp-for="MetaDescription"
+                               class="form-label fw-semibold">
+                            Meta Description
+                        </label>
+
+                        <textarea asp-for="MetaDescription"
+                                  class="form-control"
+                                  rows="4"
+                                  maxlength="500"
+                                  placeholder="Enter meta description"></textarea>
+
+                        <span asp-validation-for="MetaDescription"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Meta Keywords -->
+                    <div class="col-12">
+
+                        <label asp-for="MetaKeywords"
+                               class="form-label fw-semibold">
+                            Meta Keywords
+                        </label>
+
+                        <input asp-for="MetaKeywords"
+                               class="form-control"
+                               maxlength="500"
+                               placeholder="keyword1, keyword2, keyword3" />
+
+                        <span asp-validation-for="MetaKeywords"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Canonical URL -->
+                    <div class="col-md-8">
+
+                        <label asp-for="CanonicalUrl"
+                               class="form-label fw-semibold">
+                            Canonical URL
+                        </label>
+
+                        <input asp-for="CanonicalUrl"
+                               class="form-control"
+                               maxlength="500"
+                               placeholder="https://example.com/page" />
+
+                        <span asp-validation-for="CanonicalUrl"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Robots -->
+                    <div class="col-md-4">
+
+                        <label asp-for="Robots"
+                               class="form-label fw-semibold">
+                            Robots
+                        </label>
+
+                        <select asp-for="Robots"
+                                class="form-select">
+
+                            <option value="index, follow">
+                                index, follow
+                            </option>
+
+                            <option value="noindex, follow">
+                                noindex, follow
+                            </option>
+
+                            <option value="index, nofollow">
+                                index, nofollow
+                            </option>
+
+                            <option value="noindex, nofollow">
+                                noindex, nofollow
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Robots"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Open Graph -->
+                    <div class="col-12">
+
+                        <hr class="my-2">
+
+                        <h5 class="fw-bold mb-3">
+                            Open Graph / Social Media
+                        </h5>
+
+                    </div>
+
+                    <!-- OG Title -->
+                    <div class="col-12">
+
+                        <label asp-for="OgTitle"
+                               class="form-label fw-semibold">
+                            OG Title
+                        </label>
+
+                        <input asp-for="OgTitle"
+                               class="form-control"
+                               maxlength="200"
+                               placeholder="Enter social media title" />
+
+                        <span asp-validation-for="OgTitle"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- OG Description -->
+                    <div class="col-12">
+
+                        <label asp-for="OgDescription"
+                               class="form-label fw-semibold">
+                            OG Description
+                        </label>
+
+                        <textarea asp-for="OgDescription"
+                                  class="form-control"
+                                  rows="4"
+                                  maxlength="500"
+                                  placeholder="Enter social media description"></textarea>
+
+                        <span asp-validation-for="OgDescription"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- OG Image -->
+                    <div class="col-12">
+
+                        <label asp-for="OgImage"
+                               class="form-label fw-semibold">
+                            OG Image URL
+                        </label>
+
+                        <input asp-for="OgImage"
+                               class="form-control"
+                               maxlength="500"
+                               placeholder="https://example.com/images/og-image.jpg" />
+
+                        <span asp-validation-for="OgImage"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2 mt-4">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="bi bi-check-lg me-1"></i>
+                        Save SEO Setting
+
+                    </button>
+
+                    <a asp-action="SeoSettings"
+                       asp-controller="CMS"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,533 @@
+﻿@model CMSPanel.Models.Gallery
+
+@{
+    ViewData["Title"] = "Create Gallery";
+}
+
+<style>
+    .create-gallery-page {
+        padding: 10px 4px 30px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+        .page-header h2 {
+            color: #172033;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: #778196;
+            font-size: 14px;
+            margin: 0;
+        }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 15px;
+        border: 1px solid #dfe5ee;
+        border-radius: 8px;
+        background: #fff;
+        color: #475569;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .back-btn:hover {
+            background: #f8fafc;
+            color: #2563eb;
+        }
+
+    .create-card {
+        background: #fff;
+        border: 1px solid #e9edf5;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+        overflow: hidden;
+    }
+
+    .create-card-header {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .header-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #e8efff;
+        color: #2563eb;
+        font-size: 20px;
+    }
+
+    .create-card-header h5 {
+        color: #172033;
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0 0 4px;
+    }
+
+    .create-card-header p {
+        color: #8791a3;
+        font-size: 12px;
+        margin: 0;
+    }
+
+    .create-card-body {
+        padding: 25px;
+    }
+
+    .form-label {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .required-mark {
+        color: #dc2626;
+    }
+
+    .form-control {
+        min-height: 43px;
+        padding: 10px 12px;
+        border: 1px solid #dfe5ee;
+        border-radius: 7px;
+        color: #334155;
+        font-size: 13px;
+    }
+
+        .form-control:focus {
+            border-color: #93b4ff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+    textarea.form-control {
+        min-height: 130px;
+        resize: vertical;
+    }
+
+    .form-text {
+        color: #94a3b8;
+        font-size: 11px;
+        margin-top: 6px;
+    }
+
+    .field-validation-error {
+        display: block;
+        color: #dc2626;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .validation-summary-errors {
+        color: #dc2626;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+    .image-preview-card {
+        display: none;
+        margin-top: 15px;
+        padding: 14px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        background: #f8fafc;
+    }
+
+    .image-preview-title {
+        color: #475569;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .preview-image {
+        display: block;
+        width: 200px;
+        height: 140px;
+        object-fit: cover;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    .image-error {
+        display: none;
+        color: #dc2626;
+        font-size: 12px;
+        margin-top: 8px;
+    }
+
+    .status-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 17px;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        background: #f8fafc;
+    }
+
+    .status-title {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .status-description {
+        color: #94a3b8;
+        font-size: 11px;
+        margin: 0;
+    }
+
+    .status-box .form-check {
+        margin: 0;
+        padding-left: 2.8em;
+    }
+
+    .status-box .form-check-input {
+        width: 2.5em;
+        height: 1.3em;
+        margin-left: -2.8em;
+        cursor: pointer;
+    }
+
+        .status-box .form-check-input:checked {
+            background-color: #16a34a;
+            border-color: #16a34a;
+        }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #edf0f5;
+    }
+
+    .btn-cancel,
+    .btn-create {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 10px 18px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .btn-cancel {
+        color: #475569;
+        background: #fff;
+        border: 1px solid #dfe5ee;
+    }
+
+        .btn-cancel:hover {
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+    .btn-create {
+        color: #fff;
+        background: #2563eb;
+        border: 1px solid #2563eb;
+    }
+
+        .btn-create:hover {
+            color: #fff;
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+    @@media (max-width: 600px) {
+        .page-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .create-card-header {
+            padding: 17px 18px;
+        }
+
+        .create-card-body {
+            padding: 18px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+
+        .preview-image {
+            width: 100%;
+            max-width: 250px;
+        }
+    }
+</style>
+
+<div class="container-fluid create-gallery-page">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h2>Create Gallery</h2>
+            <p>Add a new image to your gallery</p>
+        </div>
+
+        <a asp-controller="CMS"
+           asp-action="Gallery"
+           class="back-btn">
+            <i class="bi bi-arrow-left"></i>
+            Back to Gallery
+        </a>
+    </div>
+
+    <!-- Create Form Card -->
+    <div class="create-card">
+
+        <div class="create-card-header">
+            <div class="header-icon">
+                <i class="bi bi-images"></i>
+            </div>
+
+            <div>
+                <h5>Gallery Information</h5>
+                <p>Enter the details of your new gallery item</p>
+            </div>
+        </div>
+
+        <div class="create-card-body">
+
+            <form asp-controller="CMS"
+                  asp-action="CreateGallery"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <!-- Validation -->
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-4">
+                </div>
+
+                <div class="row g-4">
+
+                    <!-- Title -->
+                    <div class="col-md-6">
+                        <label asp-for="Title" class="form-label">
+                            Gallery Title
+                        </label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               placeholder="Enter gallery title" />
+
+                        <span asp-validation-for="Title"
+                              class="field-validation-error">
+                        </span>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="col-md-6">
+                        <label asp-for="Category" class="form-label">
+                            Category
+                        </label>
+
+                        <input asp-for="Category"
+                               class="form-control"
+                               placeholder="e.g. Events, Office, Projects" />
+
+                        <span asp-validation-for="Category"
+                              class="field-validation-error">
+                        </span>
+
+                        <div class="form-text">
+                            Enter the category for this gallery image.
+                        </div>
+                    </div>
+
+                    <!-- Image URL -->
+                    <div class="col-12">
+                        <label asp-for="ImageUrl" class="form-label">
+                            Image URL
+                        </label>
+
+                        <input asp-for="ImageUrl"
+                               id="imageUrl"
+                               class="form-control"
+                               placeholder="Enter image URL" />
+
+                        <span asp-validation-for="ImageUrl"
+                              class="field-validation-error">
+                        </span>
+
+                        <div class="form-text">
+                            Enter the URL of the image you want to display.
+                        </div>
+
+                        <!-- Image Preview -->
+                        <div class="image-preview-card" id="previewCard">
+                            <div class="image-preview-title">
+                                <i class="bi bi-image me-1"></i>
+                                Image Preview
+                            </div>
+
+                            <img id="previewImage"
+                                 src=""
+                                 alt="Gallery image preview"
+                                 class="preview-image" />
+
+                            <div id="imageError" class="image-error">
+                                Image could not be loaded. Please check the URL.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12">
+                        <label asp-for="Description" class="form-label">
+                            Description
+                        </label>
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="5"
+                                  placeholder="Enter gallery description"></textarea>
+
+                        <span asp-validation-for="Description"
+                              class="field-validation-error">
+                        </span>
+
+                        <div class="form-text">
+                            Add a short description about this gallery image.
+                        </div>
+                    </div>
+
+                    <!-- Active Status -->
+                    <div class="col-12">
+                        <div class="status-box">
+
+                            <div>
+                                <div class="status-title">
+                                    <i class="bi bi-toggle-on me-1"></i>
+                                    Gallery Status
+                                </div>
+
+                                <p class="status-description">
+                                    Enable or disable this gallery item.
+                                </p>
+                            </div>
+
+                            <div class="form-check form-switch">
+                                <input asp-for="IsActive"
+                                       class="form-check-input"
+                                       type="checkbox"
+                                       role="switch" />
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-actions">
+
+                    <a asp-controller="CMS"
+                       asp-action="Gallery"
+                       class="btn btn-cancel">
+                        <i class="bi bi-x-circle"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-create">
+                        <i class="bi bi-plus-circle"></i>
+                        Create Gallery
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const imageUrl = document.getElementById("imageUrl");
+            const previewCard = document.getElementById("previewCard");
+            const previewImage = document.getElementById("previewImage");
+            const imageError = document.getElementById("imageError");
+
+            function updatePreview() {
+                const url = imageUrl.value.trim();
+
+                if (!url) {
+                    previewCard.style.display = "none";
+                    previewImage.removeAttribute("src");
+                    return;
+                }
+
+                previewCard.style.display = "block";
+                imageError.style.display = "none";
+                previewImage.style.display = "block";
+                previewImage.src = url;
+            }
+
+            previewImage.addEventListener("error", function () {
+                previewImage.style.display = "none";
+                imageError.style.display = "block";
+            });
+
+            previewImage.addEventListener("load", function () {
+                previewImage.style.display = "block";
+                imageError.style.display = "none";
+            });
+
+            imageUrl.addEventListener("input", updatePreview);
+
+            updatePreview();
+        });
+    </script>
+}

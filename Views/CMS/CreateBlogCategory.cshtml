@@ -1,0 +1,379 @@
+﻿@model CMSPanel.Models.BlogCategory
+
+@{
+    ViewData["Title"] = "Create Blog Category";
+}
+
+<style>
+    .create-category-page {
+        padding: 25px;
+    }
+
+    .create-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 750;
+        color: #1e293b;
+        margin-bottom: 5px;
+    }
+
+    .page-subtitle {
+        color: #64748b;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .btn-back {
+        background: #fff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 17px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-back:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    .create-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
+        overflow: hidden;
+    }
+
+    .create-card-header {
+        background: linear-gradient(135deg, #eff6ff, #f8fafc);
+        padding: 22px 26px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+        .create-card-header h5 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .create-card-header p {
+            color: #64748b;
+            font-size: 13px;
+            margin: 0;
+        }
+
+    .create-card-body {
+        padding: 28px;
+    }
+
+    .form-section-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .form-label {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 650;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        min-height: 45px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 13px;
+        font-size: 14px;
+        color: #334155;
+        transition: 0.2s;
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-control:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .form-text {
+        font-size: 12px;
+        color: #94a3b8;
+        margin-top: 6px;
+    }
+
+    .status-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .status-title {
+        color: #334155;
+        font-weight: 650;
+        font-size: 14px;
+        margin-bottom: 3px;
+    }
+
+    .status-description {
+        color: #64748b;
+        font-size: 12px;
+        margin: 0;
+    }
+
+    .form-check-input {
+        width: 42px;
+        height: 22px;
+        cursor: pointer;
+        margin: 0;
+    }
+
+        .form-check-input:checked {
+            background-color: #16a34a;
+            border-color: #16a34a;
+        }
+
+        .form-check-input:focus {
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+        }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding-top: 22px;
+        margin-top: 25px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .btn-save {
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 11px 22px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-save:hover {
+            background: #1d4ed8;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+    .btn-cancel {
+        background: #fff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 11px 22px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-cancel:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    @@media (max-width: 768px) {
+        .create-category-page {
+            padding: 15px;
+        }
+
+        .page-title {
+            font-size: 23px;
+        }
+
+        .create-card-body {
+            padding: 18px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="container-fluid create-category-page">
+
+    <!-- Page Header -->
+    <div class="create-header">
+        <div>
+            <h1 class="page-title">
+                <i class="bi bi-folder-plus text-primary me-2"></i>
+                Create Blog Category
+            </h1>
+            <p class="page-subtitle">
+                Add and organize a new blog category.
+            </p>
+        </div>
+
+        <a asp-action="BlogCategories" class="btn-back">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Categories
+        </a>
+    </div>
+
+    <!-- Form Card -->
+    <div class="create-card">
+
+        <div class="create-card-header">
+            <h5>
+                <i class="bi bi-pencil-square text-primary me-2"></i>
+                Category Information
+            </h5>
+            <p>Enter the details below to create a new category.</p>
+        </div>
+
+        <div class="create-card-body">
+
+            <form asp-action="CreateBlogCategory" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger mb-4">
+                </div>
+
+                <!-- Basic Information -->
+                <h6 class="form-section-title">
+                    <i class="bi bi-info-circle text-primary me-2"></i>
+                    Basic Information
+                </h6>
+
+                <div class="row g-4">
+
+                    <!-- Category Name -->
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="form-label">
+                            Category Name <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Name"
+                               class="form-control"
+                               placeholder="Enter category name" />
+
+                        <span asp-validation-for="Name"
+                              class="text-danger small"></span>
+
+                        <div class="form-text">
+                            Enter a clear and meaningful category name.
+                        </div>
+                    </div>
+
+                    <!-- Slug -->
+                    <div class="col-md-6">
+                        <label asp-for="Slug" class="form-label">
+                            Slug <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Slug"
+                               class="form-control"
+                               placeholder="example-category" />
+
+                        <span asp-validation-for="Slug"
+                              class="text-danger small"></span>
+
+                        <div class="form-text">
+                            Use a URL-friendly name, for example: technology.
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12">
+                        <label asp-for="Description" class="form-label">
+                            Description
+                        </label>
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Enter category description"></textarea>
+
+                        <span asp-validation-for="Description"
+                              class="text-danger small"></span>
+
+                        <div class="form-text">
+                            Briefly describe what this category is about.
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Status -->
+                <h6 class="form-section-title mt-4">
+                    <i class="bi bi-toggle-on text-primary me-2"></i>
+                    Category Status
+                </h6>
+
+                <div class="status-box">
+                    <div>
+                        <div class="status-title">Active Category</div>
+                        <p class="status-description">
+                            Enable this option to mark the category as active.
+                        </p>
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input asp-for="IsActive"
+                               class="form-check-input"
+                               role="switch" />
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-actions">
+
+                    <a asp-action="BlogCategories"
+                       class="btn btn-cancel">
+                        <i class="bi bi-x-lg me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-save">
+                        <i class="bi bi-check-lg me-1"></i>
+                        Save Category
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

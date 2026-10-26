@@ -1,0 +1,659 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="mb-4">
+
+        <h1 class="fw-bold mb-1">
+            Dashboard
+        </h1>
+
+        <p class="text-muted mb-0">
+            Welcome to CMSPanel Admin Dashboard
+        </p>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- TOP STAT CARDS -->
+    <!-- ========================= -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- Users -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Total Users
+                            </p>
+
+                            <h2 class="fw-bold mb-1">
+                                @ViewBag.TotalUsers
+                            </h2>
+
+                            <small class="text-muted">
+                                Registered users
+                            </small>
+
+                        </div>
+
+                        <div class="fs-1 text-primary">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Pages -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Total Pages
+                            </p>
+
+                            <h2 class="fw-bold mb-1">
+                                @ViewBag.TotalPages
+                            </h2>
+
+                            <small class="text-success">
+                                @ViewBag.PublishedPages Published
+                            </small>
+
+                        </div>
+
+                        <div class="fs-1 text-success">
+                            <i class="bi bi-file-earmark-text-fill"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Blogs -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Total Blogs
+                            </p>
+
+                            <h2 class="fw-bold mb-1">
+                                @ViewBag.TotalBlogs
+                            </h2>
+
+                            <small class="text-success">
+                                @ViewBag.PublishedBlogs Published
+                            </small>
+
+                        </div>
+
+                        <div class="fs-1 text-info">
+                            <i class="bi bi-journal-text"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Projects -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Total Projects
+                            </p>
+
+                            <h2 class="fw-bold mb-1">
+                                @ViewBag.TotalProjects
+                            </h2>
+
+                            <small class="text-muted">
+                                @ViewBag.PublishedProjects Published
+                            </small>
+
+                        </div>
+
+                        <div class="fs-1 text-warning">
+                            <i class="bi bi-kanban-fill"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- SECOND STAT ROW -->
+    <!-- ========================= -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- Gallery -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Gallery
+                            </p>
+
+                            <h3 class="fw-bold">
+                                @ViewBag.TotalGallery
+                            </h3>
+
+                            <small class="text-success">
+                                @ViewBag.ActiveGallery Active
+                            </small>
+
+                        </div>
+
+                        <i class="bi bi-images fs-2 text-primary"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Media -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Media Library
+                            </p>
+
+                            <h3 class="fw-bold">
+                                @ViewBag.TotalMedia
+                            </h3>
+
+                            <small class="text-success">
+                                @ViewBag.ActiveMedia Active
+                            </small>
+
+                        </div>
+
+                        <i class="bi bi-collection-play fs-2 text-info"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Blog Categories -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Blog Categories
+                            </p>
+
+                            <h3 class="fw-bold">
+                                @ViewBag.TotalBlogCategories
+                            </h3>
+
+                            <small class="text-muted">
+                                Total categories
+                            </small>
+
+                        </div>
+
+                        <i class="bi bi-folder-fill fs-2 text-warning"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Roles -->
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Roles
+                            </p>
+
+                            <h3 class="fw-bold">
+                                @ViewBag.TotalRoles
+                            </h3>
+
+                            <small class="text-muted">
+                                System roles
+                            </small>
+
+                        </div>
+
+                        <i class="bi bi-shield-lock-fill fs-2 text-danger"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- PAGE & BLOG STATUS -->
+    <!-- ========================= -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- Page Status -->
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white border-0 py-3">
+
+                    <h5 class="fw-bold mb-0">
+                        Page Status
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between mb-3">
+
+                        <span>
+                            Draft
+                        </span>
+
+                        <span class="badge bg-warning text-dark">
+                            @ViewBag.DraftPages
+                        </span>
+
+                    </div>
+
+
+                    <div class="d-flex justify-content-between mb-3">
+
+                        <span>
+                            Published
+                        </span>
+
+                        <span class="badge bg-success">
+                            @ViewBag.PublishedPages
+                        </span>
+
+                    </div>
+
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+                            Archived
+                        </span>
+
+                        <span class="badge bg-secondary">
+                            @ViewBag.ArchivedPages
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Blog Status -->
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white border-0 py-3">
+
+                    <h5 class="fw-bold mb-0">
+                        Blog Status
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between mb-3">
+
+                        <span>
+                            Draft
+                        </span>
+
+                        <span class="badge bg-warning text-dark">
+                            @ViewBag.DraftBlogs
+                        </span>
+
+                    </div>
+
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+                            Published
+                        </span>
+
+                        <span class="badge bg-success">
+                            @ViewBag.PublishedBlogs
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- RECENT CONTENT -->
+    <!-- ========================= -->
+
+    <div class="row g-4">
+
+        <!-- Recent Pages -->
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white py-3">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <h5 class="fw-bold mb-0">
+                            Recent Pages
+                        </h5>
+
+                        <a asp-action="Pages"
+                           class="btn btn-sm btn-outline-primary">
+
+                            View All
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body p-0">
+
+                    @if (ViewBag.RecentPages != null &&
+                         ViewBag.RecentPages.Count > 0)
+                    {
+                        <div class="table-responsive">
+
+                            <table class="table table-hover mb-0">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var page in ViewBag.RecentPages)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @@page.Title
+                                            </td>
+
+                                            <td>
+
+                                                @if (page.Status == "Published")
+                                                {
+                                                    <span class="badge bg-success">
+                                                        Published
+                                                    </span>
+                                                }
+                                                else if (page.Status == "Archived")
+                                                {
+                                                    <span class="badge bg-secondary">
+                                                        Archived
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark">
+                                                        Draft
+                                                    </span>
+                                                }
+
+                                            </td>
+
+                                            <td>
+                                                @@page.CreatedAt
+                                                    .ToLocalTime()
+                                                    .ToString("dd-MM-yyyy")
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="p-4 text-center text-muted">
+                            No pages available.
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Recent Blogs -->
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white py-3">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <h5 class="fw-bold mb-0">
+                            Recent Blogs
+                        </h5>
+
+                        <a asp-action="Blogs"
+                           class="btn btn-sm btn-outline-primary">
+
+                            View All
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body p-0">
+
+                    @if (ViewBag.RecentBlogs != null &&
+                         ViewBag.RecentBlogs.Count > 0)
+                    {
+                        <div class="table-responsive">
+
+                            <table class="table table-hover mb-0">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var blog in ViewBag.RecentBlogs)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @blog.Title
+                                            </td>
+
+                                            <td>
+
+                                                @if (blog.Status == "Published")
+                                                {
+                                                    <span class="badge bg-success">
+                                                        Published
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark">
+                                                        Draft
+                                                    </span>
+                                                }
+
+                                            </td>
+
+                                            <td>
+                                                @blog.CreatedAt
+                                                    .ToLocalTime()
+                                                    .ToString("dd-MM-yyyy")
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="p-4 text-center text-muted">
+                            No blogs available.
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

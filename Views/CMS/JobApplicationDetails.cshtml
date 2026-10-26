@@ -1,0 +1,440 @@
+﻿@model CMSPanel.Models.JobApplication
+
+@{
+    ViewData["Title"] = "Job Application Details";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold mb-1">Job Application Details</h1>
+            <p class="text-muted mb-0">
+                View complete applicant information
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <a asp-action="EditJobApplication"
+               asp-route-id="@Model.Id"
+               class="btn btn-primary">
+                <i class="bi bi-pencil me-1"></i>
+                Edit
+            </a>
+
+            <a asp-action="JobApplications"
+               class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Applicant Information -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-person me-2"></i>
+                Applicant Information
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <!-- Name -->
+                <div class="col-md-6">
+
+                    <div class="text-muted small">
+                        Applicant Name
+                    </div>
+
+                    <div class="fw-semibold fs-5">
+                        @Model.ApplicantName
+                    </div>
+
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6">
+
+                    <div class="text-muted small">
+                        Email
+                    </div>
+
+                    <div class="fw-semibold">
+                        @Model.Email
+                    </div>
+
+                </div>
+
+                <!-- Phone -->
+                <div class="col-md-6">
+
+                    <div class="text-muted small">
+                        Phone
+                    </div>
+
+                    <div class="fw-semibold">
+                        @Model.Phone
+                    </div>
+
+                </div>
+
+                <!-- Applied Job -->
+                <div class="col-md-6">
+
+                    <div class="text-muted small">
+                        Applied For
+                    </div>
+
+                    <div class="fw-semibold">
+
+                        @if (Model.Career != null)
+                        {
+                            @Model.Career.JobTitle
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                Job not found
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+                <!-- Applied Date -->
+                <div class="col-md-6">
+
+                    <div class="text-muted small">
+                        Applied Date
+                    </div>
+
+                    <div class="fw-semibold">
+                        @Model.AppliedAt.ToString("dd MMM yyyy, hh:mm tt")
+                    </div>
+
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-6">
+
+                    <div class="text-muted small">
+                        Application Status
+                    </div>
+
+                    <div class="mt-1">
+
+                        @if (Model.Status == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+                        }
+                        else if (Model.Status == "Shortlisted")
+                        {
+                            <span class="badge bg-info">
+                                Shortlisted
+                            </span>
+                        }
+                        else if (Model.Status == "Rejected")
+                        {
+                            <span class="badge bg-danger">
+                                Rejected
+                            </span>
+                        }
+                        else if (Model.Status == "Hired")
+                        {
+                            <span class="badge bg-success">
+                                Hired
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                @Model.Status
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Professional Information -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-person-workspace me-2"></i>
+                Professional Information
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Skills -->
+            <div class="mb-4">
+
+                <div class="text-muted small mb-1">
+                    Skills
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Skills))
+                {
+                    <div class="border rounded p-3 bg-light">
+                        @Model.Skills
+                    </div>
+                }
+                else
+                {
+                    <span class="text-muted">
+                        No skills information provided.
+                    </span>
+                }
+
+            </div>
+
+            <!-- Experience -->
+            <div class="mb-4">
+
+                <div class="text-muted small mb-1">
+                    Experience
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Experience))
+                {
+                    <div class="fw-semibold">
+                        @Model.Experience
+                    </div>
+                }
+                else
+                {
+                    <span class="text-muted">
+                        Not provided
+                    </span>
+                }
+
+            </div>
+
+            <!-- Resume -->
+            <div class="mb-4">
+
+                <div class="text-muted small mb-1">
+                    Resume
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.ResumeFile))
+                {
+                    <div class="border rounded p-3 bg-light">
+                        <i class="bi bi-file-earmark-text me-2"></i>
+                        @Model.ResumeFile
+                    </div>
+                }
+                else
+                {
+                    <span class="text-muted">
+                        No resume provided.
+                    </span>
+                }
+
+            </div>
+
+            <!-- Cover Letter -->
+            <div>
+
+                <div class="text-muted small mb-1">
+                    Cover Letter
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.CoverLetter))
+                {
+                    <div class="border rounded p-3 bg-light"
+                         style="white-space: pre-line;">
+                        @Model.CoverLetter
+                    </div>
+                }
+                else
+                {
+                    <span class="text-muted">
+                        No cover letter provided.
+                    </span>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Application Review -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-clipboard-check me-2"></i>
+                Application Review
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Update Application Status -->
+            <div class="mb-4">
+
+                <div class="text-muted small mb-2">
+                    Update Application Status
+                </div>
+
+                <form asp-action="UpdateJobApplicationStatus"
+                      asp-route-id="@Model.Id"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="row g-3 align-items-end">
+
+                        <div class="col-md-5">
+
+                            <label class="form-label fw-semibold">
+                                Status
+                            </label>
+
+                            <select name="status"
+                                    class="form-select">
+
+                                <option value="Pending"
+                                        selected="@(Model.Status == "Pending")">
+                                    Pending
+                                </option>
+
+                                <option value="Shortlisted"
+                                        selected="@(Model.Status == "Shortlisted")">
+                                    Shortlisted
+                                </option>
+
+                                <option value="Rejected"
+                                        selected="@(Model.Status == "Rejected")">
+                                    Rejected
+                                </option>
+
+                                <option value="Hired"
+                                        selected="@(Model.Status == "Hired")">
+                                    Hired
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-5">
+
+                            <label class="form-label fw-semibold">
+                                Remarks
+                            </label>
+
+                            <input type="text"
+                                   name="remarks"
+                                   value="@Model.Remarks"
+                                   class="form-control"
+                                   placeholder="Enter remarks..." />
+
+                        </div>
+
+                        <div class="col-md-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary w-100">
+                                <i class="bi bi-check-lg me-1"></i>
+                                Update
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="mb-3">
+
+                <div class="text-muted small mb-1">
+                    Remarks
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Remarks))
+                {
+                    <div class="border rounded p-3 bg-light"
+                         style="white-space: pre-line;">
+                        @Model.Remarks
+                    </div>
+                }
+                else
+                {
+                    <span class="text-muted">
+                        No remarks added.
+                    </span>
+                }
+
+            </div>
+
+            @if (Model.UpdatedAt.HasValue)
+            {
+                <div>
+
+                    <div class="text-muted small">
+                        Last Updated
+                    </div>
+
+                    <div class="fw-semibold">
+                        @Model.UpdatedAt.Value.ToString("dd MMM yyyy, hh:mm tt")
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+    <!-- Bottom Buttons -->
+    <div class="d-flex justify-content-end gap-2">
+
+        <a asp-action="EditJobApplication"
+           asp-route-id="@Model.Id"
+           class="btn btn-primary">
+            <i class="bi bi-pencil me-1"></i>
+            Edit Application
+        </a>
+
+        <a asp-action="DeleteJobApplication"
+           asp-route-id="@Model.Id"
+           class="btn btn-danger">
+            <i class="bi bi-trash me-1"></i>
+            Delete
+        </a>
+
+        <a asp-action="JobApplications"
+           class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Applications
+        </a>
+
+    </div>
+
+</div>

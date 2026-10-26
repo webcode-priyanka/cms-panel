@@ -1,0 +1,304 @@
+﻿@model CMSPanel.Models.SeoSetting
+
+@{
+    ViewData["Title"] = "Delete SEO Setting";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Delete SEO Setting</h1>
+        <p class="text-muted mb-0">
+            Review the SEO setting before deleting it.
+        </p>
+    </div>
+
+    <!-- Warning -->
+    <div class="alert alert-warning d-flex align-items-start gap-3">
+        <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+
+        <div>
+            <h6 class="fw-bold mb-1">
+                Are you sure you want to delete this SEO setting?
+            </h6>
+
+            <p class="mb-0">
+                This action will permanently remove this SEO record.
+            </p>
+        </div>
+    </div>
+
+    <!-- SEO Information -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-search me-2"></i>
+                SEO Information
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <!-- SEO ID -->
+                <div class="col-md-6">
+
+                    <label class="text-muted small">
+                        SEO ID
+                    </label>
+
+                    <div class="fw-semibold">
+                        @Model.Id
+                    </div>
+
+                </div>
+
+                <!-- Content Type -->
+                <div class="col-md-6">
+
+                    <label class="text-muted small">
+                        Content Type
+                    </label>
+
+                    <div>
+                        <span class="badge bg-primary">
+                            @Model.ContentType
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Content ID -->
+                <div class="col-md-6">
+
+                    <label class="text-muted small">
+                        Content ID
+                    </label>
+
+                    <div class="fw-semibold">
+                        @Model.ContentId
+                    </div>
+
+                </div>
+
+                <!-- Robots -->
+                <div class="col-md-6">
+
+                    <label class="text-muted small">
+                        Robots
+                    </label>
+
+                    <div class="fw-semibold">
+                        @(string.IsNullOrWhiteSpace(Model.Robots)
+                            ? "Not set"
+                            : Model.Robots)
+                    </div>
+
+                </div>
+
+                <!-- SEO Title -->
+                <div class="col-12">
+
+                    <label class="text-muted small">
+                        SEO Title
+                    </label>
+
+                    <div class="fw-semibold fs-5">
+                        @Model.SeoTitle
+                    </div>
+
+                </div>
+
+                <!-- Meta Description -->
+                <div class="col-12">
+
+                    <label class="text-muted small">
+                        Meta Description
+                    </label>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.MetaDescription))
+                    {
+                        <div>
+                            @Model.MetaDescription
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            Not set
+                        </span>
+                    }
+
+                </div>
+
+                <!-- Meta Keywords -->
+                <div class="col-12">
+
+                    <label class="text-muted small">
+                        Meta Keywords
+                    </label>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.MetaKeywords))
+                    {
+                        <div>
+                            @Model.MetaKeywords
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            Not set
+                        </span>
+                    }
+
+                </div>
+
+                <!-- Canonical URL -->
+                <div class="col-12">
+
+                    <label class="text-muted small">
+                        Canonical URL
+                    </label>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.CanonicalUrl))
+                    {
+                        <div>
+                            @Model.CanonicalUrl
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            Not set
+                        </span>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Open Graph Information -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-share me-2"></i>
+                Open Graph / Social Media
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <!-- OG Title -->
+                <div class="col-12">
+
+                    <label class="text-muted small">
+                        OG Title
+                    </label>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.OgTitle))
+                    {
+                        <div>
+                            @Model.OgTitle
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            Not set
+                        </span>
+                    }
+
+                </div>
+
+                <!-- OG Description -->
+                <div class="col-12">
+
+                    <label class="text-muted small">
+                        OG Description
+                    </label>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.OgDescription))
+                    {
+                        <div>
+                            @Model.OgDescription
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            Not set
+                        </span>
+                    }
+
+                </div>
+
+                <!-- OG Image -->
+                <div class="col-12">
+
+                    <label class="text-muted small">
+                        OG Image URL
+                    </label>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.OgImage))
+                    {
+                        <div>
+                            @Model.OgImage
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            Not set
+                        </span>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Delete Form -->
+    <form asp-action="DeleteSeoSetting"
+          asp-controller="CMS"
+          asp-route-id="@Model.Id"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div class="d-flex gap-2">
+
+            <button type="submit"
+                    class="btn btn-danger">
+
+                <i class="bi bi-trash me-1"></i>
+                Yes, Delete
+
+            </button>
+
+            <a asp-action="SeoSettings"
+               asp-controller="CMS"
+               class="btn btn-outline-secondary">
+
+                <i class="bi bi-arrow-left me-1"></i>
+                Cancel
+
+            </a>
+
+        </div>
+
+    </form>
+
+</div>

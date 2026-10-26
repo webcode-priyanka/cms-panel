@@ -1,0 +1,722 @@
+﻿
+@model IEnumerable<CMSPanel.Models.Product>
+
+@{
+    ViewData["Title"] = "Product Management";
+
+    var products = Model?.ToList()
+        ?? new List<CMSPanel.Models.Product>();
+
+    var totalProducts = products.Count;
+    var activeProducts = products.Count(p => p.IsActive);
+    var inactiveProducts = totalProducts - activeProducts;
+    var totalStock = products.Sum(p => p.StockQuantity);
+}
+
+<style>
+    .products-page {
+        padding: 28px;
+        min-height: calc(100vh - 70px);
+        background: #f5f7fb;
+    }
+
+    .products-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-bottom: 28px;
+    }
+
+    .products-title {
+        color: #172033;
+        font-size: 28px;
+        font-weight: 750;
+        margin: 0 0 7px;
+        letter-spacing: -.5px;
+    }
+
+    .products-subtitle {
+        color: #718096;
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .btn-add-product {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 18px;
+        background: #4f46e5;
+        border: 1px solid #4f46e5;
+        border-radius: 9px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 650;
+        text-decoration: none;
+        transition: .2s;
+    }
+
+        .btn-add-product:hover {
+            background: #4338ca;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .product-stat {
+        height: 100%;
+        padding: 21px;
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 14px;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, .025);
+    }
+
+    .stat-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .stat-label {
+        color: #718096;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .stat-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 43px;
+        height: 43px;
+        border-radius: 11px;
+        font-size: 20px;
+    }
+
+        .stat-icon.purple {
+            background: #eeebff;
+            color: #5b50d6;
+        }
+
+        .stat-icon.green {
+            background: #e4f8ed;
+            color: #16864a;
+        }
+
+        .stat-icon.orange {
+            background: #fff1df;
+            color: #c77716;
+        }
+
+        .stat-icon.blue {
+            background: #e4f1ff;
+            color: #2874c8;
+        }
+
+    .stat-value {
+        color: #172033;
+        font-size: 27px;
+        font-weight: 750;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    }
+
+    .stat-description {
+        margin-top: 7px;
+        color: #94a3b8;
+        font-size: 12px;
+    }
+
+    .products-card {
+        margin-top: 25px;
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 14px;
+        box-shadow: 0 3px 15px rgba(15, 23, 42, .03);
+        overflow: hidden;
+    }
+
+    .products-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 22px 24px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+        .products-card-header h5 {
+            color: #172033;
+            font-size: 16px;
+            font-weight: 750;
+            margin: 0;
+        }
+
+        .products-card-header p {
+            color: #94a3b8;
+            font-size: 12px;
+            margin: 5px 0 0;
+        }
+
+    .product-count {
+        padding: 6px 11px;
+        background: #eef2ff;
+        border-radius: 7px;
+        color: #4f46e5;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .products-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 20px 24px;
+    }
+
+    .product-search {
+        position: relative;
+        flex: 1;
+        min-width: 220px;
+    }
+
+        .product-search .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .product-search input {
+            width: 100%;
+            min-height: 43px;
+            padding: 10px 14px 10px 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 9px;
+            outline: none;
+            font-size: 13px;
+            color: #334155;
+        }
+
+            .product-search input:focus {
+                border-color: #818cf8;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, .1);
+            }
+
+    .btn-product-search,
+    .btn-product-reset {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 43px;
+        padding: 10px 16px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .btn-product-search {
+        color: #fff;
+        background: #4f46e5;
+        border: 1px solid #4f46e5;
+    }
+
+        .btn-product-search:hover {
+            background: #4338ca;
+            color: #fff;
+        }
+
+    .btn-product-reset {
+        color: #475569;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+    }
+
+        .btn-product-reset:hover {
+            background: #f8fafc;
+            color: #172033;
+        }
+
+    .products-table-wrap {
+        overflow-x: auto;
+    }
+
+    .products-table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 0;
+    }
+
+        .products-table thead th {
+            padding: 14px 20px;
+            background: #f8fafc;
+            color: #64748b;
+            border-top: 1px solid #edf0f5;
+            border-bottom: 1px solid #edf0f5;
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: .55px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .products-table tbody td {
+            padding: 17px 20px;
+            border-bottom: 1px solid #f0f2f6;
+            color: #475569;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .products-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .products-table tbody tr:hover {
+            background: #fafbff;
+        }
+
+    .product-name {
+        color: #1e293b;
+        font-size: 13px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+
+    .product-sku {
+        display: inline-block;
+        margin-top: 5px;
+        padding: 4px 7px;
+        background: #f1f5f9;
+        border-radius: 5px;
+        color: #64748b;
+        font-size: 11px;
+    }
+
+    .product-price {
+        color: #172033;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .stock-value {
+        color: #334155;
+        font-weight: 650;
+    }
+
+    .product-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+        .product-status.active {
+            background: #e8f8ee;
+            color: #16864a;
+        }
+
+        .product-status.inactive {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        background: currentColor;
+        border-radius: 50%;
+    }
+
+    .product-actions {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .product-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 14px;
+        text-decoration: none;
+        transition: .18s;
+        cursor: pointer;
+    }
+
+        .product-action.view {
+            color: #4f46e5;
+        }
+
+        .product-action.edit {
+            color: #b7791f;
+        }
+
+        .product-action.delete {
+            color: #dc3545;
+        }
+
+        .product-action.view:hover {
+            background: #eef2ff;
+            border-color: #c7d2fe;
+        }
+
+        .product-action.edit:hover {
+            background: #fff7e6;
+            border-color: #f5d59b;
+        }
+
+        .product-action.delete:hover {
+            background: #fff1f2;
+            border-color: #fecdd3;
+        }
+
+    .products-empty {
+        padding: 55px 20px !important;
+        text-align: center;
+    }
+
+    .empty-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 58px;
+        margin: 0 auto 15px;
+        border-radius: 15px;
+        background: #eef2ff;
+        color: #6366f1;
+        font-size: 25px;
+    }
+
+    .empty-title {
+        color: #334155;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .empty-description {
+        margin-top: 6px;
+        color: #94a3b8;
+        font-size: 12px;
+    }
+
+    .products-card-footer {
+        padding: 15px 24px;
+        border-top: 1px solid #edf0f5;
+        background: #fcfdff;
+        color: #94a3b8;
+        font-size: 12px;
+    }
+
+    @@media (max-width: 767px) {
+        .products-page {
+            padding: 16px;
+        }
+
+        .products-title {
+            font-size: 23px;
+        }
+
+        .products-header {
+            align-items: flex-start;
+        }
+
+        .products-toolbar {
+            padding: 16px;
+        }
+
+        .products-card-header {
+            padding: 18px 16px;
+        }
+
+        .products-table thead th,
+        .products-table tbody td {
+            padding: 14px;
+        }
+
+        .btn-product-search,
+        .btn-product-reset {
+            flex: 1;
+        }
+
+        .product-search {
+            min-width: 100%;
+        }
+    }
+</style>
+
+<div class="products-page">
+
+    <div class="products-header">
+        <div>
+            <h1 class="products-title">
+                <i class="bi bi-box-seam me-2"
+                   style="color:#4f46e5"></i>
+                Product Management
+            </h1>
+            <p class="products-subtitle">
+                Manage your product catalog, prices and inventory.
+            </p>
+        </div>
+
+        <a asp-action="CreateProduct" class="btn-add-product">
+            <i class="bi bi-plus-lg"></i>
+            Add Product
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            @TempData["Success"]
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show"
+             role="alert">
+            <i class="bi bi-exclamation-circle-fill me-2"></i>
+            @TempData["Error"]
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row g-3">
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="product-stat">
+                <div class="stat-top">
+                    <span class="stat-label">Total Products</span>
+                    <span class="stat-icon purple">
+                        <i class="bi bi-box-seam"></i>
+                    </span>
+                </div>
+                <div class="stat-value">@totalProducts</div>
+                <div class="stat-description">Products in this listing</div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="product-stat">
+                <div class="stat-top">
+                    <span class="stat-label">Active Products</span>
+                    <span class="stat-icon green">
+                        <i class="bi bi-check-circle"></i>
+                    </span>
+                </div>
+                <div class="stat-value">@activeProducts</div>
+                <div class="stat-description">Currently marked active</div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="product-stat">
+                <div class="stat-top">
+                    <span class="stat-label">Inactive Products</span>
+                    <span class="stat-icon orange">
+                        <i class="bi bi-pause-circle"></i>
+                    </span>
+                </div>
+                <div class="stat-value">@inactiveProducts</div>
+                <div class="stat-description">Currently marked inactive</div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="product-stat">
+                <div class="stat-top">
+                    <span class="stat-label">Listed Stock</span>
+                    <span class="stat-icon blue">
+                        <i class="bi bi-archive"></i>
+                    </span>
+                </div>
+                <div class="stat-value">@totalStock.ToString("N0")</div>
+                <div class="stat-description">Units in displayed results</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="products-card">
+        <div class="products-card-header">
+            <div>
+                <h5>All Products</h5>
+                <p>View and manage products from one place.</p>
+            </div>
+
+            <span class="product-count">
+                @totalProducts products
+            </span>
+        </div>
+
+        <form asp-action="Products" method="get"
+              class="products-toolbar">
+
+            <div class="product-search">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text"
+                       name="searchString"
+                       value="@ViewBag.SearchString"
+                       placeholder="Search by product name or SKU..."
+                       aria-label="Search products" />
+            </div>
+
+            <button type="submit" class="btn-product-search">
+                <i class="bi bi-search"></i>
+                Search
+            </button>
+
+            <a asp-action="Products" class="btn-product-reset">
+                <i class="bi bi-arrow-counterclockwise"></i>
+                Clear
+            </a>
+        </form>
+
+        <div class="products-table-wrap">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (products.Any())
+                    {
+                        @foreach (var product in products)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="product-name">
+                                        @product.ProductName
+                                    </div>
+                                    <span class="product-sku">
+                                        SKU: @(string.IsNullOrWhiteSpace(product.SKU)
+                                       ? "-"
+                                       : product.SKU)
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="product-price">
+                                        ₹@product.Price.ToString("N2")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="stock-value">
+                                        @product.StockQuantity.ToString("N0")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @if (product.IsActive)
+                                    {
+                                        <span class="product-status active">
+                                            <span class="status-dot"></span>
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="product-status inactive">
+                                            <span class="status-dot"></span>
+                                            Inactive
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <div class="product-actions">
+                                        <a asp-action="ProductDetails"
+                                           asp-route-id="@product.Id"
+                                           class="product-action view"
+                                           title="View product"
+                                           aria-label="View product">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        <a asp-action="EditProduct"
+                                           asp-route-id="@product.Id"
+                                           class="product-action edit"
+                                           title="Edit product"
+                                           aria-label="Edit product">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+
+                                        <form asp-action="DeleteProduct"
+                                              asp-route-id="@product.Id"
+                                              method="post"
+                                              class="d-inline"
+                                              onsubmit="return confirm('Are you sure you want to delete this product?');">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <button type="submit"
+                                                    class="product-action delete"
+                                                    title="Delete product"
+                                                    aria-label="Delete product">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="products-empty">
+                                <div class="empty-icon">
+                                    <i class="bi bi-box-seam"></i>
+                                </div>
+                                <div class="empty-title">
+                                    No products found
+                                </div>
+                                <div class="empty-description">
+                                    Try another search or add a new product.
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="products-card-footer">
+            Showing @products.Count product(s) in the current results.
+        </div>
+    </div>
+</div>

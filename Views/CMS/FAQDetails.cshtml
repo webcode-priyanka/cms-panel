@@ -1,0 +1,514 @@
+﻿
+@model CMSPanel.Models.FAQ
+
+@{
+    ViewData["Title"] = "FAQ Details";
+}
+
+<style>
+    .faq-details-page {
+        padding: 28px;
+        min-height: calc(100vh - 70px);
+        background: #f5f7fb;
+        color: #172033;
+    }
+
+    .faq-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-bottom: 26px;
+    }
+
+    .faq-breadcrumb {
+        color: #94a3b8;
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+        .faq-breadcrumb a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+
+    .faq-title {
+        color: #172033;
+        font-size: 28px;
+        font-weight: 750;
+        letter-spacing: -.5px;
+        margin: 0 0 7px;
+    }
+
+    .faq-subtitle {
+        color: #718096;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .faq-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 650;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: .2s;
+    }
+
+    .faq-btn-back {
+        color: #475569;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+    }
+
+        .faq-btn-back:hover {
+            color: #172033;
+            background: #f8fafc;
+        }
+
+    .faq-btn-edit {
+        color: #fff;
+        background: #4f46e5;
+        border: 1px solid #4f46e5;
+    }
+
+        .faq-btn-edit:hover {
+            color: #fff;
+            background: #4338ca;
+            border-color: #4338ca;
+        }
+
+    .faq-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 14px;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, .025);
+        overflow: hidden;
+        margin-bottom: 22px;
+    }
+
+    .faq-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .faq-card-title {
+        color: #172033;
+        font-size: 15px;
+        font-weight: 750;
+        margin: 0;
+    }
+
+    .faq-card-body {
+        padding: 24px;
+    }
+
+    .faq-question-panel {
+        padding: 24px;
+        background: #f8fafc;
+        border: 1px solid #edf0f5;
+        border-left: 4px solid #4f46e5;
+        border-radius: 10px;
+    }
+
+    .faq-question-label {
+        color: #718096;
+        font-size: 11px;
+        font-weight: 750;
+        letter-spacing: .7px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .faq-question {
+        color: #172033;
+        font-size: 21px;
+        font-weight: 750;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+        margin: 0;
+    }
+
+    .faq-answer {
+        color: #475569;
+        font-size: 14px;
+        line-height: 1.9;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        margin: 0;
+    }
+
+    .faq-answer-label {
+        color: #718096;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .faq-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 750;
+        white-space: nowrap;
+    }
+
+    .faq-status-dot {
+        width: 6px;
+        height: 6px;
+        background: currentColor;
+        border-radius: 50%;
+    }
+
+    .faq-status-active {
+        background: #e8f8ee;
+        color: #16864a;
+    }
+
+    .faq-status-inactive {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    .faq-info-row {
+        display: grid;
+        grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
+        gap: 20px;
+        padding: 17px 0;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+        .faq-info-row:first-child {
+            padding-top: 0;
+        }
+
+        .faq-info-row:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+    .faq-info-label {
+        color: #718096;
+        font-size: 13px;
+        font-weight: 650;
+    }
+
+    .faq-info-value {
+        color: #334155;
+        font-size: 13px;
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+    }
+
+    .faq-category {
+        display: inline-block;
+        padding: 6px 10px;
+        background: #eef2ff;
+        color: #4f46e5;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .faq-record-box {
+        height: 100%;
+        padding: 19px;
+        background: #f8fafc;
+        border: 1px solid #edf0f5;
+        border-radius: 10px;
+    }
+
+    .faq-record-label {
+        color: #718096;
+        font-size: 12px;
+        margin-bottom: 9px;
+    }
+
+    .faq-record-value {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+
+    .faq-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 24px;
+    }
+
+    .faq-footer-note {
+        color: #94a3b8;
+        font-size: 12px;
+        margin: 0;
+    }
+
+    @@media (max-width: 767px) {
+        .faq-details-page {
+            padding: 16px;
+        }
+
+        .faq-title {
+            font-size: 23px;
+        }
+
+        .faq-card-header {
+            padding: 17px 18px;
+        }
+
+        .faq-card-body {
+            padding: 18px;
+        }
+
+        .faq-question-panel {
+            padding: 18px;
+        }
+
+        .faq-question {
+            font-size: 18px;
+        }
+
+        .faq-info-row {
+            grid-template-columns: 1fr;
+            gap: 6px;
+        }
+
+        .faq-footer {
+            align-items: stretch;
+        }
+    }
+</style>
+
+<div class="faq-details-page">
+
+    <!-- Page Header -->
+    <div class="faq-header">
+        <div>
+            <div class="faq-breadcrumb">
+                <a asp-action="FAQs">FAQ Management</a>
+                <span class="mx-1">/</span>
+                <span>FAQ Details</span>
+            </div>
+
+            <h1 class="faq-title">FAQ Details</h1>
+            <p class="faq-subtitle">
+                View the question, answer and FAQ configuration.
+            </p>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-action="FAQs" class="faq-btn faq-btn-back">
+                <i class="bi bi-arrow-left"></i>
+                Back to FAQs
+            </a>
+
+            <a asp-action="EditFAQ"
+               asp-route-id="@Model.Id"
+               class="faq-btn faq-btn-edit">
+                <i class="bi bi-pencil-square"></i>
+                Edit FAQ
+            </a>
+        </div>
+    </div>
+
+    <!-- Question -->
+    <div class="faq-card">
+        <div class="faq-card-header">
+            <h5 class="faq-card-title">
+                <i class="bi bi-patch-question me-2"
+                   style="color:#4f46e5"></i>
+                FAQ Question
+            </h5>
+
+            @if (Model.IsActive)
+            {
+                <span class="faq-status faq-status-active">
+                    <span class="faq-status-dot"></span>
+                    Active
+                </span>
+            }
+            else
+            {
+                <span class="faq-status faq-status-inactive">
+                    <span class="faq-status-dot"></span>
+                    Inactive
+                </span>
+            }
+        </div>
+
+        <div class="faq-card-body">
+            <div class="faq-question-panel">
+                <div class="faq-question-label">Question</div>
+                <h2 class="faq-question">@Model.Question</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Answer -->
+    <div class="faq-card">
+        <div class="faq-card-header">
+            <h5 class="faq-card-title">
+                <i class="bi bi-chat-left-text me-2"
+                   style="color:#4f46e5"></i>
+                FAQ Answer
+            </h5>
+        </div>
+
+        <div class="faq-card-body">
+            <div class="faq-answer-label">Answer Content</div>
+
+            <p class="faq-answer">@Model.Answer</p>
+        </div>
+    </div>
+
+    <!-- FAQ Information -->
+    <div class="faq-card">
+        <div class="faq-card-header">
+            <h5 class="faq-card-title">
+                <i class="bi bi-card-list me-2"
+                   style="color:#4f46e5"></i>
+                FAQ Information
+            </h5>
+        </div>
+
+        <div class="faq-card-body">
+
+            <div class="faq-info-row">
+                <div class="faq-info-label">FAQ ID</div>
+                <div class="faq-info-value fw-semibold">
+                    #@Model.Id
+                </div>
+            </div>
+
+            <div class="faq-info-row">
+                <div class="faq-info-label">Category</div>
+                <div class="faq-info-value">
+                    @if (!string.IsNullOrWhiteSpace(Model.Category))
+                    {
+                        <span class="faq-category">
+                            @Model.Category
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Not provided</span>
+                    }
+                </div>
+            </div>
+
+            <div class="faq-info-row">
+                <div class="faq-info-label">Display Order</div>
+                <div class="faq-info-value">
+                    @Model.DisplayOrder
+                </div>
+            </div>
+
+            <div class="faq-info-row">
+                <div class="faq-info-label">Status</div>
+                <div class="faq-info-value">
+                    @if (Model.IsActive)
+                    {
+                        <span class="faq-status faq-status-active">
+                            <span class="faq-status-dot"></span>
+                            Active
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="faq-status faq-status-inactive">
+                            <span class="faq-status-dot"></span>
+                            Inactive
+                        </span>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Record Information -->
+    <div class="faq-card">
+        <div class="faq-card-header">
+            <h5 class="faq-card-title">
+                <i class="bi bi-clock-history me-2"
+                   style="color:#4f46e5"></i>
+                Record Information
+            </h5>
+        </div>
+
+        <div class="faq-card-body">
+            <div class="row g-3">
+
+                <div class="col-12 col-md-6">
+                    <div class="faq-record-box">
+                        <div class="faq-record-label">
+                            <i class="bi bi-calendar-plus me-1"></i>
+                            Created At
+                        </div>
+
+                        <div class="faq-record-value">
+                            @Model.CreatedAt.ToLocalTime().ToString("hh:mm tt")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="faq-record-box">
+                        <div class="faq-record-label">
+                            <i class="bi bi-calendar-check me-1"></i>
+                            Last Updated
+                        </div>
+
+                        <div class="faq-record-value">
+                            @(Model.UpdatedAt.HasValue
+                                ? Model.UpdatedAt.Value.ToLocalTime()
+                                .ToString("dd MMM yyyy, hh:mm tt")
+                                : "Not updated yet")
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="faq-footer">
+        <p class="faq-footer-note">
+            <i class="bi bi-info-circle me-1"></i>
+            FAQ ID: @Model.Id
+        </p>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-action="FAQs" class="faq-btn faq-btn-back">
+                <i class="bi bi-arrow-left"></i>
+                Back to FAQs
+            </a>
+
+            <a asp-action="EditFAQ"
+               asp-route-id="@Model.Id"
+               class="faq-btn faq-btn-edit">
+                <i class="bi bi-pencil-square"></i>
+                Edit FAQ
+            </a>
+        </div>
+    </div>
+
+</div>

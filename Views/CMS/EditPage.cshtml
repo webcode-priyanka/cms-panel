@@ -1,0 +1,229 @@
+﻿@model CMSPanel.Models.Page
+
+@{
+    ViewData["Title"] = "Edit Page";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Edit Page</h1>
+        <p class="text-muted">Update website page</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-action="EditPage" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="row">
+
+                    <!-- Title -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Title"
+                               class="form-label fw-semibold">
+                            Title
+                        </label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               placeholder="Enter page title" />
+
+                        <span asp-validation-for="Title"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <!-- Slug -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Slug"
+                               class="form-label fw-semibold">
+                            Slug
+                        </label>
+
+                        <input asp-for="Slug"
+                               class="form-control"
+                               placeholder="example-page" />
+
+                        <span asp-validation-for="Slug"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Content with CKEditor -->
+                <div class="mb-3">
+                    <label asp-for="Content"
+                           class="form-label fw-semibold">
+                        Content
+                    </label>
+
+                    <textarea asp-for="Content"
+                              id="pageContentEditor"
+                              class="form-control"
+                              rows="8"
+                              placeholder="Enter page content"></textarea>
+
+                    <span asp-validation-for="Content"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="row">
+
+                    <!-- Status -->
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="Status"
+                               class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select asp-for="Status"
+                                class="form-select">
+                            <option value="Draft">Draft</option>
+                            <option value="Published">Published</option>
+                            <option value="Archived">Archived</option>
+                        </select>
+
+                        <span asp-validation-for="Status"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <!-- Meta Title -->
+                    <div class="col-md-8 mb-3">
+                        <label asp-for="MetaTitle"
+                               class="form-label fw-semibold">
+                            Meta Title
+                        </label>
+
+                        <input asp-for="MetaTitle"
+                               class="form-control"
+                               placeholder="Enter SEO meta title" />
+
+                        <span asp-validation-for="MetaTitle"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Meta Description -->
+                <div class="mb-3">
+                    <label asp-for="MetaDescription"
+                           class="form-label fw-semibold">
+                        Meta Description
+                    </label>
+
+                    <textarea asp-for="MetaDescription"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Enter SEO meta description"></textarea>
+
+                    <span asp-validation-for="MetaDescription"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <!-- Published -->
+                <div class="form-check mb-3">
+                    <input asp-for="IsPublished"
+                           class="form-check-input" />
+
+                    <label asp-for="IsPublished"
+                           class="form-check-label">
+                        Published
+                    </label>
+                </div>
+
+                <!-- Visible -->
+                <div class="form-check mb-4">
+                    <input asp-for="IsVisible"
+                           class="form-check-input" />
+
+                    <label asp-for="IsVisible"
+                           class="form-check-label">
+                        Visible on website
+                    </label>
+                </div>
+
+                <!-- Buttons -->
+                <div>
+                    <button type="submit"
+                            class="btn btn-primary">
+                        <i class="bi bi-save"></i>
+                        Update Page
+                    </button>
+
+                    <a asp-action="Pages"
+                       class="btn btn-secondary ms-2">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <!-- CKEditor CDN -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+    <!-- Initialize CKEditor -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const editorElement =
+                document.querySelector("#pageContentEditor");
+
+            if (editorElement && typeof ClassicEditor !== "undefined") {
+
+                ClassicEditor
+                    .create(editorElement, {
+                        toolbar: [
+                            "heading",
+                            "|",
+                            "bold",
+                            "italic",
+                            "underline",
+                            "|",
+                            "link",
+                            "bulletedList",
+                            "numberedList",
+                            "|",
+                            "blockQuote",
+                            "insertTable",
+                            "|",
+                            "undo",
+                            "redo"
+                        ]
+                    })
+                    .catch(error => {
+                        console.error("CKEditor initialization error:", error);
+                    });
+
+            } else {
+                console.error(
+                    "CKEditor load nahi hua. Internet connection aur CDN check karein."
+                );
+            }
+
+        });
+    </script>
+}

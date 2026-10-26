@@ -1,0 +1,179 @@
+﻿@model CMSPanel.Models.Service
+
+@{
+    ViewData["Title"] = "Create Service";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Create Service</h1>
+        <p class="text-muted">Add a new service</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-action="CreateService" method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label asp-for="Title" class="form-label">
+                            Title
+                        </label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               placeholder="Enter service title" />
+
+                        <span asp-validation-for="Title"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Slug" class="form-label">
+                            Slug
+                        </label>
+
+                        <input asp-for="Slug"
+                               class="form-control"
+                               placeholder="Enter service slug" />
+
+                        <span asp-validation-for="Slug"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="ShortDescription"
+                               class="form-label">
+                            Short Description
+                        </label>
+
+                        <textarea asp-for="ShortDescription"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter short description"></textarea>
+
+                        <span asp-validation-for="ShortDescription"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Description"
+                               class="form-label">
+                            Description
+                        </label>
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="6"
+                                  placeholder="Enter service description"></textarea>
+
+                        <span asp-validation-for="Description"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Icon"
+                               class="form-label">
+                            Icon
+                        </label>
+
+                        <input asp-for="Icon"
+                               class="form-control"
+                               placeholder="e.g. bi-code-slash" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ImageUrl"
+                               class="form-label">
+                            Image URL
+                        </label>
+
+                        <input asp-for="ImageUrl"
+                               class="form-control"
+                               placeholder="Enter image URL" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="DisplayOrder"
+                               class="form-label">
+                            Display Order
+                        </label>
+
+                        <input asp-for="DisplayOrder"
+                               type="number"
+                               class="form-control"
+                               min="0" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label d-block">
+                            Status
+                        </label>
+
+                        <div class="form-check form-switch mt-2">
+                            <input asp-for="IsActive"
+                                   class="form-check-input"
+                                   type="checkbox" />
+
+                            <label asp-for="IsActive"
+                                   class="form-check-label">
+                                Active
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="MetaTitle"
+                               class="form-label">
+                            Meta Title
+                        </label>
+
+                        <input asp-for="MetaTitle"
+                               class="form-control"
+                               placeholder="Enter SEO meta title" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="MetaDescription"
+                               class="form-label">
+                            Meta Description
+                        </label>
+
+                        <textarea asp-for="MetaDescription"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter SEO meta description"></textarea>
+                    </div>
+
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit"
+                            class="btn btn-primary">
+                        <i class="bi bi-check-lg"></i>
+                        Save Service
+                    </button>
+
+                    <a asp-action="Services"
+                       class="btn btn-secondary">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

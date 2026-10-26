@@ -1,0 +1,550 @@
+﻿
+@model CMSPanel.Models.News
+
+@{
+    ViewData["Title"] = "News Details";
+
+    var isPublished = string.Equals(
+        Model.Status,
+        "Published",
+        StringComparison.OrdinalIgnoreCase);
+
+    var isArchived = string.Equals(
+        Model.Status,
+        "Archived",
+        StringComparison.OrdinalIgnoreCase);
+}
+
+<style>
+    .news-details-page {
+        min-height: 100vh;
+        background: #f5f7fb;
+        padding: 28px;
+        color: #1f2937;
+    }
+
+    .news-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 25px;
+    }
+
+        .news-page-header h1 {
+            font-size: 27px;
+            font-weight: 750;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .news-page-header p {
+            color: #6b7280;
+            margin: 0;
+        }
+
+    .news-card {
+        background: #fff;
+        border: 1px solid #e8ecf3;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, .04);
+        overflow: hidden;
+        margin-bottom: 22px;
+    }
+
+    .news-card-header {
+        padding: 19px 24px;
+        border-bottom: 1px solid #edf0f5;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+        .news-card-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+    .news-card-body {
+        padding: 24px;
+    }
+
+    .news-title {
+        font-size: 26px;
+        font-weight: 750;
+        line-height: 1.4;
+        color: #111827;
+        overflow-wrap: anywhere;
+        margin-bottom: 14px;
+    }
+
+    .news-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .news-status-published {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .news-status-archived {
+        background: #f3f4f6;
+        color: #4b5563;
+    }
+
+    .news-status-draft {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .news-info-box {
+        height: 100%;
+        padding: 16px;
+        border: 1px solid #edf0f5;
+        border-radius: 11px;
+        background: #fff;
+        overflow-wrap: anywhere;
+    }
+
+    .news-info-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 9px;
+        color: #6b7280;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+        .news-info-label i {
+            color: #4f46e5;
+            font-size: 16px;
+        }
+
+    .news-info-value {
+        color: #1f2937;
+        font-size: 14px;
+        line-height: 1.7;
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .news-content {
+        border: 1px solid #edf0f5;
+        border-radius: 11px;
+        background: #fafbfe;
+        padding: 20px;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        line-height: 1.85;
+        color: #374151;
+        min-height: 90px;
+    }
+
+    .news-section-icon {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 9px;
+        background: #eef2ff;
+        color: #4f46e5;
+        margin-right: 10px;
+    }
+
+    .news-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 15px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 650;
+        text-decoration: none;
+        transition: .2s ease;
+    }
+
+    .news-action-back {
+        color: #374151;
+        background: #fff;
+        border: 1px solid #d1d5db;
+    }
+
+        .news-action-back:hover {
+            color: #111827;
+            background: #f3f4f6;
+        }
+
+    .news-action-edit {
+        color: #4338ca;
+        background: #eef2ff;
+        border: 1px solid #c7d2fe;
+    }
+
+        .news-action-edit:hover {
+            color: #3730a3;
+            background: #e0e7ff;
+        }
+
+    .news-image {
+        max-width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+
+    .news-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    @@media (max-width: 768px) {
+        .news-details-page {
+            padding: 15px;
+        }
+
+        .news-page-header h1 {
+            font-size: 23px;
+        }
+
+        .news-card-body,
+        .news-card-header {
+            padding: 18px;
+        }
+
+        .news-title {
+            font-size: 22px;
+        }
+    }
+</style>
+
+<div class="news-details-page">
+
+    <!-- Page Header -->
+    <div class="news-page-header">
+        <div>
+            <h1>
+                <i class="bi bi-newspaper me-2"></i>
+                News Details
+            </h1>
+            <p>View complete news, publication and SEO information.</p>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-action="News" class="news-action news-action-back">
+                <i class="bi bi-arrow-left"></i>
+                Back to News
+            </a>
+
+            <a asp-action="EditNews"
+               asp-route-id="@Model.Id"
+               class="news-action news-action-edit">
+                <i class="bi bi-pencil-square"></i>
+                Edit News
+            </a>
+        </div>
+    </div>
+
+    <!-- News Overview -->
+    <div class="news-card">
+        <div class="news-card-body">
+
+            <div class="text-muted small mb-2">
+                NEWS RECORD #@Model.Id
+            </div>
+
+            <h2 class="news-title">@Model.Title</h2>
+
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+                @if (isPublished)
+                {
+                    <span class="news-status news-status-published">
+                        <i class="bi bi-check-circle-fill"></i> Published
+                    </span>
+                }
+                else if (isArchived)
+                {
+                    <span class="news-status news-status-archived">
+                        <i class="bi bi-archive-fill"></i> Archived
+                    </span>
+                }
+                else
+                {
+                    <span class="news-status news-status-draft">
+                        <i class="bi bi-pencil-fill"></i>
+                        @(string.IsNullOrWhiteSpace(Model.Status) ? "Unknown" : Model.Status)
+                    </span>
+                }
+
+                <span class="text-muted small">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    @Model.PublicationDate.ToString("dd MMM yyyy")
+                </span>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6 col-xl-4">
+                    <div class="news-info-box">
+                        <div class="news-info-label">
+                            <i class="bi bi-person"></i> Author
+                        </div>
+                        <p class="news-info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Author) ? "Not specified" : Model.Author)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="news-info-box">
+                        <div class="news-info-label">
+                            <i class="bi bi-folder2-open"></i> Category
+                        </div>
+                        <p class="news-info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Category) ? "Not categorized" : Model.Category)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="news-info-box">
+                        <div class="news-info-label">
+                            <i class="bi bi-link-45deg"></i> Slug
+                        </div>
+                        <p class="news-info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Slug) ? "Not specified" : Model.Slug)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- News Content -->
+    <div class="news-card">
+        <div class="news-card-header">
+            <h5>
+                <span class="news-section-icon">
+                    <i class="bi bi-file-text"></i>
+                </span>
+                News Content
+            </h5>
+        </div>
+
+        <div class="news-card-body">
+
+            <div class="mb-4">
+                <div class="news-info-label">
+                    <i class="bi bi-card-text"></i> Excerpt
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Excerpt))
+                {
+                    <p class="news-content mb-0">@Model.Excerpt</p>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">No excerpt provided.</p>
+                }
+            </div>
+
+            <div>
+                <div class="news-info-label">
+                    <i class="bi bi-body-text"></i> Full Content
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Content))
+                {
+                    <div class="news-content">@Model.Content</div>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">No news content available.</p>
+                }
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Media and Attachments -->
+    <div class="news-card">
+        <div class="news-card-header">
+            <h5>
+                <span class="news-section-icon">
+                    <i class="bi bi-paperclip"></i>
+                </span>
+                Media & Attachments
+            </h5>
+        </div>
+
+        <div class="news-card-body">
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <div class="news-info-box">
+                        <div class="news-info-label">
+                            <i class="bi bi-image"></i> Image Path
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Image))
+                        {
+                            <p class="news-info-value mb-3">@Model.Image</p>
+
+                            <img src="@Model.Image"
+                                 alt="@Model.Title"
+                                 class="news-image" />
+                        }
+                        else
+                        {
+                            <p class="news-info-value text-muted">No image added.</p>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="news-info-box">
+                        <div class="news-info-label">
+                            <i class="bi bi-file-earmark-arrow-down"></i> Attachment
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Attachment))
+                        {
+                            <p class="news-info-value mb-3">@Model.Attachment</p>
+
+                            <a href="@Model.Attachment"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="news-action news-action-edit">
+                                <i class="bi bi-box-arrow-up-right"></i>
+                                Open Attachment
+                            </a>
+                        }
+                        else
+                        {
+                            <p class="news-info-value text-muted">No attachment added.</p>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO Settings -->
+    <div class="news-card">
+        <div class="news-card-header">
+            <h5>
+                <span class="news-section-icon">
+                    <i class="bi bi-search"></i>
+                </span>
+                SEO Settings
+            </h5>
+        </div>
+
+        <div class="news-card-body">
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="news-info-box">
+                        <div class="news-info-label">
+                            <i class="bi bi-type"></i> Meta Title
+                        </div>
+                        <p class="news-info-value">
+                            @(string.IsNullOrWhiteSpace(Model.MetaTitle) ? "Not configured" : Model.MetaTitle)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="news-info-box">
+                        <div class="news-info-label">
+                            <i class="bi bi-card-text"></i> Meta Description
+                        </div>
+                        <p class="news-info-value">
+                            @(string.IsNullOrWhiteSpace(Model.MetaDescription) ? "Not configured" : Model.MetaDescription)
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Record Information -->
+    <div class="news-card">
+        <div class="news-card-header">
+            <h5>
+                <span class="news-section-icon">
+                    <i class="bi bi-clock-history"></i>
+                </span>
+                Record Information
+            </h5>
+        </div>
+
+        <div class="news-card-body">
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="news-info-box">
+                        <div class="news-info-label">
+                            <i class="bi bi-calendar-plus"></i> Created At
+                        </div>
+                        <p class="news-info-value">
+                            @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="news-info-box">
+                        <div class="news-info-label">
+                            <i class="bi bi-calendar-check"></i> Last Updated
+                        </div>
+                        <p class="news-info-value">
+                            @(Model.UpdatedAt.HasValue
+                                ? Model.UpdatedAt.Value.ToString("dd MMM yyyy, hh:mm tt")
+                                : "Not updated yet")
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div class="news-footer">
+        <a asp-action="News" class="news-action news-action-back">
+            <i class="bi bi-arrow-left"></i>
+            Back to News
+        </a>
+
+        <a asp-action="EditNews"
+           asp-route-id="@Model.Id"
+           class="news-action news-action-edit">
+            <i class="bi bi-pencil-square"></i>
+            Edit News
+        </a>
+    </div>
+
+</div>

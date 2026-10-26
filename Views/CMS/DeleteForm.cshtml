@@ -1,0 +1,158 @@
+﻿@model CMSPanel.Models.Form
+
+@{
+    ViewData["Title"] = "Delete Form";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+
+        <h1 class="fw-bold mb-1">
+            Delete Form
+        </h1>
+
+        <p class="text-muted mb-0">
+            Confirm deletion of this form.
+        </p>
+
+    </div>
+
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+
+                <i class="bi bi-exclamation-triangle me-2"></i>
+
+                Are you sure you want to delete this form?
+
+            </div>
+
+
+            <div class="row g-3">
+
+                <!-- Name -->
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Form Name
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.Name
+                    </div>
+
+                </div>
+
+
+                <!-- Slug -->
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Slug
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.Slug
+                    </div>
+
+                </div>
+
+
+                <!-- Description -->
+                <div class="col-12">
+
+                    <label class="form-label fw-semibold">
+                        Description
+                    </label>
+
+                    <div class="form-control bg-light">
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Description))
+                        {
+                            @Model.Description
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                No description provided.
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- Status -->
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Status
+                    </label>
+
+                    <div>
+
+                        @if (Model.Status == "Active")
+                        {
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                Inactive
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Delete Form -->
+            <form asp-controller="CMS"
+                  asp-action="DeleteForm"
+                  method="post"
+                  class="mt-4">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class="bi bi-trash me-1"></i>
+                        Yes, Delete
+
+                    </button>
+
+
+                    <a asp-controller="CMS"
+                       asp-action="Forms"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

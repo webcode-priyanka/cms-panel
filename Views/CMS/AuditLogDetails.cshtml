@@ -1,0 +1,231 @@
+﻿@model CMSPanel.Models.AuditLog
+
+@{
+    ViewData["Title"] = "Audit Log Details";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Audit Log Details</h1>
+            <p class="text-muted mb-0">
+                View complete audit log information
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-action="DeleteAuditLog"
+               asp-route-id="@Model.Id"
+               class="btn btn-danger">
+                <i class="bi bi-trash"></i>
+                Delete
+            </a>
+
+            <a asp-action="AuditLogs"
+               class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i>
+                Back
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <!-- Left Side -->
+
+                <div class="col-md-8">
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            User
+                        </label>
+
+                        <div class="fs-5">
+                            @if (!string.IsNullOrWhiteSpace(Model.UserName))
+                            {
+                                @Model.UserName
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    System
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Action
+                        </label>
+
+                        <div>
+                            <span class="badge bg-primary">
+                                @Model.Action
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Module
+                        </label>
+
+                        <div>
+                            <span class="badge bg-dark">
+                                @Model.Module
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Resource
+                        </label>
+
+                        <div>
+                            @if (!string.IsNullOrWhiteSpace(Model.Resource))
+                            {
+                                @Model.Resource
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Resource ID
+                        </label>
+
+                        <div>
+                            @if (!string.IsNullOrWhiteSpace(Model.ResourceId))
+                            {
+                                @Model.ResourceId
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.OldValues))
+                    {
+                        <div class="mb-4">
+                            <label class="fw-semibold text-muted">
+                                Old Values
+                            </label>
+
+                            <div class="border rounded p-3 bg-light">
+                                <pre class="mb-0">@Model.OldValues</pre>
+                            </div>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.NewValues))
+                    {
+                        <div class="mb-4">
+                            <label class="fw-semibold text-muted">
+                                New Values
+                            </label>
+
+                            <div class="border rounded p-3 bg-light">
+                                <pre class="mb-0">@Model.NewValues</pre>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+                <!-- Right Side -->
+
+                <div class="col-md-4">
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Result
+                        </label>
+
+                        <div>
+                            @if (Model.Result == "Success")
+                            {
+                                <span class="badge bg-success">
+                                    Success
+                                </span>
+                            }
+                            else if (Model.Result == "Failed")
+                            {
+                                <span class="badge bg-danger">
+                                    Failed
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    @(string.IsNullOrWhiteSpace(Model.Result)
+                                        ? "-"
+                                        : Model.Result)
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            User ID
+                        </label>
+
+                        <div>
+                            @if (!string.IsNullOrWhiteSpace(Model.UserId))
+                            {
+                                @Model.UserId
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            IP Address
+                        </label>
+
+                        <div>
+                            @if (!string.IsNullOrWhiteSpace(Model.IpAddress))
+                            {
+                                @Model.IpAddress
+                            }
+                            else
+                            {
+                                <span class="text-muted">-</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Created At
+                        </label>
+
+                        <div>
+                            @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

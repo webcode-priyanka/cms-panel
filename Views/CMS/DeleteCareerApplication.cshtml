@@ -1,0 +1,102 @@
+﻿@model CMSPanel.Models.CareerApplication
+
+@{
+    ViewData["Title"] = "Delete Career Application";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Delete Application</h1>
+        <p class="text-muted">
+            Confirm application deletion
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+
+                Are you sure you want to delete this career application?
+            </div>
+
+            <div class="row g-3 mb-4">
+
+                <div class="col-md-6">
+
+                    <strong>
+                        Applicant:
+                    </strong>
+
+                    <div>
+                        @Model.ApplicantName
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <strong>
+                        Email:
+                    </strong>
+
+                    <div>
+                        @Model.Email
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <strong>
+                        Job:
+                    </strong>
+
+                    <div>
+                        @(Model.CareerTitle ?? "-")
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <strong>
+                        Status:
+                    </strong>
+
+                    <div>
+                        @Model.Status
+                    </div>
+
+                </div>
+
+            </div>
+
+            <form asp-action="DeleteCareerApplication" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    <i class="bi bi-trash me-1"></i>
+                    Yes, Delete
+                </button>
+
+                <a asp-action="CareerApplications"
+                   class="btn btn-secondary ms-2">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

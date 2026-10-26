@@ -1,0 +1,196 @@
+﻿@model CMSPanel.Models.Redirect
+
+@{
+    ViewData["Title"] = "Redirect Details";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Redirect Details</h1>
+        <p class="text-muted mb-0">
+            View redirect information.
+        </p>
+    </div>
+
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <!-- ID -->
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        ID
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.Id
+                    </div>
+
+                </div>
+
+
+                <!-- Redirect Type -->
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Redirect Type
+                    </label>
+
+                    <div class="mt-1">
+
+                        @if (Model.RedirectType == "301")
+                        {
+                            <span class="badge bg-primary fs-6">
+                                301 - Permanent
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark fs-6">
+                                302 - Temporary
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- Source URL -->
+                <div class="col-12">
+
+                    <label class="form-label fw-semibold">
+                        Source URL
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.SourceUrl
+                    </div>
+
+                </div>
+
+
+                <!-- Destination URL -->
+                <div class="col-12">
+
+                    <label class="form-label fw-semibold">
+                        Destination URL
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.DestinationUrl
+                    </div>
+
+                </div>
+
+
+                <!-- Status -->
+                <div class="col-md-4">
+
+                    <label class="form-label fw-semibold">
+                        Status
+                    </label>
+
+                    <div>
+
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success fs-6">
+                                Active
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary fs-6">
+                                Inactive
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- Created -->
+                <div class="col-md-4">
+
+                    <label class="form-label fw-semibold">
+                        Created At
+                    </label>
+
+                    <div class="text-muted">
+                        @Model.CreatedAt.ToString("dd MMM yyyy hh:mm tt")
+                    </div>
+
+                </div>
+
+
+                <!-- Updated -->
+                <div class="col-md-4">
+
+                    <label class="form-label fw-semibold">
+                        Updated At
+                    </label>
+
+                    <div class="text-muted">
+
+                        @if (Model.UpdatedAt.HasValue)
+                        {
+                            @Model.UpdatedAt.Value.ToString("dd MMM yyyy hh:mm tt")
+                        }
+                        else
+                        {
+                            <span>Not updated</span>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="d-flex gap-2 mt-4">
+
+                <a asp-controller="CMS"
+                   asp-action="EditRedirect"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning">
+
+                    <i class="bi bi-pencil me-1"></i>
+                    Edit
+
+                </a>
+
+                <a asp-controller="CMS"
+                   asp-action="DeleteRedirect"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-danger">
+
+                    <i class="bi bi-trash me-1"></i>
+                    Delete
+
+                </a>
+
+                <a asp-controller="CMS"
+                   asp-action="Redirects"
+                   class="btn btn-outline-secondary">
+
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Back
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

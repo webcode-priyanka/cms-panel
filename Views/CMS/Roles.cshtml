@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Roles</h1>
+        <p class="text-muted">
+            Manage CMS panel roles
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Role Name</th>
+                            <th>Normalized Name</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{
+                            int count = 1;
+                        }
+
+                        @foreach (var role in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>
+                                    <span class="badge bg-primary">
+                                        @role.Name
+                                    </span>
+                                </td>
+                                <td>@role.NormalizedName</td>
+                            </tr>
+
+                            count++;
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+

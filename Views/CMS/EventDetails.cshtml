@@ -1,0 +1,537 @@
+﻿
+@model CMSPanel.Models.Event
+
+@{
+    ViewData["Title"] = "Event Details";
+
+    var isPublished = string.Equals(
+        Model.Status,
+        "Published",
+        StringComparison.OrdinalIgnoreCase);
+}
+
+<style>
+    .event-details-page {
+        background: #f5f7fb;
+        min-height: 100vh;
+        padding: 28px;
+        color: #1f2937;
+    }
+
+    .event-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 26px;
+    }
+
+        .event-header h1 {
+            font-size: 27px;
+            font-weight: 750;
+            margin-bottom: 6px;
+            color: #111827;
+        }
+
+        .event-header p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+    .event-card {
+        background: #fff;
+        border: 1px solid #e8ecf3;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
+        overflow: hidden;
+        margin-bottom: 22px;
+    }
+
+    .event-card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f5;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+        .event-card-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+    .event-card-body {
+        padding: 24px;
+    }
+
+    .event-title {
+        font-size: 25px;
+        font-weight: 750;
+        margin-bottom: 18px;
+        color: #111827;
+        overflow-wrap: anywhere;
+    }
+
+    .event-image {
+        width: 100%;
+        max-height: 380px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .event-image-placeholder {
+        min-height: 180px;
+        border-radius: 12px;
+        background: #f3f4f6;
+        color: #9ca3af;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .event-image-placeholder i {
+            font-size: 36px;
+        }
+
+    .event-info {
+        height: 100%;
+        padding: 16px;
+        border: 1px solid #edf0f5;
+        border-radius: 12px;
+        background: #fff;
+        overflow-wrap: anywhere;
+    }
+
+    .event-info-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #6b7280;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        margin-bottom: 9px;
+    }
+
+        .event-info-label i {
+            color: #4f46e5;
+            font-size: 16px;
+        }
+
+    .event-info-value {
+        margin: 0;
+        color: #1f2937;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .event-description {
+        background: #f9fafb;
+        border: 1px solid #edf0f5;
+        border-radius: 12px;
+        padding: 18px;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        line-height: 1.8;
+        margin: 0;
+        color: #374151;
+    }
+
+    .event-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 20px;
+        padding: 7px 12px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .event-status-published {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .event-status-other {
+        background: #f3f4f6;
+        color: #4b5563;
+    }
+
+    .event-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: .2s ease;
+    }
+
+    .event-action-back {
+        color: #374151;
+        background: #fff;
+        border: 1px solid #d1d5db;
+    }
+
+        .event-action-back:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+    .event-action-edit {
+        background: #eef2ff;
+        border: 1px solid #c7d2fe;
+        color: #4338ca;
+    }
+
+        .event-action-edit:hover {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+    .event-action-delete {
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+        color: #be123c;
+    }
+
+        .event-action-delete:hover {
+            background: #ffe4e6;
+            color: #9f1239;
+        }
+
+    .event-link {
+        color: #4f46e5;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+    }
+
+        .event-link:hover {
+            text-decoration: underline;
+        }
+
+    .event-section-icon {
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: #eef2ff;
+        color: #4f46e5;
+        margin-right: 10px;
+    }
+
+    @@media (max-width: 768px) {
+        .event-details-page {
+            padding: 16px;
+        }
+
+        .event-card-body,
+        .event-card-header {
+            padding: 18px;
+        }
+
+        .event-header h1 {
+            font-size: 23px;
+        }
+
+        .event-title {
+            font-size: 21px;
+        }
+    }
+</style>
+
+<div class="event-details-page">
+
+    <div class="event-header">
+        <div>
+            <h1><i class="bi bi-calendar-event me-2"></i>Event Details</h1>
+            <p>View event information, schedule and SEO settings.</p>
+        </div>
+
+        <a asp-action="Events" class="event-action event-action-back">
+            <i class="bi bi-arrow-left"></i>
+            Back to Events
+        </a>
+    </div>
+
+    <!-- Event Overview -->
+    <div class="event-card">
+        <div class="event-card-body">
+
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+                <div>
+                    <div class="text-muted small mb-2">
+                        EVENT #@Model.Id
+                    </div>
+
+                    <h2 class="event-title">@Model.Title</h2>
+
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <span class="event-status @(isPublished ? "event-status-published" : "event-status-other")">
+                            <i class="bi @(isPublished ? "bi-check-circle-fill" : "bi-info-circle-fill")"></i>
+                            @(string.IsNullOrWhiteSpace(Model.Status) ? "Unknown" : Model.Status)
+                        </span>
+
+                        @if (Model.StartDate.Date >= DateTime.Today)
+                        {
+                            <span class="badge rounded-pill bg-light text-dark border p-2">
+                                <i class="bi bi-calendar3 me-1"></i>
+                                Upcoming / Scheduled
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge rounded-pill bg-light text-dark border p-2">
+                                <i class="bi bi-clock-history me-1"></i>
+                                Started
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <a asp-action="EditEvent"
+                       asp-route-id="@Model.Id"
+                       class="event-action event-action-edit">
+                        <i class="bi bi-pencil-square"></i>
+                        Edit Event
+                    </a>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Image))
+            {
+                <div class="mb-4">
+                    <img src="@Model.Image"
+                         alt="@Model.Title"
+                         class="event-image" />
+                </div>
+            }
+            else
+            {
+                <div class="event-image-placeholder mb-4">
+                    <i class="bi bi-image"></i>
+                    <span>No event image available</span>
+                </div>
+            }
+
+            <div class="row g-3">
+                <div class="col-md-6 col-xl-4">
+                    <div class="event-info">
+                        <div class="event-info-label">
+                            <i class="bi bi-geo-alt"></i> Location
+                        </div>
+                        <p class="event-info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Location) ? "Not specified" : Model.Location)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="event-info">
+                        <div class="event-info-label">
+                            <i class="bi bi-calendar-event"></i> Start Date
+                        </div>
+                        <p class="event-info-value">
+                            @Model.StartDate.ToString("dd MMMM yyyy")
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-4">
+                    <div class="event-info">
+                        <div class="event-info-label">
+                            <i class="bi bi-calendar-check"></i> End Date
+                        </div>
+                        <p class="event-info-value">
+                            @(Model.EndDate?.ToString("dd MMMM yyyy") ?? "Not specified")
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Description and Registration -->
+    <div class="row g-3">
+        <div class="col-lg-8">
+            <div class="event-card h-100 mb-0">
+                <div class="event-card-header">
+                    <h5>
+                        <span class="event-section-icon">
+                            <i class="bi bi-text-paragraph"></i>
+                        </span>
+                        Event Description
+                    </h5>
+                </div>
+
+                <div class="event-card-body">
+                    @if (!string.IsNullOrWhiteSpace(Model.Description))
+                    {
+                        <p class="event-description">@Model.Description</p>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No description has been added for this event.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="event-card h-100 mb-0">
+                <div class="event-card-header">
+                    <h5>
+                        <span class="event-section-icon">
+                            <i class="bi bi-link-45deg"></i>
+                        </span>
+                        Registration
+                    </h5>
+                </div>
+
+                <div class="event-card-body">
+                    <div class="event-info">
+                        <div class="event-info-label">
+                            <i class="bi bi-globe2"></i> Registration Link
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.RegistrationLink))
+                        {
+                            <a href="@Model.RegistrationLink"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="event-link">
+                                Open Registration Page
+                                <i class="bi bi-box-arrow-up-right ms-1"></i>
+                            </a>
+
+                            <div class="small text-muted mt-2">
+                                @Model.RegistrationLink
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="event-info-value text-muted">No registration link provided.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO Settings -->
+    <div class="event-card mt-3">
+        <div class="event-card-header">
+            <h5>
+                <span class="event-section-icon">
+                    <i class="bi bi-search"></i>
+                </span>
+                SEO Settings
+            </h5>
+        </div>
+
+        <div class="event-card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="event-info">
+                        <div class="event-info-label">
+                            <i class="bi bi-type"></i> Meta Title
+                        </div>
+                        <p class="event-info-value">
+                            @(string.IsNullOrWhiteSpace(Model.MetaTitle) ? "Not configured" : Model.MetaTitle)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="event-info">
+                        <div class="event-info-label">
+                            <i class="bi bi-card-text"></i> Meta Description
+                        </div>
+                        <p class="event-info-value">
+                            @(string.IsNullOrWhiteSpace(Model.MetaDescription) ? "Not configured" : Model.MetaDescription)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Record Information -->
+    <div class="event-card">
+        <div class="event-card-header">
+            <h5>
+                <span class="event-section-icon">
+                    <i class="bi bi-clock-history"></i>
+                </span>
+                Record Information
+            </h5>
+        </div>
+
+        <div class="event-card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="event-info">
+                        <div class="event-info-label">
+                            <i class="bi bi-calendar-plus"></i> Created At
+                        </div>
+                        <p class="event-info-value">
+                            @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="event-info">
+                        <div class="event-info-label">
+                            <i class="bi bi-calendar-check"></i> Last Updated
+                        </div>
+                        <p class="event-info-value">
+                            @(Model.UpdatedAt?.ToString("dd MMM yyyy, hh:mm tt") ?? "Not updated yet")
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
+        <a asp-action="Events" class="event-action event-action-back">
+            <i class="bi bi-arrow-left"></i>
+            Back to Events
+        </a>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-action="EditEvent"
+               asp-route-id="@Model.Id"
+               class="event-action event-action-edit">
+                <i class="bi bi-pencil-square"></i>
+                Edit Event
+            </a>
+
+            <a asp-action="DeleteEvent"
+               asp-route-id="@Model.Id"
+               class="event-action event-action-delete">
+                <i class="bi bi-trash3"></i>
+                Delete Event
+            </a>
+        </div>
+    </div>
+
+</div>

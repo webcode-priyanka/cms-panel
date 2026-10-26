@@ -1,0 +1,96 @@
+﻿@model CMSPanel.Models.Testimonial
+
+@{
+    ViewData["Title"] = "Create Testimonial";
+}
+
+<div class="container-fluid py-4">
+    <h2 class="fw-bold mb-4">Create Testimonial</h2>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <form asp-action="CreateTestimonial" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="ClientName" class="form-label"></label>
+                    <input asp-for="ClientName" class="form-control" />
+                    <span asp-validation-for="ClientName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Designation" class="form-label"></label>
+                    <input asp-for="Designation" class="form-control" />
+                    <span asp-validation-for="Designation"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CompanyName" class="form-label"></label>
+                    <input asp-for="CompanyName" class="form-control" />
+                    <span asp-validation-for="CompanyName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Content" class="form-label"></label>
+                    <textarea asp-for="Content" class="form-control"
+                              rows="5"></textarea>
+                    <span asp-validation-for="Content"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ImageUrl" class="form-label"></label>
+                    <input asp-for="ImageUrl" class="form-control"
+                           placeholder="Enter image URL" />
+                    <span asp-validation-for="ImageUrl"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Rating" class="form-label"></label>
+                    <select asp-for="Rating" class="form-select">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <option value="@i">@i Star</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Rating"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DisplayOrder" class="form-label"></label>
+                    <input asp-for="DisplayOrder" class="form-control"
+                           type="number" />
+                    <span asp-validation-for="DisplayOrder"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label">
+                        Active
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Save Testimonial
+                </button>
+                <a asp-action="Testimonials" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

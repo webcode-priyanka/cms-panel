@@ -1,0 +1,476 @@
+﻿@model CMSPanel.Models.Page
+
+@{
+    ViewData["Title"] = "Create Page";
+}
+
+<style>
+    .create-page-container {
+        padding: 28px;
+        background: #f5f7fb;
+        min-height: 100vh;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 28px;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 6px;
+    }
+
+    .page-subtitle {
+        color: #64748b;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .form-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+        margin-bottom: 22px;
+        overflow: hidden;
+    }
+
+    .form-card-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid #edf0f5;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .form-card-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .form-card-header i {
+            color: #6366f1;
+            font-size: 19px;
+        }
+
+    .form-card-body {
+        padding: 24px;
+    }
+
+    .form-label {
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-control,
+    .form-select {
+        border: 1px solid #dbe2ea;
+        border-radius: 8px;
+        padding: 11px 13px;
+        font-size: 14px;
+        color: #334155;
+        transition: 0.2s;
+    }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+    textarea.form-control {
+        resize: vertical;
+        line-height: 1.7;
+    }
+
+    .field-hint {
+        color: #94a3b8;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .section-divider {
+        border-top: 1px solid #edf0f5;
+        margin: 22px 0;
+    }
+
+    .form-check-custom {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        padding: 15px 16px 15px 42px;
+        min-height: 70px;
+        transition: 0.2s;
+    }
+
+        .form-check-custom:hover {
+            border-color: #c7d2fe;
+            background: #f5f7ff;
+        }
+
+        .form-check-custom .form-check-input {
+            margin-left: -27px;
+            margin-top: 4px;
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+        }
+
+            .form-check-custom .form-check-input:checked {
+                background-color: #4f46e5;
+                border-color: #4f46e5;
+            }
+
+        .form-check-custom .form-check-label {
+            color: #334155;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+    .checkbox-description {
+        display: block;
+        color: #94a3b8;
+        font-size: 12px;
+        font-weight: 400;
+        margin-top: 4px;
+    }
+
+    .btn-save {
+        background: #4f46e5;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 11px 22px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-save:hover {
+            background: #4338ca;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .btn-cancel {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 11px 22px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-cancel:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .validation-summary-errors {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 18px;
+        margin-bottom: 20px;
+        color: #b91c1c;
+        font-size: 13px;
+    }
+
+    .text-danger {
+        font-size: 12px;
+    }
+
+    @@media (max-width: 768px) {
+        .create-page-container {
+            padding: 16px;
+        }
+
+        .page-title {
+            font-size: 23px;
+        }
+
+        .form-card-body {
+            padding: 18px;
+        }
+    }
+</style>
+
+<div class="container-fluid create-page-container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">
+                <i class="bi bi-file-earmark-plus me-2"></i>
+                Create Page
+            </h1>
+            <p class="page-subtitle">
+                Create and manage a new website page
+            </p>
+        </div>
+
+        <a asp-action="Pages" class="btn-cancel">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Pages
+        </a>
+    </div>
+
+    <form asp-action="CreatePage" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3">
+        </div>
+
+        <!-- Basic Information -->
+        <div class="form-card">
+            <div class="form-card-header">
+                <i class="bi bi-info-circle"></i>
+                <h5>Basic Information</h5>
+            </div>
+
+            <div class="form-card-body">
+                <div class="row g-3">
+
+                    <!-- Title -->
+                    <div class="col-md-6">
+                        <label asp-for="Title" class="form-label">
+                            Page Title <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               placeholder="Enter page title" />
+
+                        <span asp-validation-for="Title"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <!-- Slug -->
+                    <div class="col-md-6">
+                        <label asp-for="Slug" class="form-label">
+                            URL Slug <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Slug"
+                               class="form-control"
+                               placeholder="example-page" />
+
+                        <span asp-validation-for="Slug"
+                              class="text-danger">
+                        </span>
+
+                        <div class="field-hint">
+                            Use a simple URL-friendly name for your page.
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="col-12">
+                        <label asp-for="Content" class="form-label">
+                            Page Content
+                        </label>
+
+                        <textarea asp-for="Content"
+                                  id="pageContentEditor"
+                                  class="form-control"
+                                  rows="9"
+                                  placeholder="Write your page content here..."></textarea>
+
+                        <span asp-validation-for="Content"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Publishing Settings -->
+        <div class="form-card">
+            <div class="form-card-header">
+                <i class="bi bi-send"></i>
+                <h5>Publishing Settings</h5>
+            </div>
+
+            <div class="form-card-body">
+                <div class="row g-3">
+
+                    <!-- Status -->
+                    <div class="col-md-4">
+                        <label asp-for="Status" class="form-label">
+                            Page Status
+                        </label>
+
+                        <select asp-for="Status" class="form-select">
+                            <option value="Draft">Draft</option>
+                            <option value="Published">Published</option>
+                            <option value="Archived">Archived</option>
+                        </select>
+
+                        <span asp-validation-for="Status"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <!-- Published -->
+                    <div class="col-md-4">
+                        <div class="form-check form-check-custom">
+                            <input asp-for="IsPublished"
+                                   class="form-check-input" />
+
+                            <label asp-for="IsPublished"
+                                   class="form-check-label">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Published
+                                <span class="checkbox-description">
+                                    Make this page published.
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Visible -->
+                    <div class="col-md-4">
+                        <div class="form-check form-check-custom">
+                            <input asp-for="IsVisible"
+                                   class="form-check-input" />
+
+                            <label asp-for="IsVisible"
+                                   class="form-check-label">
+                                <i class="bi bi-eye me-1"></i>
+                                Visible on Website
+                                <span class="checkbox-description">
+                                    Show this page on the website.
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Settings -->
+        <div class="form-card">
+            <div class="form-card-header">
+                <i class="bi bi-search"></i>
+                <h5>SEO Settings</h5>
+            </div>
+
+            <div class="form-card-body">
+                <div class="row g-3">
+
+                    <!-- Meta Title -->
+                    <div class="col-12">
+                        <label asp-for="MetaTitle" class="form-label">
+                            Meta Title
+                        </label>
+
+                        <input asp-for="MetaTitle"
+                               class="form-control"
+                               placeholder="Enter SEO meta title" />
+
+                        <span asp-validation-for="MetaTitle"
+                              class="text-danger">
+                        </span>
+
+                        <div class="field-hint">
+                            Add a title for search engine results.
+                        </div>
+                    </div>
+
+                    <!-- Meta Description -->
+                    <div class="col-12">
+                        <label asp-for="MetaDescription"
+                               class="form-label">
+                            Meta Description
+                        </label>
+
+                        <textarea asp-for="MetaDescription"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Enter SEO meta description"></textarea>
+
+                        <span asp-validation-for="MetaDescription"
+                              class="text-danger">
+                        </span>
+
+                        <div class="field-hint">
+                            Write a short description of your page.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-card">
+            <div class="form-card-body">
+                <div class="d-flex justify-content-end flex-wrap gap-2">
+
+                    <a asp-action="Pages" class="btn-cancel">
+                        <i class="bi bi-x-lg me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-save me-1"></i>
+                        Save Page
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+@@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const editorElement =
+                document.querySelector("#pageContentEditor");
+
+            if (editorElement) {
+                ClassicEditor
+                    .create(editorElement)
+                    .catch(error => {
+                        console.error("CKEditor error:", error);
+                    });
+            }
+        });
+    </script>
+}
+}

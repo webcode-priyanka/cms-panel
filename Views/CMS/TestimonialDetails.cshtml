@@ -1,0 +1,632 @@
+﻿
+@model CMSPanel.Models.Testimonial
+
+@{
+    ViewData["Title"] = "Testimonial Details";
+}
+
+<style>
+    .testimonial-details-page {
+        background: #f5f7fb;
+        min-height: calc(100vh - 70px);
+        padding: 28px;
+        color: #172033;
+    }
+
+    .testimonial-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .testimonial-heading {
+        font-size: 25px;
+        font-weight: 750;
+        margin-bottom: 6px;
+        color: #172033;
+    }
+
+    .testimonial-subtitle {
+        color: #788399;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .testimonial-breadcrumb {
+        color: #8993a7;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .testimonial-breadcrumb span {
+        color: #4f46e5;
+        font-weight: 600;
+    }
+
+    .testimonial-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: .2s ease;
+    }
+
+    .testimonial-btn-primary {
+        background: #4f46e5;
+        border: 1px solid #4f46e5;
+        color: #fff;
+    }
+
+    .testimonial-btn-primary:hover {
+        background: #4338ca;
+        border-color: #4338ca;
+        color: #fff;
+    }
+
+    .testimonial-btn-secondary {
+        background: #fff;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+
+    .testimonial-btn-secondary:hover {
+        background: #f8fafc;
+        color: #172033;
+    }
+
+    .testimonial-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(23, 32, 51, .035);
+        overflow: hidden;
+        margin-bottom: 22px;
+    }
+
+    .testimonial-card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f6;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .testimonial-card-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        background: #eeedff;
+        color: #4f46e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
+        flex-shrink: 0;
+    }
+
+    .testimonial-card-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0;
+        color: #172033;
+    }
+
+    .testimonial-card-description {
+        font-size: 12px;
+        color: #8993a7;
+        margin: 4px 0 0;
+    }
+
+    .testimonial-card-body {
+        padding: 24px;
+    }
+
+    .testimonial-profile {
+        height: 100%;
+        min-height: 245px;
+        background: #f8f9ff;
+        border: 1px solid #eceeff;
+        border-radius: 12px;
+        padding: 28px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .testimonial-avatar {
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #fff;
+        box-shadow: 0 3px 14px rgba(79, 70, 229, .13);
+        margin-bottom: 16px;
+    }
+
+    .testimonial-avatar-placeholder {
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        background: #eeedff;
+        color: #4f46e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 38px;
+        margin-bottom: 16px;
+    }
+
+    .testimonial-client-name {
+        font-size: 20px;
+        font-weight: 750;
+        color: #172033;
+        margin-bottom: 5px;
+        overflow-wrap: anywhere;
+    }
+
+    .testimonial-client-role {
+        font-size: 13px;
+        color: #788399;
+        margin-bottom: 12px;
+    }
+
+    .testimonial-company {
+        display: inline-flex;
+        gap: 7px;
+        align-items: center;
+        color: #4f46e5;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .testimonial-field {
+        padding: 13px 0;
+        border-bottom: 1px solid #f0f2f7;
+    }
+
+    .testimonial-field:last-child {
+        border-bottom: none;
+    }
+
+    .testimonial-label {
+        display: block;
+        font-size: 12px;
+        color: #8993a7;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .testimonial-value {
+        font-size: 14px;
+        color: #263247;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+    }
+
+    .testimonial-quote {
+        background: #f8f9ff;
+        border: 1px solid #eceeff;
+        border-left: 4px solid #4f46e5;
+        border-radius: 10px;
+        padding: 20px;
+        color: #45516a;
+        font-size: 14px;
+        line-height: 1.85;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+    }
+
+    .testimonial-rating {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .testimonial-rating .bi-star-fill {
+        color: #f5a623;
+        font-size: 17px;
+    }
+
+    .testimonial-rating .bi-star {
+        color: #d5dbea;
+        font-size: 17px;
+    }
+
+    .testimonial-rating-number {
+        margin-left: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #475569;
+    }
+
+    .testimonial-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .testimonial-status-active {
+        background: #e9f9ef;
+        color: #16834a;
+    }
+
+    .testimonial-status-inactive {
+        background: #f0f2f6;
+        color: #647084;
+    }
+
+    .testimonial-meta-box {
+        background: #fafbfe;
+        border: 1px solid #edf0f6;
+        border-radius: 10px;
+        padding: 17px;
+        height: 100%;
+    }
+
+    .testimonial-meta-icon {
+        color: #4f46e5;
+        margin-right: 7px;
+    }
+
+    .testimonial-image-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #4f46e5;
+        text-decoration: none;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+
+    .testimonial-image-link:hover {
+        text-decoration: underline;
+    }
+
+    .testimonial-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding-top: 6px;
+    }
+
+    @@media (max-width: 767px) {
+        .testimonial-details-page {
+            padding: 16px;
+        }
+
+        .testimonial-card-header,
+        .testimonial-card-body {
+            padding: 18px;
+        }
+
+        .testimonial-heading {
+            font-size: 22px;
+        }
+
+        .testimonial-header-actions {
+            width: 100%;
+        }
+
+        .testimonial-header-actions .testimonial-btn {
+            flex: 1;
+        }
+    }
+</style>
+
+<div class="testimonial-details-page">
+
+    <!-- Page Header -->
+    <div class="testimonial-header">
+        <div>
+            <div class="testimonial-breadcrumb">
+                CMS Panel <span>/ Testimonials / Details</span>
+            </div>
+
+            <h2 class="testimonial-heading">Testimonial Details</h2>
+
+            <p class="testimonial-subtitle">
+                View client information, feedback and testimonial settings.
+            </p>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap testimonial-header-actions">
+            <a asp-action="Testimonials"
+               class="testimonial-btn testimonial-btn-secondary">
+                <i class="bi bi-arrow-left"></i>
+                Back to List
+            </a>
+
+            <a asp-action="EditTestimonial"
+               asp-route-id="@Model.Id"
+               class="testimonial-btn testimonial-btn-primary">
+                <i class="bi bi-pencil-square"></i>
+                Edit Testimonial
+            </a>
+        </div>
+    </div>
+
+    <!-- Client Overview -->
+    <div class="testimonial-card">
+        <div class="testimonial-card-header">
+            <div class="testimonial-card-icon">
+                <i class="bi bi-person-badge"></i>
+            </div>
+            <div>
+                <h5 class="testimonial-card-title">Client Overview</h5>
+                <p class="testimonial-card-description">
+                    Client profile and testimonial summary
+                </p>
+            </div>
+        </div>
+
+        <div class="testimonial-card-body">
+            <div class="row g-4 align-items-stretch">
+
+                <div class="col-lg-4">
+                    <div class="testimonial-profile">
+                        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl"
+                                 alt="@Model.ClientName"
+                                 class="testimonial-avatar"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+
+                            <div class="testimonial-avatar-placeholder"
+                                 style="display:none;">
+                                <i class="bi bi-person"></i>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="testimonial-avatar-placeholder">
+                                <i class="bi bi-person"></i>
+                            </div>
+                        }
+
+                        <div class="testimonial-client-name">
+                            @(string.IsNullOrWhiteSpace(Model.ClientName)
+                                ? "Unnamed Client"
+                                : Model.ClientName)
+                        </div>
+
+                        <div class="testimonial-client-role">
+                            @(string.IsNullOrWhiteSpace(Model.Designation)
+                                ? "Designation not provided"
+                                : Model.Designation)
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.CompanyName))
+                        {
+                            <div class="testimonial-company">
+                                <i class="bi bi-building"></i>
+                                @Model.CompanyName
+                            </div>
+                        }
+
+                        <div class="mt-3">
+                            @if (Model.IsActive)
+                            {
+                                <span class="testimonial-status testimonial-status-active">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Active
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="testimonial-status testimonial-status-inactive">
+                                    <i class="bi bi-pause-circle-fill"></i>
+                                    Inactive
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <h6 class="fw-bold mb-3">Client Information</h6>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="testimonial-field">
+                                <span class="testimonial-label">Client Name</span>
+                                <div class="testimonial-value">
+                                    @(string.IsNullOrWhiteSpace(Model.ClientName)
+                                        ? "Not provided"
+                                        : Model.ClientName)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="testimonial-field">
+                                <span class="testimonial-label">Designation</span>
+                                <div class="testimonial-value">
+                                    @(string.IsNullOrWhiteSpace(Model.Designation)
+                                        ? "Not provided"
+                                        : Model.Designation)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="testimonial-field">
+                                <span class="testimonial-label">Company</span>
+                                <div class="testimonial-value">
+                                    @(string.IsNullOrWhiteSpace(Model.CompanyName)
+                                        ? "Not provided"
+                                        : Model.CompanyName)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="testimonial-field">
+                                <span class="testimonial-label">Display Order</span>
+                                <div class="testimonial-value">
+                                    #@Model.DisplayOrder
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="testimonial-field">
+                                <span class="testimonial-label">Client Rating</span>
+
+                                <div class="testimonial-rating">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= Model.Rating)
+                                        {
+                                            <i class="bi bi-star-fill"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-star"></i>
+                                        }
+                                    }
+
+                                    <span class="testimonial-rating-number">
+                                        @Model.Rating / 5
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="testimonial-field">
+                                <span class="testimonial-label">Image URL</span>
+
+                                @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                                {
+                                    <a href="@Model.ImageUrl"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       class="testimonial-image-link">
+                                        <i class="bi bi-box-arrow-up-right"></i>
+                                        Open image
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="testimonial-value">
+                                        No image provided
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonial Content -->
+    <div class="testimonial-card">
+        <div class="testimonial-card-header">
+            <div class="testimonial-card-icon">
+                <i class="bi bi-chat-quote"></i>
+            </div>
+            <div>
+                <h5 class="testimonial-card-title">Client Feedback</h5>
+                <p class="testimonial-card-description">
+                    Full testimonial content
+                </p>
+            </div>
+        </div>
+
+        <div class="testimonial-card-body">
+            @if (!string.IsNullOrWhiteSpace(Model.Content))
+            {
+                <div class="testimonial-quote">
+                    <i class="bi bi-quote fs-4 me-2" style="color:#4f46e5;"></i>@Model.Content
+                </div>
+            }
+            else
+            {
+                <div class="text-muted small">
+                    No testimonial content has been added.
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Record Information -->
+    <div class="testimonial-card">
+        <div class="testimonial-card-header">
+            <div class="testimonial-card-icon">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <div>
+                <h5 class="testimonial-card-title">Record Information</h5>
+                <p class="testimonial-card-description">
+                    Creation and last update details
+                </p>
+            </div>
+        </div>
+
+        <div class="testimonial-card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="testimonial-meta-box">
+                        <span class="testimonial-label">
+                            <i class="bi bi-calendar-plus testimonial-meta-icon"></i>
+                            Created At
+                        </span>
+                        <div class="testimonial-value">
+                            @(Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt"))
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="testimonial-meta-box">
+                        <span class="testimonial-label">
+                            <i class="bi bi-calendar-check testimonial-meta-icon"></i>
+                            Last Updated
+                        </span>
+                        <div class="testimonial-value">
+                            @(Model.UpdatedAt.HasValue
+                                ? Model.UpdatedAt.Value.ToString("dd MMM yyyy, hh:mm tt")
+                                : "Not updated yet")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="testimonial-footer">
+        <a asp-action="Testimonials"
+           class="testimonial-btn testimonial-btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            Back to Testimonials
+        </a>
+
+        <a asp-action="EditTestimonial"
+           asp-route-id="@Model.Id"
+           class="testimonial-btn testimonial-btn-primary">
+            <i class="bi bi-pencil-square"></i>
+            Edit Testimonial
+        </a>
+    </div>
+
+</div>

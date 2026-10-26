@@ -1,0 +1,80 @@
+﻿@model CMSPanel.Models.FAQ
+
+@{
+    ViewData["Title"] = "Create FAQ";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Create FAQ</h2>
+        <p class="text-muted">Add a new frequently asked question.</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-action="CreateFAQ" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Question" class="form-label">Question</label>
+                    <input asp-for="Question" class="form-control"
+                           placeholder="Enter question" />
+                    <span asp-validation-for="Question"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Answer" class="form-label">Answer</label>
+                    <textarea asp-for="Answer" class="form-control"
+                              rows="5"
+                              placeholder="Enter answer"></textarea>
+                    <span asp-validation-for="Answer"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Category" class="form-label">Category</label>
+                    <input asp-for="Category" class="form-control"
+                           placeholder="Enter category (optional)" />
+                    <span asp-validation-for="Category"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DisplayOrder" class="form-label">
+                        Display Order
+                    </label>
+                    <input asp-for="DisplayOrder" type="number"
+                           class="form-control" />
+                    <span asp-validation-for="DisplayOrder"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-4">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label">
+                        Active
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Save FAQ
+                </button>
+
+                <a asp-action="FAQs" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

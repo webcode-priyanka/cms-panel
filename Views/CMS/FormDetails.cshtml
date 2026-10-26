@@ -1,0 +1,363 @@
+﻿
+@model CMSPanel.Models.Form
+
+@{
+    ViewData["Title"] = "Form Details";
+}
+
+<style>
+    .form-details-page {
+        padding: 24px;
+        background: #f8fafc;
+        min-height: 80vh;
+        border-radius: 14px;
+    }
+
+    .fd-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .fd-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0 0 6px;
+    }
+
+    .fd-subtitle {
+        color: #64748b;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .fd-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        margin-bottom: 22px;
+        overflow: hidden;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+    }
+
+    .fd-card-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid #e2e8f0;
+        background: #fff;
+    }
+
+        .fd-card-header h5 {
+            margin: 0;
+            color: #1e293b;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+    .fd-card-body {
+        padding: 22px;
+    }
+
+    .fd-field {
+        margin-bottom: 24px;
+    }
+
+        .fd-field:last-child {
+            margin-bottom: 0;
+        }
+
+    .fd-label {
+        display: block;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .fd-value {
+        color: #1e293b;
+        font-size: 15px;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+    }
+
+    .fd-description {
+        color: #475569;
+        line-height: 1.7;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .fd-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        background: #dbeafe;
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .fd-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .fd-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    .fd-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 18px;
+        min-height: 42px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .fd-btn-edit {
+        background: #2563eb;
+        color: #fff;
+    }
+
+        .fd-btn-edit:hover {
+            background: #1d4ed8;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+
+    .fd-btn-delete {
+        background: #fff;
+        color: #dc2626;
+        border-color: #fecaca;
+    }
+
+        .fd-btn-delete:hover {
+            background: #dc2626;
+            color: #fff;
+            border-color: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.15);
+        }
+
+    .fd-btn-back {
+        background: #fff;
+        color: #475569;
+        border-color: #cbd5e1;
+    }
+
+        .fd-btn-back:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+            border-color: #94a3b8;
+        }
+
+    .fd-btn:focus-visible {
+        outline: 3px solid #93c5fd;
+        outline-offset: 2px;
+    }
+
+    .fd-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #64748b;
+        font-size: 13px;
+        margin-top: 8px;
+    }
+
+    @@media (max-width: 576px) {
+        .form-details-page {
+            padding: 14px;
+        }
+
+        .fd-title {
+            font-size: 22px;
+        }
+
+        .fd-card-body {
+            padding: 16px;
+        }
+
+        .fd-actions {
+            flex-direction: column;
+        }
+
+        .fd-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="form-details-page">
+
+    <!-- Page Header -->
+    <div class="fd-header">
+        <div>
+            <h2 class="fd-title">
+                <i class="bi bi-file-earmark-text me-2"></i>
+                Form Details
+            </h2>
+
+            <p class="fd-subtitle">
+                View and manage the details of this form.
+            </p>
+
+            <div class="fd-meta">
+                <i class="bi bi-hash"></i>
+                Form ID: @Model.Id
+            </div>
+        </div>
+
+        <span class="fd-status">
+            <span class="fd-status-dot"></span>
+            @(string.IsNullOrWhiteSpace(Model.Status) ? "Not Set" : Model.Status)
+        </span>
+    </div>
+
+    <!-- Basic Information -->
+    <div class="fd-card">
+        <div class="fd-card-header">
+            <h5>
+                <i class="bi bi-info-circle me-2"></i>
+                Basic Information
+            </h5>
+        </div>
+
+        <div class="fd-card-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="fd-field">
+                        <label class="fd-label">Form Name</label>
+                        <div class="fd-value">
+                            @(string.IsNullOrWhiteSpace(Model.Name)
+                                ? "Not provided"
+                                : Model.Name)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="fd-field">
+                        <label class="fd-label">Form Slug</label>
+                        <div class="fd-value">
+                            @(string.IsNullOrWhiteSpace(Model.Slug)
+                                ? "Not provided"
+                                : Model.Slug)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="fd-field">
+                        <label class="fd-label">Description</label>
+                        <div class="fd-description">
+                            @(string.IsNullOrWhiteSpace(Model.Description)
+                                ? "No description available."
+                                : Model.Description)
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Information -->
+    <div class="fd-card">
+        <div class="fd-card-header">
+            <h5>
+                <i class="bi bi-clock-history me-2"></i>
+                Activity Information
+            </h5>
+        </div>
+
+        <div class="fd-card-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="fd-field">
+                        <label class="fd-label">Created At</label>
+                        <div class="fd-value">
+                            @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="fd-field">
+                        <label class="fd-label">Last Updated</label>
+                        <div class="fd-value">
+                            @(Model.UpdatedAt.HasValue
+                                ? Model.UpdatedAt.Value.ToString("dd MMM yyyy, hh:mm tt")
+                                : "Not updated yet")
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="fd-actions">
+
+        <!-- Edit -->
+        <a asp-controller="CMS"
+           asp-action="EditForm"
+           asp-route-id="@Model.Id"
+           class="fd-btn fd-btn-edit">
+            <i class="bi bi-pencil-square"></i>
+            Edit Form
+        </a>
+
+        <!-- Delete -->
+        <form asp-controller="CMS"
+              asp-action="DeleteForm"
+              asp-route-id="@Model.Id"
+              method="post"
+              class="d-inline"
+              onsubmit="return confirm('Are you sure you want to delete this form? This action cannot be undone.');">
+
+            @Html.AntiForgeryToken()
+
+            <button type="submit" class="fd-btn fd-btn-delete">
+                <i class="bi bi-trash3"></i>
+                Delete Form
+            </button>
+        </form>
+
+        <!-- Back -->
+        <a asp-controller="CMS"
+           asp-action="Forms"
+           class="fd-btn fd-btn-back">
+            <i class="bi bi-arrow-left"></i>
+            Back to Forms
+        </a>
+
+    </div>
+
+</div>
+

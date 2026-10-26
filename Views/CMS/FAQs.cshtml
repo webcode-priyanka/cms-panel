@@ -1,0 +1,127 @@
+﻿@model IEnumerable<CMSPanel.Models.FAQ>
+
+@{
+    ViewData["Title"] = "FAQs";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">FAQ Management</h2>
+            <p class="text-muted">Manage frequently asked questions.</p>
+        </div>
+
+        <a asp-action="CreateFAQ" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add FAQ
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-action="FAQs" method="get" class="mb-4">
+                <div class="input-group">
+                    <input type="text"
+                           name="searchString"
+                           value="@ViewBag.SearchString"
+                           class="form-control"
+                           placeholder="Search question, answer or category..." />
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+
+                    <a asp-action="FAQs" class="btn btn-secondary">
+                        Reset
+                    </a>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Question</th>
+                            <th>Category</th>
+                            <th>Answer</th>
+                            <th>Order</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var faq in Model)
+                            {
+                                <tr>
+                                    <td>@faq.Question</td>
+                                    <td>@(faq.Category ?? "-")</td>
+                                    <td>
+                                        @(string.IsNullOrEmpty(faq.Answer)
+                                            ? "-"
+                                            : faq.Answer.Length > 60
+                                            ? faq.Answer.Substring(0, 60) + "..."
+                                            : faq.Answer)
+                                    </td>
+                                    <td>@faq.DisplayOrder</td>
+                                    <td>
+                                        @if (faq.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="FAQDetails"
+                                           asp-route-id="@faq.Id"
+                                           class="btn btn-sm btn-info text-white"
+                                           title="Details">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        <a asp-action="EditFAQ"
+                                           asp-route-id="@faq.Id"
+                                           class="btn btn-sm btn-warning"
+                                           title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+
+                                        <a asp-action="DeleteFAQ"
+                                           asp-route-id="@faq.Id"
+                                           class="btn btn-sm btn-danger"
+                                           title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    No FAQs found.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+﻿@model CMSPanel.Models.Download
+
+@{
+    ViewData["Title"] = "Delete Download";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold text-danger">Delete Download</h2>
+        <p class="text-muted">Confirm before deleting this document.</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                Are you sure you want to delete this document?
+                This action cannot be undone.
+            </div>
+
+            <h4 class="fw-bold mb-3">@Model.Title</h4>
+
+            <hr />
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <strong>Category</strong>
+                    <p>@Model.Category</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>File Name</strong>
+                    <p>@Model.FileName</p>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <strong>Description</strong>
+                    <p>@Model.Description</p>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <strong>File Path</strong>
+                    <p>@Model.FilePath</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Status</strong>
+                    <p>@Model.Status</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <strong>Created At</strong>
+                    <p>@Model.CreatedAt.ToString("dd MMM yyyy")</p>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <form asp-action="DeleteDownload" method="post">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Yes, Delete
+                </button>
+
+                <a asp-action="Downloads" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </form>
+
+        </div>
+    </div>
+</div>

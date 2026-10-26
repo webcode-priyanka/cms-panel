@@ -1,0 +1,133 @@
+﻿@model CMSPanel.Models.Service
+
+@{
+    ViewData["Title"] = "Service Details";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Service Details</h1>
+            <p class="text-muted mb-0">View complete service information</p>
+        </div>
+
+        <a asp-controller="CMS"
+           asp-action="Services"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Services
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+            <h3 class="fw-bold mb-4">@Model.Title</h3>
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <strong>Title</strong>
+                    <p>@Model.Title</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Slug</strong>
+                    <p>@Model.Slug</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Short Description</strong>
+                    <p>@Model.ShortDescription</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Icon</strong>
+                    <p>@Model.Icon</p>
+                </div>
+
+                <div class="col-md-12">
+                    <strong>Description</strong>
+                    <p>@Model.Description</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Image</strong>
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <div>
+                            <img src="@Model.ImageUrl"
+                                 alt="@Model.Title"
+                                 class="img-fluid rounded"
+                                 style="max-width: 250px;" />
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No image available</p>
+                    }
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Display Order</strong>
+                    <p>@Model.DisplayOrder</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Status</strong>
+                    <p>
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inactive</span>
+                        }
+                    </p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Created At</strong>
+                    <p>@Model.CreatedAt.ToString("dd MMM yyyy hh:mm tt")</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Updated At</strong>
+                    <p>
+                        @(Model.UpdatedAt.HasValue
+                            ? Model.UpdatedAt.Value.ToString("dd MMM yyyy hh:mm tt")
+                            : "Not updated")
+                    </p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Meta Title</strong>
+                    <p>@Model.MetaTitle</p>
+                </div>
+
+                <div class="col-md-12">
+                    <strong>Meta Description</strong>
+                    <p>@Model.MetaDescription</p>
+                </div>
+
+            </div>
+
+            <div class="mt-4">
+                <a asp-controller="CMS"
+                   asp-action="EditService"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i> Edit Service
+                </a>
+
+                <a asp-controller="CMS"
+                   asp-action="Services"
+                   class="btn btn-outline-secondary">
+                    Back to List
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

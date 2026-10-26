@@ -1,0 +1,197 @@
+﻿@model CMSPanel.Models.Notification
+
+@{
+    ViewData["Title"] = "Edit Notification";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Edit Notification</h1>
+        <p class="text-muted mb-0">
+            Update notification details
+        </p>
+    </div>
+
+
+    <!-- Form Card -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <form asp-action="EditNotification"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <div class="row g-4">
+
+                    <!-- Title -->
+                    <div class="col-md-8">
+
+                        <label asp-for="Title"
+                               class="form-label">
+                            Title
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               placeholder="Enter notification title" />
+
+                        <span asp-validation-for="Title"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Type -->
+                    <div class="col-md-4">
+
+                        <label asp-for="Type"
+                               class="form-label">
+                            Type
+                        </label>
+
+                        <select asp-for="Type"
+                                class="form-select">
+
+                            <option value="Info">
+                                Info
+                            </option>
+
+                            <option value="Success">
+                                Success
+                            </option>
+
+                            <option value="Warning">
+                                Warning
+                            </option>
+
+                            <option value="Error">
+                                Error
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Type"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Message -->
+                    <div class="col-12">
+
+                        <label asp-for="Message"
+                               class="form-label">
+                            Message
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <textarea asp-for="Message"
+                                  class="form-control"
+                                  rows="6"
+                                  placeholder="Enter notification message"></textarea>
+
+                        <span asp-validation-for="Message"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Status -->
+                    <div class="col-md-4">
+
+                        <label asp-for="Status"
+                               class="form-label">
+                            Status
+                        </label>
+
+                        <select asp-for="Status"
+                                class="form-select">
+
+                            <option value="Unread">
+                                Unread
+                            </option>
+
+                            <option value="Read">
+                                Read
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Status"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Link -->
+                    <div class="col-md-8">
+
+                        <label asp-for="Link"
+                               class="form-label">
+                            Link
+                        </label>
+
+                        <input asp-for="Link"
+                               class="form-control"
+                               placeholder="Optional URL or page link" />
+
+                        <span asp-validation-for="Link"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="mt-4 d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="bi bi-check-circle me-1"></i>
+                        Update Notification
+
+                    </button>
+
+                    <a asp-action="Notifications"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Back
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

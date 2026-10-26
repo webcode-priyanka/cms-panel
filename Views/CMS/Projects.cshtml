@@ -1,0 +1,807 @@
+﻿@model IEnumerable<CMSPanel.Models.Project>
+
+@{
+    ViewData["Title"] = "Projects";
+    var projects = Model?.ToList() ?? new List<CMSPanel.Models.Project>();
+}
+
+<style>
+    .projects-container {
+        padding: 25px;
+        background: #f8fafc;
+        min-height: 80vh;
+    }
+
+    .projects-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .projects-header h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 5px;
+    }
+
+    .projects-header p {
+        color: #64748b;
+        margin: 0;
+    }
+
+    .create-btn {
+        background: #2563eb;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        border: none;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .create-btn:hover {
+        background: #1d4ed8;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    .project-stat-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        height: 100%;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+    }
+
+    .stat-icon {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-size: 21px;
+        margin-bottom: 14px;
+    }
+
+    .stat-icon.blue {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+
+    .stat-icon.green {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+
+    .stat-icon.orange {
+        background: #ffedd5;
+        color: #ea580c;
+    }
+
+    .stat-icon.purple {
+        background: #f3e8ff;
+        color: #9333ea;
+    }
+
+    .stat-label {
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .stat-value {
+        color: #1e293b;
+        font-size: 25px;
+        font-weight: 700;
+    }
+
+    .filter-card,
+    .projects-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+
+    .filter-card .card-body {
+        padding: 22px;
+    }
+
+    .section-title {
+        color: #1e293b;
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 18px;
+    }
+
+    .form-label {
+        color: #475569;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-control,
+    .form-select {
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    }
+
+    .search-btn {
+        background: #1e293b;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-weight: 600;
+    }
+
+    .search-btn:hover {
+        background: #334155;
+        color: #fff;
+    }
+
+    .clear-btn {
+        border: 1px solid #cbd5e1;
+        color: #475569;
+        background: #fff;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .clear-btn:hover {
+        background: #f1f5f9;
+        color: #1e293b;
+    }
+
+    .projects-card-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .projects-card-header h5 {
+        margin: 0;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .project-count {
+        background: #eff6ff;
+        color: #2563eb;
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        padding: 15px 14px;
+        white-space: nowrap;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .table tbody td {
+        padding: 15px 14px;
+        color: #334155;
+        font-size: 13px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .table tbody tr:hover {
+        background: #f8fafc;
+    }
+
+    .project-number {
+        color: #94a3b8;
+        font-weight: 600;
+    }
+
+    .project-title {
+        color: #1e293b;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .project-slug {
+        color: #94a3b8;
+        font-size: 11px;
+        overflow-wrap: anywhere;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .status-published {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-approved {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .status-review {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .status-archived {
+        background: #e2e8f0;
+        color: #475569;
+    }
+
+    .status-scheduled {
+        background: #cffafe;
+        color: #0e7490;
+    }
+
+    .status-unpublished {
+        background: #334155;
+        color: #fff;
+    }
+
+    .status-default {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+
+    .featured-badge {
+        display: inline-block;
+        background: #fef3c7;
+        color: #92400e;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .workflow-btn {
+        border-radius: 7px;
+        padding: 6px 10px;
+        font-size: 11px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 5px;
+    }
+
+    .action-buttons .btn {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 7px;
+        padding: 0;
+    }
+
+    .empty-state {
+        padding: 55px 20px !important;
+        text-align: center;
+    }
+
+    .empty-state i {
+        display: block;
+        font-size: 48px;
+        color: #cbd5e1;
+        margin-bottom: 15px;
+    }
+
+    .empty-state h5 {
+        font-weight: 700;
+        color: #334155;
+    }
+
+    .empty-state p {
+        color: #94a3b8;
+        margin-bottom: 0;
+    }
+
+    @@media (max-width: 768px) {
+        .projects-container {
+            padding: 15px;
+        }
+
+        .projects-header h1 {
+            font-size: 23px;
+        }
+
+        .create-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .filter-card .card-body {
+            padding: 16px;
+        }
+
+        .projects-card-header {
+            padding: 16px;
+        }
+    }
+</style>
+
+<div class="container-fluid projects-container">
+
+    <!-- Header -->
+    <div class="projects-header">
+        <div>
+            <h1>
+                <i class="bi bi-briefcase me-2 text-primary"></i>
+                Projects
+            </h1>
+            <p>Manage and organize all your projects.</p>
+        </div>
+
+        <a asp-controller="CMS"
+           asp-action="CreateProject"
+           class="create-btn">
+            <i class="bi bi-plus-lg me-1"></i>
+            Create Project
+        </a>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-xl-3 col-md-6">
+            <div class="project-stat-card">
+                <div class="stat-icon blue">
+                    <i class="bi bi-briefcase"></i>
+                </div>
+                <div class="stat-label">Total Projects</div>
+                <div class="stat-value">@projects.Count</div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="project-stat-card">
+                <div class="stat-icon green">
+                    <i class="bi bi-globe"></i>
+                </div>
+                <div class="stat-label">Published Projects</div>
+                <div class="stat-value">
+                    @projects.Count(p => p.Status == "Published")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="project-stat-card">
+                <div class="stat-icon orange">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div class="stat-label">In Review</div>
+                <div class="stat-value">
+                    @projects.Count(p => p.Status == "In Review")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="project-stat-card">
+                <div class="stat-icon purple">
+                    <i class="bi bi-star"></i>
+                </div>
+                <div class="stat-label">Featured Projects</div>
+                <div class="stat-value">
+                    @projects.Count(p => p.IsFeatured)
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="filter-card">
+        <div class="card-body">
+
+            <h5 class="section-title">
+                <i class="bi bi-funnel me-2 text-primary"></i>
+                Search & Filter Projects
+            </h5>
+
+            <form asp-controller="CMS"
+                  asp-action="Projects"
+                  method="get">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-lg-6 col-md-6">
+                        <label class="form-label">Search Projects</label>
+                        <input type="text"
+                               name="searchString"
+                               value="@ViewBag.SearchString"
+                               class="form-control"
+                               placeholder="Search by title, slug, client or project type..." />
+                    </div>
+
+                    <div class="col-lg-4 col-md-4">
+                        <label class="form-label">Project Status</label>
+
+                        <select name="status" class="form-select">
+                            <option value="">All Status</option>
+
+                            @foreach (var status in new[]
+                            {
+                            "Draft",
+                            "In Review",
+                            "Approved",
+                            "Scheduled",
+                            "Published",
+                            "Unpublished",
+                            "Archived"
+                            })
+                            {
+                                if ((string?)ViewBag.Status == status)
+                                {
+                                    <option value="@status" selected>
+                                        @status
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@status">
+                                        @status
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-lg-2 col-md-2">
+                        <button type="submit"
+                                class="search-btn w-100 mb-2">
+                            <i class="bi bi-search me-1"></i>
+                            Search
+                        </button>
+
+                        <a asp-controller="CMS"
+                           asp-action="Projects"
+                           class="clear-btn w-100">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i>
+                            Clear
+                        </a>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Projects Table -->
+    <div class="projects-card">
+
+        <div class="projects-card-header">
+            <h5>
+                <i class="bi bi-list-ul me-2 text-primary"></i>
+                All Projects
+            </h5>
+
+            <span class="project-count">
+                @projects.Count Projects
+            </span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Project</th>
+                        <th>Client</th>
+                        <th>Project Type</th>
+                        <th>Status</th>
+                        <th>Workflow</th>
+                        <th>Featured</th>
+                        <th>Project Date</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (projects.Any())
+                    {
+                        int count = 1;
+
+                        foreach (var project in projects)
+                        {
+                            <tr>
+                                <!-- Number -->
+                                <td>
+                                    <span class="project-number">@count</span>
+                                </td>
+
+                                <!-- Project -->
+                                <td>
+                                    <div class="project-title">
+                                        @project.Title
+                                    </div>
+                                    <div class="project-slug">
+                                        /@project.Slug
+                                    </div>
+                                </td>
+
+                                <!-- Client -->
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(project.ClientName)
+                                        ? "-"
+                                        : project.ClientName)
+                                </td>
+
+                                <!-- Project Type -->
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(project.ProjectType)
+                                        ? "-"
+                                        : project.ProjectType)
+                                </td>
+
+                                <!-- Status -->
+                                <td>
+                                    @if (project.Status == "Published")
+                                    {
+                                        <span class="status-badge status-published">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Published
+                                        </span>
+                                    }
+                                    else if (project.Status == "Approved")
+                                    {
+                                        <span class="status-badge status-approved">
+                                            <i class="bi bi-patch-check me-1"></i>
+                                            Approved
+                                        </span>
+                                    }
+                                    else if (project.Status == "In Review")
+                                    {
+                                        <span class="status-badge status-review">
+                                            <i class="bi bi-clock me-1"></i>
+                                            In Review
+                                        </span>
+                                    }
+                                    else if (project.Status == "Archived")
+                                    {
+                                        <span class="status-badge status-archived">
+                                            <i class="bi bi-archive me-1"></i>
+                                            Archived
+                                        </span>
+                                    }
+                                    else if (project.Status == "Scheduled")
+                                    {
+                                        <span class="status-badge status-scheduled">
+                                            <i class="bi bi-calendar-event me-1"></i>
+                                            Scheduled
+                                        </span>
+                                    }
+                                    else if (project.Status == "Unpublished")
+                                    {
+                                        <span class="status-badge status-unpublished">
+                                            Unpublished
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge status-default">
+                                            @project.Status
+                                        </span>
+                                    }
+                                </td>
+
+                                <!-- Workflow -->
+                                <td>
+                                    @if (project.Status == "Draft")
+                                    {
+                                        <form asp-controller="CMS"
+                                              asp-action="UpdateProjectStatus"
+                                              method="post">
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@project.Id" />
+
+                                            <input type="hidden"
+                                                   name="newStatus"
+                                                   value="In Review" />
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-warning workflow-btn"
+                                                    title="Send for Review">
+                                                <i class="bi bi-send me-1"></i>
+                                                Review
+                                            </button>
+                                        </form>
+                                    }
+                                    else if (project.Status == "In Review")
+                                    {
+                                        <form asp-controller="CMS"
+                                              asp-action="UpdateProjectStatus"
+                                              method="post">
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@project.Id" />
+
+                                            <input type="hidden"
+                                                   name="newStatus"
+                                                   value="Approved" />
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-success workflow-btn"
+                                                    title="Approve Project">
+                                                <i class="bi bi-check-circle me-1"></i>
+                                                Approve
+                                            </button>
+                                        </form>
+                                    }
+                                    else if (project.Status == "Approved" ||
+                                    project.Status == "Scheduled")
+                                    {
+                                        <form asp-controller="CMS"
+                                              asp-action="UpdateProjectStatus"
+                                              method="post">
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@project.Id" />
+
+                                            <input type="hidden"
+                                                   name="newStatus"
+                                                   value="Published" />
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-success workflow-btn"
+                                                    title="Publish Project">
+                                                <i class="bi bi-globe me-1"></i>
+                                                Publish
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">—</span>
+                                    }
+                                </td>
+
+                                <!-- Featured -->
+                                <td>
+                                    @if (project.IsFeatured)
+                                    {
+                                        <span class="featured-badge">
+                                            <i class="bi bi-star-fill me-1"></i>
+                                            Featured
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No</span>
+                                    }
+                                </td>
+
+                                <!-- Project Date -->
+                                <td>
+                                    @(project.ProjectDate.HasValue
+                                        ? project.ProjectDate.Value.ToString("dd MMM yyyy")
+                                        : "-")
+                                </td>
+
+                                <!-- Actions -->
+                                <td>
+                                    <div class="action-buttons">
+
+                                        <a asp-controller="CMS"
+                                           asp-action="ProjectDetails"
+                                           asp-route-id="@project.Id"
+                                           class="btn btn-sm btn-outline-info"
+                                           title="View Project">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        <a asp-controller="CMS"
+                                           asp-action="EditProject"
+                                           asp-route-id="@project.Id"
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="Edit Project">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+
+
+                                        <form asp-controller="CMS"
+                                              asp-action="DeleteProject"
+                                              method="post"
+                                              class="d-inline"
+                                              onsubmit="return confirm('Are you sure you want to delete this project?');">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden" name="id" value="@project.Id" />
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    title="Delete Project">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+
+
+                                    </div>
+                                </td>
+                            </tr>
+
+                            count++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9" class="empty-state">
+                                <i class="bi bi-folder-x"></i>
+                                <h5>No Projects Found</h5>
+                                <p>
+                                    No projects match your search or filter.
+                                </p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>

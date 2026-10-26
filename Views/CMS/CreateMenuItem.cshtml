@@ -1,0 +1,285 @@
+﻿@model CMSPanel.Models.MenuItem
+
+@{
+    ViewData["Title"] = "Create Menu Item";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Create Menu Item</h1>
+        <p class="text-muted mb-0">
+            Create a new website navigation menu item.
+        </p>
+    </div>
+
+
+    <!-- VALIDATION -->
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger"
+         role="alert">
+    </div>
+
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-4">
+
+            <form asp-action="CreateMenuItem"
+                  asp-controller="CMS"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+
+                <div class="row g-4">
+
+                    <!-- TITLE -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Title"
+                               class="form-label fw-semibold">
+                            Menu Title
+                        </label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               placeholder="e.g. About Us" />
+
+                        <span asp-validation-for="Title"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- LOCATION -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Location"
+                               class="form-label fw-semibold">
+                            Menu Location
+                        </label>
+
+                        <select asp-for="Location"
+                                class="form-select">
+
+                            <option value="Header">
+                                Header
+                            </option>
+
+                            <option value="Footer">
+                                Footer
+                            </option>
+
+                            <option value="Context">
+                                Context
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Location"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- URL -->
+                    <div class="col-md-8">
+
+                        <label asp-for="Url"
+                               class="form-label fw-semibold">
+                            URL
+                        </label>
+
+                        <input asp-for="Url"
+                               class="form-control"
+                               placeholder="e.g. /about" />
+
+                        <span asp-validation-for="Url"
+                              class="text-danger">
+                        </span>
+
+                        <small class="text-muted">
+                            Example: /about, /contact or https://example.com
+                        </small>
+
+                    </div>
+
+
+                    <!-- TARGET -->
+                    <div class="col-md-4">
+
+                        <label asp-for="Target"
+                               class="form-label fw-semibold">
+                            Open Link
+                        </label>
+
+                        <select asp-for="Target"
+                                class="form-select">
+
+                            <option value="">
+                                Same Tab
+                            </option>
+
+                            <option value="_blank">
+                                New Tab
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PARENT MENU -->
+                    <div class="col-md-6">
+
+                        <label asp-for="ParentId"
+                               class="form-label fw-semibold">
+                            Parent Menu
+                        </label>
+
+                        <select asp-for="ParentId"
+                                class="form-select">
+
+                            <option value="">
+                                Main Menu
+                            </option>
+
+                            @if (ViewBag.ParentMenus != null)
+                            {
+                                foreach (var parent in ViewBag.ParentMenus)
+                                {
+                                    <option value="@parent.Id">
+                                        @parent.Title
+                                    </option>
+                                }
+                            }
+
+                        </select>
+
+                        <small class="text-muted">
+                            Select a parent if this is a submenu item.
+                        </small>
+
+                    </div>
+
+
+                    <!-- DISPLAY ORDER -->
+                    <div class="col-md-3">
+
+                        <label asp-for="DisplayOrder"
+                               class="form-label fw-semibold">
+                            Display Order
+                        </label>
+
+                        <input asp-for="DisplayOrder"
+                               type="number"
+                               class="form-control"
+                               min="0"
+                               value="0" />
+
+                    </div>
+
+
+                    <!-- VISIBILITY -->
+                    <div class="col-md-3">
+
+                        <label class="form-label fw-semibold">
+                            Visibility
+                        </label>
+
+                        <div class="form-check form-switch mt-2">
+
+                            <input asp-for="IsVisible"
+                                   class="form-check-input"
+                                   type="checkbox" />
+
+                            <label asp-for="IsVisible"
+                                   class="form-check-label">
+                                Visible
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+                    <div class="col-12">
+
+                        <label asp-for="Description"
+                               class="form-label fw-semibold">
+                            Description
+                        </label>
+
+                        <textarea asp-for="Description"
+                                  id="menuDescription"
+                                  class="form-control"
+                                  rows="8"
+                                  placeholder="Enter menu description..."></textarea>
+
+                        <span asp-validation-for="Description"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+                    <div class="col-12">
+
+                        <hr />
+
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bi bi-check-circle me-1"></i>
+                                Create Menu Item
+
+                            </button>
+
+
+                            <a asp-action="MenuItems"
+                               asp-controller="CMS"
+                               class="btn btn-outline-secondary">
+
+                                <i class="bi bi-arrow-left me-1"></i>
+                                Back
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- CKEditor -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#menuDescription'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+}

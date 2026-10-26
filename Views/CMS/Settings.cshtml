@@ -1,0 +1,611 @@
+﻿@model CMSPanel.Models.Setting
+
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Settings</h1>
+        <p class="text-muted mb-0">
+            Manage website identity, contact information, branding and operational settings
+        </p>
+    </div>
+
+    <!-- Success Message -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+
+            <i class="bi bi-check-circle me-1"></i>
+            @TempData["Success"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+    <form asp-action="Settings"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3">
+        </div>
+
+
+        <!-- Site Identity -->
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white py-3">
+
+                <h5 class="mb-0 fw-bold">
+                    <i class="bi bi-globe2 me-2"></i>
+                    Site Identity
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <!-- Site Name -->
+                    <div class="col-md-6">
+
+                        <label asp-for="SiteName"
+                               class="form-label fw-semibold">
+                            Site Name
+                        </label>
+
+                        <input asp-for="SiteName"
+                               class="form-control"
+                               placeholder="Enter site name" />
+
+                        <span asp-validation-for="SiteName"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Site Tagline -->
+                    <div class="col-md-6">
+
+                        <label asp-for="SiteTagline"
+                               class="form-label fw-semibold">
+                            Site Tagline
+                        </label>
+
+                        <input asp-for="SiteTagline"
+                               class="form-control"
+                               placeholder="Enter site tagline" />
+
+                        <span asp-validation-for="SiteTagline"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Logo -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Logo"
+                               class="form-label fw-semibold">
+                            Logo URL / Path
+                        </label>
+
+                        <input asp-for="Logo"
+                               class="form-control"
+                               placeholder="/uploads/logo.png" />
+
+                        <span asp-validation-for="Logo"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Favicon -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Favicon"
+                               class="form-label fw-semibold">
+                            Favicon URL / Path
+                        </label>
+
+                        <input asp-for="Favicon"
+                               class="form-control"
+                               placeholder="/uploads/favicon.ico" />
+
+                        <span asp-validation-for="Favicon"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Contact Information -->
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white py-3">
+
+                <h5 class="mb-0 fw-bold">
+                    <i class="bi bi-person-lines-fill me-2"></i>
+                    Contact Information
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <!-- Email -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Email"
+                               class="form-label fw-semibold">
+                            Email
+                        </label>
+
+                        <input asp-for="Email"
+                               type="email"
+                               class="form-control"
+                               placeholder="Enter email address" />
+
+                        <span asp-validation-for="Email"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6">
+
+                        <label asp-for="Phone"
+                               class="form-label fw-semibold">
+                            Phone
+                        </label>
+
+                        <input asp-for="Phone"
+                               class="form-control"
+                               placeholder="Enter phone number" />
+
+                        <span asp-validation-for="Phone"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- Address -->
+                    <div class="col-12">
+
+                        <label asp-for="Address"
+                               class="form-label fw-semibold">
+                            Address
+                        </label>
+
+                        <textarea asp-for="Address"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Enter complete address"></textarea>
+
+                        <span asp-validation-for="Address"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <!-- City -->
+                    <div class="col-md-3">
+
+                        <label asp-for="City"
+                               class="form-label fw-semibold">
+                            City
+                        </label>
+
+                        <input asp-for="City"
+                               class="form-control"
+                               placeholder="City" />
+
+                    </div>
+
+                    <!-- State -->
+                    <div class="col-md-3">
+
+                        <label asp-for="State"
+                               class="form-label fw-semibold">
+                            State
+                        </label>
+
+                        <input asp-for="State"
+                               class="form-control"
+                               placeholder="State" />
+
+                    </div>
+
+                    <!-- Postal Code -->
+                    <div class="col-md-3">
+
+                        <label asp-for="PostalCode"
+                               class="form-label fw-semibold">
+                            Postal Code
+                        </label>
+
+                        <input asp-for="PostalCode"
+                               class="form-control"
+                               placeholder="Postal code" />
+
+                    </div>
+
+                    <!-- Country -->
+                    <div class="col-md-3">
+
+                        <label asp-for="Country"
+                               class="form-label fw-semibold">
+                            Country
+                        </label>
+
+                        <input asp-for="Country"
+                               class="form-control"
+                               placeholder="Country" />
+
+                    </div>
+
+                    <!-- Business Hours -->
+                    <div class="col-12">
+
+                        <label asp-for="BusinessHours"
+                               class="form-label fw-semibold">
+                            Business Hours
+                        </label>
+
+                        <input asp-for="BusinessHours"
+                               class="form-control"
+                               placeholder="Mon - Sat, 9:00 AM - 6:00 PM" />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Social Links -->
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white py-3">
+
+                <h5 class="mb-0 fw-bold">
+                    <i class="bi bi-share me-2"></i>
+                    Social Links
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <!-- Facebook -->
+                    <div class="col-md-6">
+
+                        <label asp-for="FacebookUrl"
+                               class="form-label fw-semibold">
+                            Facebook
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-facebook"></i>
+                            </span>
+
+                            <input asp-for="FacebookUrl"
+                                   class="form-control"
+                                   placeholder="https://facebook.com/..." />
+
+                        </div>
+
+                    </div>
+
+                    <!-- Instagram -->
+                    <div class="col-md-6">
+
+                        <label asp-for="InstagramUrl"
+                               class="form-label fw-semibold">
+                            Instagram
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-instagram"></i>
+                            </span>
+
+                            <input asp-for="InstagramUrl"
+                                   class="form-control"
+                                   placeholder="https://instagram.com/..." />
+
+                        </div>
+
+                    </div>
+
+                    <!-- Twitter -->
+                    <div class="col-md-6">
+
+                        <label asp-for="TwitterUrl"
+                               class="form-label fw-semibold">
+                            Twitter / X
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-twitter-x"></i>
+                            </span>
+
+                            <input asp-for="TwitterUrl"
+                                   class="form-control"
+                                   placeholder="https://x.com/..." />
+
+                        </div>
+
+                    </div>
+
+                    <!-- LinkedIn -->
+                    <div class="col-md-6">
+
+                        <label asp-for="LinkedInUrl"
+                               class="form-label fw-semibold">
+                            LinkedIn
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-linkedin"></i>
+                            </span>
+
+                            <input asp-for="LinkedInUrl"
+                                   class="form-control"
+                                   placeholder="https://linkedin.com/..." />
+
+                        </div>
+
+                    </div>
+
+                    <!-- YouTube -->
+                    <div class="col-md-6">
+
+                        <label asp-for="YouTubeUrl"
+                               class="form-label fw-semibold">
+                            YouTube
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-youtube"></i>
+                            </span>
+
+                            <input asp-for="YouTubeUrl"
+                                   class="form-control"
+                                   placeholder="https://youtube.com/..." />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Branding -->
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white py-3">
+
+                <h5 class="mb-0 fw-bold">
+                    <i class="bi bi-palette me-2"></i>
+                    Branding
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <!-- Primary Color -->
+                    <div class="col-md-6">
+
+                        <label asp-for="PrimaryColor"
+                               class="form-label fw-semibold">
+                            Primary Color
+                        </label>
+
+                        <div class="input-group">
+
+                            <input asp-for="PrimaryColor"
+                                   type="text"
+                                   class="form-control"
+                                   placeholder="#0d6efd" />
+
+                            <input type="color"
+                                   class="form-control form-control-color"
+                                   value="@(Model.PrimaryColor ?? "#0d6efd")"
+                                   onchange="document.getElementById('PrimaryColor').value=this.value" />
+
+                        </div>
+
+                    </div>
+
+                    <!-- Secondary Color -->
+                    <div class="col-md-6">
+
+                        <label asp-for="SecondaryColor"
+                               class="form-label fw-semibold">
+                            Secondary Color
+                        </label>
+
+                        <div class="input-group">
+
+                            <input asp-for="SecondaryColor"
+                                   type="text"
+                                   class="form-control"
+                                   placeholder="#6c757d" />
+
+                            <input type="color"
+                                   class="form-control form-control-color"
+                                   value="@(Model.SecondaryColor ?? "#6c757d")"
+                                   onchange="document.getElementById('SecondaryColor').value=this.value" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Operational Settings -->
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white py-3">
+
+                <h5 class="mb-0 fw-bold">
+                    <i class="bi bi-gear me-2"></i>
+                    Operational Settings
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <!-- Time Zone -->
+                    <div class="col-md-6">
+
+                        <label asp-for="TimeZone"
+                               class="form-label fw-semibold">
+                            Time Zone
+                        </label>
+
+                        <select asp-for="TimeZone"
+                                class="form-select">
+
+                            <option value="India Standard Time">
+                                India Standard Time
+                            </option>
+
+                            <option value="UTC">
+                                UTC
+                            </option>
+
+                            <option value="Eastern Standard Time">
+                                Eastern Standard Time
+                            </option>
+
+                            <option value="Pacific Standard Time">
+                                Pacific Standard Time
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Maintenance Mode -->
+                    <div class="col-md-3">
+
+                        <label class="form-label fw-semibold d-block">
+                            Maintenance Mode
+                        </label>
+
+                        <div class="form-check form-switch mt-2">
+
+                            <input asp-for="MaintenanceMode"
+                                   class="form-check-input"
+                                   type="checkbox" />
+
+                            <label asp-for="MaintenanceMode"
+                                   class="form-check-label">
+                                Enable
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="col-md-3">
+
+                        <label class="form-label fw-semibold d-block">
+                            Notifications
+                        </label>
+
+                        <div class="form-check form-switch mt-2">
+
+                            <input asp-for="EnableNotifications"
+                                   class="form-check-input"
+                                   type="checkbox" />
+
+                            <label asp-for="EnableNotifications"
+                                   class="form-check-label">
+                                Enable
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Save Button -->
+        <div class="d-flex justify-content-end gap-2 mb-4">
+
+            <button type="submit"
+                    class="btn btn-primary px-4">
+
+                <i class="bi bi-check-circle me-1"></i>
+                Save Settings
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

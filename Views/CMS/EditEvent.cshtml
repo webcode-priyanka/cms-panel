@@ -1,0 +1,492 @@
+﻿
+@model CMSPanel.Models.Event
+
+@{
+    ViewData["Title"] = "Edit Event";
+}
+
+<style>
+    .edit-event-page {
+        min-height: 100vh;
+        background: #f5f7fb;
+        padding: 28px;
+        color: #1f2937;
+    }
+
+    .event-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 26px;
+    }
+
+        .event-page-header h1 {
+            font-size: 27px;
+            font-weight: 750;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .event-page-header p {
+            color: #6b7280;
+            margin: 0;
+        }
+
+    .event-form-card {
+        background: #fff;
+        border: 1px solid #e8ecf3;
+        border-radius: 16px;
+        box-shadow: 0 5px 22px rgba(15, 23, 42, .04);
+        overflow: hidden;
+    }
+
+    .event-form-header {
+        padding: 22px 26px;
+        border-bottom: 1px solid #edf0f5;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .event-header-icon {
+        width: 46px;
+        height: 46px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #eef2ff;
+        color: #4f46e5;
+        border-radius: 12px;
+        font-size: 22px;
+        flex-shrink: 0;
+    }
+
+    .event-form-header h5 {
+        font-weight: 700;
+        margin: 0 0 4px;
+        color: #111827;
+    }
+
+    .event-form-header p {
+        color: #6b7280;
+        font-size: 13px;
+        margin: 0;
+    }
+
+    .event-form-body {
+        padding: 26px;
+    }
+
+    .event-section {
+        padding-bottom: 24px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+        .event-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+    .event-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 20px;
+    }
+
+        .event-section-title i {
+            color: #4f46e5;
+            font-size: 19px;
+        }
+
+    .event-form-label {
+        font-size: 13px;
+        font-weight: 650;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+
+    .event-form-control {
+        border: 1px solid #dfe3eb;
+        border-radius: 9px;
+        padding: 11px 13px;
+        font-size: 14px;
+        color: #1f2937;
+        background-color: #fff;
+        width: 100%;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+        .event-form-control:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, .10);
+            outline: none;
+        }
+
+    textarea.event-form-control {
+        resize: vertical;
+        min-height: 110px;
+    }
+
+    .event-form-control::placeholder {
+        color: #9ca3af;
+    }
+
+    .event-help-text {
+        color: #9ca3af;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .event-form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 20px 26px;
+        background: #fafbfe;
+        border-top: 1px solid #edf0f5;
+    }
+
+    .event-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 17px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 650;
+        text-decoration: none;
+        transition: .2s ease;
+        cursor: pointer;
+    }
+
+    .event-btn-primary {
+        color: #fff;
+        background: #4f46e5;
+        border: 1px solid #4f46e5;
+    }
+
+        .event-btn-primary:hover {
+            color: #fff;
+            background: #4338ca;
+            border-color: #4338ca;
+        }
+
+    .event-btn-secondary {
+        color: #374151;
+        background: #fff;
+        border: 1px solid #d1d5db;
+    }
+
+        .event-btn-secondary:hover {
+            color: #111827;
+            background: #f3f4f6;
+        }
+
+    .event-validation {
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .event-validation-summary:empty {
+        display: none;
+    }
+
+    @@media (max-width: 768px) {
+        .edit-event-page {
+            padding: 15px;
+        }
+
+        .event-page-header h1 {
+            font-size: 23px;
+        }
+
+        .event-form-header,
+        .event-form-body {
+            padding: 19px;
+        }
+
+        .event-form-actions {
+            padding: 17px 19px;
+        }
+
+            .event-form-actions > div {
+                width: 100%;
+            }
+
+            .event-form-actions .event-btn {
+                flex: 1;
+            }
+    }
+</style>
+
+<div class="edit-event-page">
+
+    <!-- Page Header -->
+    <div class="event-page-header">
+        <div>
+            <h1>
+                <i class="bi bi-calendar2-event me-2"></i>
+                Edit Event
+            </h1>
+            <p>Update event details, schedule, registration and SEO information.</p>
+        </div>
+
+        <a asp-action="Events" class="event-btn event-btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            Back to Events
+        </a>
+    </div>
+
+    <!-- Main Form Card -->
+    <div class="event-form-card">
+
+        <div class="event-form-header">
+            <div class="event-header-icon">
+                <i class="bi bi-pencil-square"></i>
+            </div>
+
+            <div>
+                <h5>Update Event Information</h5>
+                <p>Event ID: @Model.Id · Edit the fields below and save your changes.</p>
+            </div>
+        </div>
+
+        <form asp-action="EditEvent" method="post">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="event-form-body">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger event-validation-summary mb-4"></div>
+
+                <!-- Basic Information -->
+                <div class="event-section">
+                    <h5 class="event-section-title">
+                        <i class="bi bi-info-circle"></i>
+                        Basic Information
+                    </h5>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <label asp-for="Title" class="form-label event-form-label">
+                                Event Title <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Title"
+                                   class="event-form-control"
+                                   placeholder="Enter event title" />
+                            <span asp-validation-for="Title"
+                                  class="text-danger event-validation"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Location" class="form-label event-form-label">
+                                Location
+                            </label>
+                            <input asp-for="Location"
+                                   class="event-form-control"
+                                   placeholder="Enter event location" />
+                            <span asp-validation-for="Location"
+                                  class="text-danger event-validation"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="Description" class="form-label event-form-label">
+                                Event Description
+                            </label>
+                            <textarea asp-for="Description"
+                                      class="event-form-control"
+                                      rows="5"
+                                      placeholder="Describe the event, its purpose and important details..."></textarea>
+                            <span asp-validation-for="Description"
+                                  class="text-danger event-validation"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Schedule -->
+                <div class="event-section">
+                    <h5 class="event-section-title">
+                        <i class="bi bi-calendar-week"></i>
+                        Event Schedule
+                    </h5>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <label asp-for="StartDate" class="form-label event-form-label">
+                                Start Date <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="StartDate"
+                                   type="date"
+                                   asp-format="{0:yyyy-MM-dd}"
+                                   class="event-form-control" />
+                            <span asp-validation-for="StartDate"
+                                  class="text-danger event-validation"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="EndDate" class="form-label event-form-label">
+                                End Date
+                            </label>
+                            <input asp-for="EndDate"
+                                   type="date"
+                                   asp-format="{0:yyyy-MM-dd}"
+                                   class="event-form-control" />
+                            <span asp-validation-for="EndDate"
+                                  class="text-danger event-validation"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Status" class="form-label event-form-label">
+                                Publication Status
+                            </label>
+                            <select asp-for="Status" class="event-form-control">
+                                <option value="Draft">Draft</option>
+                                <option value="Published">Published</option>
+                            </select>
+                            <span asp-validation-for="Status"
+                                  class="text-danger event-validation"></span>
+                            <div class="event-help-text">
+                                Published events may be visible on the public website.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Media and Registration -->
+                <div class="event-section">
+                    <h5 class="event-section-title">
+                        <i class="bi bi-image"></i>
+                        Image & Registration
+                    </h5>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <label asp-for="Image" class="form-label event-form-label">
+                                Event Image URL
+                            </label>
+                            <input asp-for="Image"
+                                   class="event-form-control"
+                                   placeholder="https://example.com/event-image.jpg" />
+                            <span asp-validation-for="Image"
+                                  class="text-danger event-validation"></span>
+                            <div class="event-help-text">
+                                Enter the URL of the image you want to display.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="RegistrationLink" class="form-label event-form-label">
+                                Registration Link
+                            </label>
+                            <input asp-for="RegistrationLink"
+                                   class="event-form-control"
+                                   placeholder="https://example.com/register" />
+                            <span asp-validation-for="RegistrationLink"
+                                  class="text-danger event-validation"></span>
+                            <div class="event-help-text">
+                                Add the webpage where visitors can register.
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Image))
+                        {
+                            <div class="col-12">
+                                <label class="form-label event-form-label">Current Event Image</label>
+                                <div>
+                                    <img src="@Model.Image"
+                                         alt="Current event image"
+                                         style="max-width:100%; max-height:220px; object-fit:cover; border-radius:12px; border:1px solid #e5e7eb;" />
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+                <!-- SEO Settings -->
+                <div class="event-section">
+                    <h5 class="event-section-title">
+                        <i class="bi bi-search"></i>
+                        SEO Settings
+                    </h5>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <label asp-for="MetaTitle" class="form-label event-form-label">
+                                Meta Title
+                            </label>
+                            <input asp-for="MetaTitle"
+                                   class="event-form-control"
+                                   placeholder="Enter SEO title" />
+                            <span asp-validation-for="MetaTitle"
+                                  class="text-danger event-validation"></span>
+                            <div class="event-help-text">
+                                A clear title helps search engines understand the event.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="MetaDescription" class="form-label event-form-label">
+                                Meta Description
+                            </label>
+                            <textarea asp-for="MetaDescription"
+                                      class="event-form-control"
+                                      rows="3"
+                                      placeholder="Write a short description for search results..."></textarea>
+                            <span asp-validation-for="MetaDescription"
+                                  class="text-danger event-validation"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Form Actions -->
+            <div class="event-form-actions">
+                <a asp-action="Events" class="event-btn event-btn-secondary">
+                    <i class="bi bi-x-circle"></i>
+                    Cancel
+                </a>
+
+                <div class="d-flex gap-2">
+                    <button type="reset" class="event-btn event-btn-secondary">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                        Reset
+                    </button>
+
+                    <button type="submit" class="event-btn event-btn-primary">
+                        <i class="bi bi-check2-circle"></i>
+                        Update Event
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

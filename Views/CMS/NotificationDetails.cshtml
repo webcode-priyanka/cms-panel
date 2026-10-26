@@ -1,0 +1,165 @@
+﻿@model CMSPanel.Models.Notification
+
+@{
+    ViewData["Title"] = "Notification Details";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Notification Details</h1>
+            <p class="text-muted mb-0">
+                View notification information
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-action="EditNotification"
+               asp-route-id="@Model.Id"
+               class="btn btn-primary">
+                <i class="bi bi-pencil-square"></i>
+                Edit
+            </a>
+
+            <a asp-action="Notifications"
+               class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i>
+                Back
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <div class="col-md-8">
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Title
+                        </label>
+
+                        <div class="fs-5">
+                            @Model.Title
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Message
+                        </label>
+
+                        <div class="border rounded p-3 bg-light">
+                            @Model.Message
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Link))
+                    {
+                        <div class="mb-4">
+                            <label class="fw-semibold text-muted">
+                                Link
+                            </label>
+
+                            <div>
+                                <a href="@Model.Link"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    @Model.Link
+                                </a>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Type
+                        </label>
+
+                        <div>
+                            @if (Model.Type == "Success")
+                            {
+                                <span class="badge bg-success">
+                                    Success
+                                </span>
+                            }
+                            else if (Model.Type == "Warning")
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    Warning
+                                </span>
+                            }
+                            else if (Model.Type == "Error")
+                            {
+                                <span class="badge bg-danger">
+                                    Error
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-info text-dark">
+                                    Info
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Status
+                        </label>
+
+                        <div>
+                            @if (Model.Status == "Read")
+                            {
+                                <span class="badge bg-success">
+                                    Read
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    Unread
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="fw-semibold text-muted">
+                            Created At
+                        </label>
+
+                        <div>
+                            @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                        </div>
+                    </div>
+
+                    @if (Model.UpdatedAt.HasValue)
+                    {
+                        <div class="mb-4">
+                            <label class="fw-semibold text-muted">
+                                Updated At
+                            </label>
+
+                            <div>
+                                @Model.UpdatedAt.Value.ToString("dd MMM yyyy, hh:mm tt")
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

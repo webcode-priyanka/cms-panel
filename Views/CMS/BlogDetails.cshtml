@@ -1,0 +1,487 @@
+﻿@model CMSPanel.Models.Blog
+
+@{
+    ViewData["Title"] = "Blog Details";
+}
+
+<style>
+    .blog-details-page {
+        padding: 28px;
+        background: #f5f7fb;
+        min-height: 100vh;
+    }
+
+    .details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 28px;
+    }
+
+    .details-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 6px;
+    }
+
+    .details-subtitle {
+        color: #64748b;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .btn-edit {
+        background: #f59e0b;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-edit:hover {
+            background: #d97706;
+            color: #fff;
+        }
+
+    .btn-back {
+        background: #64748b;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-back:hover {
+            background: #475569;
+            color: #fff;
+        }
+
+    .details-card {
+        background: #fff;
+        border: 1px solid #e8edf5;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+        margin-bottom: 22px;
+        overflow: hidden;
+    }
+
+    .details-card-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid #edf0f5;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .details-card-header h5 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .details-card-header i {
+            color: #6366f1;
+            font-size: 19px;
+        }
+
+    .details-card-body {
+        padding: 24px;
+    }
+
+    .detail-label {
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .detail-value {
+        color: #1e293b;
+        font-size: 15px;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+    }
+
+    .detail-item {
+        margin-bottom: 25px;
+    }
+
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+
+    .detail-divider {
+        border-top: 1px solid #edf0f5;
+        margin: 8px 0 24px;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 13px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .status-published {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-archived {
+        background: #e2e8f0;
+        color: #475569;
+    }
+
+    .status-draft {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .status-yes {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-no {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .tag-badge {
+        display: inline-block;
+        background: #eef2ff;
+        color: #4f46e5;
+        border: 1px solid #c7d2fe;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin: 3px 4px 3px 0;
+    }
+
+    .content-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 20px;
+        color: #334155;
+        font-size: 14px;
+        line-height: 1.8;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        min-height: 100px;
+    }
+
+    .image-url {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+        color: #475569;
+    }
+
+    .date-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        padding: 13px 15px;
+        color: #334155;
+        font-size: 14px;
+    }
+
+    .empty-value {
+        color: #94a3b8;
+        font-style: italic;
+        font-size: 14px;
+    }
+
+    @@media (max-width: 768px) {
+        .blog-details-page {
+            padding: 16px;
+        }
+
+        .details-title {
+            font-size: 23px;
+        }
+
+        .details-card-body {
+            padding: 18px;
+        }
+
+        .details-header {
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="container-fluid blog-details-page">
+
+    <!-- Page Header -->
+    <div class="details-header">
+        <div>
+            <h1 class="details-title">
+                <i class="bi bi-file-earmark-text me-2"></i>
+                Blog Details
+            </h1>
+            <p class="details-subtitle">
+                View and manage your blog information
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-action="EditBlog"
+               asp-route-id="@Model.Id"
+               class="btn-edit">
+                <i class="bi bi-pencil-square me-1"></i>
+                Edit Blog
+            </a>
+
+            <a asp-action="Blogs" class="btn-back">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back
+            </a>
+        </div>
+    </div>
+
+    <!-- Basic Information -->
+    <div class="details-card">
+        <div class="details-card-header">
+            <i class="bi bi-info-circle"></i>
+            <h5>Basic Information</h5>
+        </div>
+
+        <div class="details-card-body">
+            <div class="row">
+
+                <div class="col-md-6 detail-item">
+                    <label class="detail-label">Blog Title</label>
+                    <div class="detail-value fs-5 fw-bold">
+                        @Model.Title
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label class="detail-label">Slug</label>
+                    <div class="detail-value">
+                        @(string.IsNullOrWhiteSpace(Model.Slug)
+                            ? "Not set"
+                            : Model.Slug)
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label class="detail-label">Category</label>
+                    <div class="detail-value">
+                        @(Model.BlogCategory != null
+                            ? Model.BlogCategory.Name
+                            : "Not set")
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label class="detail-label">Blog Tags</label>
+                    <div>
+                        @if (Model.BlogTags != null && Model.BlogTags.Any())
+                        {
+                            foreach (var tag in Model.BlogTags)
+                            {
+                                <span class="tag-badge">
+                                    <i class="bi bi-tag me-1"></i>
+                                    @tag.Name
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="empty-value">No tags assigned</span>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Publishing Information -->
+    <div class="details-card">
+        <div class="details-card-header">
+            <i class="bi bi-send"></i>
+            <h5>Publishing Information</h5>
+        </div>
+
+        <div class="details-card-body">
+            <div class="row">
+
+                <div class="col-md-4 detail-item">
+                    <label class="detail-label">Status</label>
+                    <div>
+                        @if (Model.Status == "Published")
+                        {
+                            <span class="status-badge status-published">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Published
+                            </span>
+                        }
+                        else if (Model.Status == "Archived")
+                        {
+                            <span class="status-badge status-archived">
+                                <i class="bi bi-archive me-1"></i>
+                                Archived
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-draft">
+                                <i class="bi bi-pencil me-1"></i>
+                                @(string.IsNullOrWhiteSpace(Model.Status)
+                                    ? "Draft"
+                                    : Model.Status)
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-4 detail-item">
+                    <label class="detail-label">Published</label>
+                    <div>
+                        @if (Model.IsPublished)
+                        {
+                            <span class="status-badge status-yes">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Yes
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-no">
+                                <i class="bi bi-x-circle me-1"></i>
+                                No
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-4 detail-item">
+                    <label class="detail-label">Featured Image</label>
+                    <div class="image-url">
+                        @(string.IsNullOrWhiteSpace(Model.FeaturedImage)
+                            ? "Not set"
+                            : Model.FeaturedImage)
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Content -->
+    <div class="details-card">
+        <div class="details-card-header">
+            <i class="bi bi-card-text"></i>
+            <h5>Blog Content</h5>
+        </div>
+
+        <div class="details-card-body">
+            <label class="detail-label">Content</label>
+            <div class="content-box">
+                @Html.Raw(Model.Content)
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO Information -->
+    <div class="details-card">
+        <div class="details-card-header">
+            <i class="bi bi-search"></i>
+            <h5>SEO Information</h5>
+        </div>
+
+        <div class="details-card-body">
+            <div class="row">
+
+                <div class="col-md-6 detail-item">
+                    <label class="detail-label">Meta Title</label>
+                    <div class="detail-value">
+                        @(string.IsNullOrWhiteSpace(Model.MetaTitle)
+                            ? "Not set"
+                            : Model.MetaTitle)
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label class="detail-label">Meta Description</label>
+                    <div class="detail-value">
+                        @(string.IsNullOrWhiteSpace(Model.MetaDescription)
+                            ? "Not set"
+                            : Model.MetaDescription)
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Information -->
+    <div class="details-card">
+        <div class="details-card-header">
+            <i class="bi bi-calendar3"></i>
+            <h5>Date Information</h5>
+        </div>
+
+        <div class="details-card-body">
+            <div class="row">
+
+                <div class="col-md-6 detail-item">
+                    <label class="detail-label">Created At</label>
+                    <div class="date-box">
+                        <i class="bi bi-calendar-check me-2 text-primary"></i>
+                        @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                    </div>
+                </div>
+
+                <div class="col-md-6 detail-item">
+                    <label class="detail-label">Last Updated</label>
+                    <div class="date-box">
+                        <i class="bi bi-clock-history me-2 text-primary"></i>
+                        @(Model.UpdatedAt.HasValue
+                            ? Model.UpdatedAt.Value.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                            : "Not updated")
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div class="d-flex justify-content-end gap-2 mb-3">
+        <a asp-action="Blogs" class="btn-back">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Blogs
+        </a>
+
+        <a asp-action="EditBlog"
+           asp-route-id="@Model.Id"
+           class="btn-edit">
+            <i class="bi bi-pencil-square me-1"></i>
+            Edit Blog
+        </a>
+    </div>
+
+</div>

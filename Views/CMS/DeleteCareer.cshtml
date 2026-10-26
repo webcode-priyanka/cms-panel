@@ -1,0 +1,214 @@
+﻿@model CMSPanel.Models.Career
+
+@{
+    ViewData["Title"] = "Delete Career";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Delete Career</h1>
+        <p class="text-muted mb-0">Confirm deletion of this job opening</p>
+    </div>
+
+    <!-- Warning -->
+    <div class="alert alert-danger d-flex align-items-start" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+
+        <div>
+            <strong>Are you sure you want to delete this career?</strong>
+            <div class="mt-1">
+                This action cannot be undone.
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Information -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-briefcase me-2"></i>
+                Job Information
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <!-- Job Title -->
+                <div class="col-md-6">
+                    <label class="text-muted small">
+                        Job Title
+                    </label>
+
+                    <div class="fw-semibold fs-5">
+                        @Model.JobTitle
+                    </div>
+                </div>
+
+                <!-- Department -->
+                <div class="col-md-6">
+                    <label class="text-muted small">
+                        Department
+                    </label>
+
+                    <div class="fw-semibold">
+                        @Model.Department
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Location
+                    </label>
+
+                    <div>
+                        <i class="bi bi-geo-alt me-1"></i>
+                        @Model.Location
+                    </div>
+                </div>
+
+                <!-- Job Type -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Job Type
+                    </label>
+
+                    <div>
+                        <span class="badge bg-light text-dark border">
+                            @Model.JobType
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Status
+                    </label>
+
+                    <div>
+                        @if (Model.Status == "Published")
+                        {
+                            <span class="badge bg-success">
+                                Published
+                            </span>
+                        }
+                        else if (Model.Status == "Closed")
+                        {
+                            <span class="badge bg-danger">
+                                Closed
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">
+                                Draft
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Experience -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Experience
+                    </label>
+
+                    <div>
+                        @if (!string.IsNullOrWhiteSpace(Model.Experience))
+                        {
+                            @Model.Experience
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                Not specified
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Salary -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Salary
+                    </label>
+
+                    <div>
+                        @if (!string.IsNullOrWhiteSpace(Model.Salary))
+                        {
+                            @Model.Salary
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                Not specified
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Last Date -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Application Last Date
+                    </label>
+
+                    <div>
+                        @if (Model.LastDate.HasValue)
+                        {
+                            @Model.LastDate.Value.ToString("dd MMM yyyy")
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                Not specified
+                            </span>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Delete Form -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <form asp-action="DeleteCareer"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a asp-action="Careers"
+                       class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        <i class="bi bi-trash me-1"></i>
+                        Yes, Delete Career
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

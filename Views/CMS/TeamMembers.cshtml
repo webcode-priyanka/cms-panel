@@ -1,0 +1,147 @@
+﻿@model IEnumerable<CMSPanel.Models.TeamMember>
+
+@{
+    ViewData["Title"] = "Team Members";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Team / Leadership</h2>
+            <p class="text-muted">Manage team members and leadership details.</p>
+        </div>
+
+        <a asp-action="CreateTeamMember" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add Team Member
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-action="TeamMembers" method="get" class="mb-4">
+                <div class="input-group">
+                    <input type="text"
+                           name="searchString"
+                           value="@Context.Request.Query["searchString"]"
+                           class="form-control"
+                           placeholder="Search by name, designation or email..." />
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+
+                    <a asp-action="TeamMembers" class="btn btn-secondary">
+                        Reset
+                    </a>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Email</th>
+                            <th>Order</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var member in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (!string.IsNullOrWhiteSpace(member.ImageUrl))
+                                        {
+                                            <img src="@member.ImageUrl"
+                                                 alt="@member.Name"
+                                                 style="width:55px;height:55px;object-fit:cover;border-radius:50%;" />
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-person-circle fs-2 text-secondary"></i>
+                                        }
+                                    </td>
+
+                                    <td>@member.Name</td>
+                                    <td>@member.Designation</td>
+                                    <td>@(member.Email ?? "-")</td>
+                                    <td>@member.DisplayOrder</td>
+
+                                    <td>
+                                        @if (member.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <a asp-action="TeamMemberDetails"
+                                           asp-route-id="@member.Id"
+                                           class="btn btn-sm btn-info text-white"
+                                           title="Details">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        <a asp-action="EditTeamMember"
+                                           asp-route-id="@member.Id"
+                                           class="btn btn-sm btn-warning"
+                                           title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+
+                                        
+                                        <form asp-action="DeleteTeamMember"
+                                              asp-route-id="@member.Id"
+                                              method="post"
+                                              class="d-inline"
+                                              onsubmit="return confirm('Are you sure you want to delete this team member?');">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-danger"
+                                                    title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                        
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    No team members found.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

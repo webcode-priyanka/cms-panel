@@ -1,0 +1,447 @@
+﻿ @model CMSPanel.Models.MenuItem
+
+@{
+    ViewData["Title"] = "Edit Menu Item";
+    var parentMenus = ViewBag.ParentMenuItems as Microsoft.AspNetCore.Mvc.Rendering.SelectList;
+}
+
+<style>
+    .edit-menu-page {
+        color: #253247;
+    }
+
+    .edit-menu-breadcrumb {
+        font-size: .875rem;
+        color: #778398;
+    }
+
+        .edit-menu-breadcrumb a {
+            color: #5269d8;
+            text-decoration: none;
+        }
+
+    .edit-menu-card {
+        background: #fff;
+        border: 1px solid #e8edf3;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(25, 42, 70, .045);
+        overflow: hidden;
+    }
+
+    .edit-menu-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 21px 24px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .edit-menu-card-body {
+        padding: 26px 24px;
+    }
+
+    .edit-menu-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+        border-radius: 12px;
+        background: #edf1ff;
+        color: #5269d8;
+        font-size: 1.2rem;
+    }
+
+    .edit-menu-page .form-label {
+        color: #344258;
+        font-size: .9rem;
+        margin-bottom: 8px;
+    }
+
+    .edit-menu-page .form-control,
+    .edit-menu-page .form-select {
+        min-height: 44px;
+        border-color: #dfe5ed;
+        border-radius: 8px;
+    }
+
+    .edit-menu-page textarea.form-control {
+        min-height: 180px;
+    }
+
+    .edit-menu-page .form-control:focus,
+    .edit-menu-page .form-select:focus {
+        border-color: #8799f4;
+        box-shadow: 0 0 0 .2rem rgba(82, 105, 216, .12);
+    }
+
+    .edit-menu-help {
+        display: block;
+        margin-top: 7px;
+        color: #7b8798;
+        font-size: .8rem;
+    }
+
+    .edit-menu-section-title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .edit-menu-section-subtitle {
+        font-size: .85rem;
+        color: #7b8798;
+        margin-bottom: 0;
+    }
+
+    .edit-menu-footer {
+        padding: 20px 24px;
+        background: #fbfcfe;
+        border-top: 1px solid #edf0f5;
+    }
+
+    .edit-menu-status-box {
+        height: 100%;
+        min-height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border: 1px solid #e6ebf2;
+        border-radius: 10px;
+        background: #fbfcfe;
+    }
+
+    .edit-menu-page .form-check-input {
+        width: 2.6em;
+        height: 1.35em;
+        cursor: pointer;
+    }
+
+        .edit-menu-page .form-check-input:checked {
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+    .edit-menu-page .btn {
+        border-radius: 8px;
+        padding: 10px 17px;
+        font-weight: 600;
+    }
+
+    .edit-menu-page .validation-summary-valid {
+        display: none;
+    }
+
+    .edit-menu-page .field-validation-error {
+        display: block;
+        margin-top: 5px;
+        font-size: .82rem;
+    }
+
+    @@media (max-width: 767px) {
+        .edit-menu-card-header,
+        .edit-menu-card-body {
+            padding: 18px;
+        }
+
+        .edit-menu-footer {
+            padding: 18px;
+        }
+
+        .edit-menu-actions {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .edit-menu-actions .btn {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="container-fluid py-4 edit-menu-page">
+
+    <!-- BREADCRUMB -->
+    <div class="edit-menu-breadcrumb mb-3">
+        <a asp-controller="CMS" asp-action="Index">Dashboard</a>
+        <i class="bi bi-chevron-right mx-2"></i>
+        <a asp-controller="CMS" asp-action="MenuItems">Menus / Navigation</a>
+        <i class="bi bi-chevron-right mx-2"></i>
+        <span>Edit Menu Item</span>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+        <div class="d-flex align-items-center gap-3">
+            <div class="edit-menu-icon">
+                <i class="bi bi-pencil-square"></i>
+            </div>
+
+            <div>
+                <h2 class="fw-bold mb-1">Edit Menu Item</h2>
+                <p class="text-muted mb-0">
+                    Update navigation details, placement and visibility.
+                </p>
+            </div>
+        </div>
+
+        <span class="badge bg-light text-dark border px-3 py-2">
+            Menu ID: #@Model.Id
+        </span>
+    </div>
+
+    <!-- VALIDATION SUMMARY -->
+    <div asp-validation-summary="ModelOnly"
+         class="alert alert-danger"
+         role="alert"></div>
+
+    <form asp-action="EditMenuItem"
+          asp-controller="CMS"
+          asp-route-id="@Model.Id"
+          method="post">
+
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <!-- GENERAL INFORMATION -->
+        <div class="edit-menu-card mb-4">
+
+            <div class="edit-menu-card-header">
+                <div class="edit-menu-icon">
+                    <i class="bi bi-info-circle"></i>
+                </div>
+
+                <div>
+                    <h5 class="edit-menu-section-title">General Information</h5>
+                    <p class="edit-menu-section-subtitle">
+                        Set the menu title, location and destination.
+                    </p>
+                </div>
+            </div>
+
+            <div class="edit-menu-card-body">
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label asp-for="Title" class="form-label fw-semibold">
+                            Menu Title <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               placeholder="e.g. About Us" />
+
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Location" class="form-label fw-semibold">
+                            Menu Location <span class="text-danger">*</span>
+                        </label>
+
+                        <select asp-for="Location" class="form-select">
+                            <option value="Header">Header</option>
+                            <option value="Footer">Footer</option>
+                            <option value="Context">Context</option>
+                        </select>
+
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label asp-for="Url" class="form-label fw-semibold">
+                            Destination URL <span class="text-danger">*</span>
+                        </label>
+
+                        <input asp-for="Url"
+                               class="form-control"
+                               placeholder="e.g. /about or https://example.com" />
+
+                        <span asp-validation-for="Url" class="text-danger"></span>
+
+                        <small class="edit-menu-help">
+                            Use a relative path such as /about or a complete external URL.
+                        </small>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Target" class="form-label fw-semibold">
+                            Open Link
+                        </label>
+
+                        <select asp-for="Target" class="form-select">
+                            <option value="">Same Tab</option>
+                            <option value="_self">Same Tab</option>
+                            <option value="_blank">New Tab</option>
+                        </select>
+
+                        <small class="edit-menu-help">
+                            Choose where the destination opens.
+                        </small>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- HIERARCHY & DISPLAY -->
+        <div class="edit-menu-card mb-4">
+
+            <div class="edit-menu-card-header">
+                <div class="edit-menu-icon">
+                    <i class="bi bi-diagram-3"></i>
+                </div>
+
+                <div>
+                    <h5 class="edit-menu-section-title">Hierarchy & Display</h5>
+                    <p class="edit-menu-section-subtitle">
+                        Configure the parent menu, ordering and visibility.
+                    </p>
+                </div>
+            </div>
+
+            <div class="edit-menu-card-body">
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+                        <label asp-for="ParentId" class="form-label fw-semibold">
+                            Parent Menu
+                        </label>
+
+                        <select asp-for="ParentId"
+                                asp-items="parentMenus"
+                                class="form-select">
+                            <option value="">Main Menu (No Parent)</option>
+                        </select>
+
+                        <span asp-validation-for="ParentId" class="text-danger"></span>
+
+                        <small class="edit-menu-help">
+                            Select a parent to make this item a submenu.
+                        </small>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="DisplayOrder" class="form-label fw-semibold">
+                            Display Order
+                        </label>
+
+                        <input asp-for="DisplayOrder"
+                               type="number"
+                               min="0"
+                               class="form-control" />
+
+                        <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+
+                        <small class="edit-menu-help">
+                            Lower numbers appear first.
+                        </small>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Visibility</label>
+
+                        <div class="edit-menu-status-box">
+                            <div>
+                                <div class="fw-semibold">Show Menu</div>
+                                <small class="text-muted">Enable display</small>
+                            </div>
+
+                            <div class="form-check form-switch mb-0">
+                                <input asp-for="IsVisible"
+                                       class="form-check-input"
+                                       type="checkbox"
+                                       role="switch" />
+                            </div>
+                        </div>
+
+                        <span asp-validation-for="IsVisible" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="edit-menu-card mb-4">
+
+            <div class="edit-menu-card-header">
+                <div class="edit-menu-icon">
+                    <i class="bi bi-card-text"></i>
+                </div>
+
+                <div>
+                    <h5 class="edit-menu-section-title">Menu Description</h5>
+                    <p class="edit-menu-section-subtitle">
+                        Add supporting content or details for this menu item.
+                    </p>
+                </div>
+            </div>
+
+            <div class="edit-menu-card-body">
+                <label asp-for="Description" class="form-label fw-semibold">
+                    Description
+                </label>
+
+                <textarea asp-for="Description"
+                          id="menuDescription"
+                          class="form-control"
+                          rows="8"
+                          placeholder="Write the menu description here..."></textarea>
+
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- ACTION FOOTER -->
+        <div class="edit-menu-card">
+            <div class="edit-menu-footer d-flex flex-wrap justify-content-between align-items-center gap-3">
+
+                <div class="text-muted small">
+                    <i class="bi bi-shield-check me-1"></i>
+                    Review your changes before updating.
+                </div>
+
+                <div class="edit-menu-actions d-flex flex-wrap gap-2">
+                    <a asp-controller="CMS"
+                       asp-action="MenuItems"
+                       class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Update Menu Item
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const description = document.querySelector("#menuDescription");
+
+            if (description && window.ClassicEditor) {
+                ClassicEditor
+                    .create(description)
+                    .catch(function (error) {
+                        console.error("CKEditor initialization failed:", error);
+                    });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,100 @@
+﻿@model CMSPanel.Models.Download
+
+@{
+    ViewData["Title"] = "Create Download";
+}
+
+<div class="container-fluid py-4">
+    <div class="mb-4">
+        <h2 class="fw-bold">Create Download</h2>
+        <p class="text-muted">Add a new downloadable document</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <form asp-action="CreateDownload" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Title" class="form-label">Title</label>
+                        <input asp-for="Title" class="form-control"
+                               placeholder="Enter document title" />
+                        <span asp-validation-for="Title"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Category" class="form-label">Category</label>
+                        <input asp-for="Category" class="form-control"
+                               placeholder="Enter category" />
+                        <span asp-validation-for="Category"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label asp-for="Description" class="form-label">
+                            Description
+                        </label>
+                        <textarea asp-for="Description"
+                                  class="form-control" rows="4"
+                                  placeholder="Enter document description"></textarea>
+                        <span asp-validation-for="Description"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FileName" class="form-label">
+                            File Name
+                        </label>
+                        <input asp-for="FileName" class="form-control"
+                               placeholder="e.g. company-policy.pdf" />
+                        <span asp-validation-for="FileName"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="FilePath" class="form-label">
+                            File Path
+                        </label>
+                        <input asp-for="FilePath" class="form-control"
+                               placeholder="Enter file path" />
+                        <span asp-validation-for="FilePath"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Status" class="form-label">
+                            Status
+                        </label>
+                        <select asp-for="Status" class="form-select">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <span asp-validation-for="Status"
+                              class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Save Download
+                    </button>
+
+                    <a asp-action="Downloads" class="btn btn-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

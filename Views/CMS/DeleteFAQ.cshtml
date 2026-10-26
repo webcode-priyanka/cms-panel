@@ -1,0 +1,72 @@
+﻿@model CMSPanel.Models.FAQ
+
+@{
+    ViewData["Title"] = "Delete FAQ";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h2 class="fw-bold text-danger">Delete FAQ</h2>
+        <p class="text-muted">Confirm before deleting this FAQ.</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <div class="alert alert-warning">
+                Are you sure you want to delete this FAQ?
+                This action cannot be undone.
+            </div>
+
+            <div class="mb-4">
+                <h5 class="fw-bold">Question</h5>
+                <p>@Model.Question</p>
+            </div>
+
+            <hr />
+
+            <div class="mb-4">
+                <h5 class="fw-bold">Answer</h5>
+                <p style="white-space: pre-wrap;">@Model.Answer</p>
+            </div>
+
+            <dl class="row">
+                <dt class="col-md-3">Category</dt>
+                <dd class="col-md-9">
+                    @(Model.Category ?? "Not provided")
+                </dd>
+
+                <dt class="col-md-3">Status</dt>
+                <dd class="col-md-9">
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </dd>
+            </dl>
+
+            <form asp-action="DeleteFAQ"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+
+                <a asp-action="FAQs" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </form>
+
+        </div>
+    </div>
+</div>

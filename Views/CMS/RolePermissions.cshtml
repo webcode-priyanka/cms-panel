@@ -1,0 +1,86 @@
+﻿@model IEnumerable<CMSPanel.Models.RolePermission>
+
+@{
+    ViewData["Title"] = "Role Permissions";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Role Permissions</h1>
+        <p class="text-muted">
+            View role and permission assignments
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Role</th>
+                            <th>Permission</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @{
+                            int count = 1;
+                        }
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+
+                                <td>
+                                    <span class="badge bg-primary">
+                                        @item.Role?.Name
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-info text-dark">
+                                        @item.Permission?.Name
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @item.Permission?.Description
+                                </td>
+
+                                <td>
+                                    @if (item.IsAllowed)
+                                    {
+                                        <span class="badge bg-success">
+                                            Allowed
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            Denied
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+
+                            count++;
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

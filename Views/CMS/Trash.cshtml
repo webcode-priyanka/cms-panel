@@ -1,0 +1,291 @@
+﻿@model IEnumerable<CMSPanel.Models.TrashItem>
+
+@{
+    ViewData["Title"] = "Trash / Recovery";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold">Trash / Recovery</h1>
+            <p class="text-muted mb-0">
+                Manage deleted records and restore them when required.
+            </p>
+        </div>
+
+    </div>
+
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+
+            @TempData["Success"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["Error"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+        </div>
+    }
+
+    <!-- Search / Filter -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <form asp-action="Trash"
+                  method="get"
+                  class="row g-3">
+
+                <div class="col-md-5">
+
+                    <label class="form-label">
+                        Search
+                    </label>
+
+                    <input type="text"
+                           name="searchString"
+                           value="@ViewBag.SearchString"
+                           class="form-control"
+                           placeholder="Search by name or ID" />
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Module
+                    </label>
+
+                    <select name="module"
+                            class="form-select">
+
+                        <option value="">
+                            All Modules
+                        </option>
+
+                        @foreach (var item in ViewBag.Modules)
+                        {
+                            <option value="@item"
+                                    selected="@(ViewBag.Module == item ? "selected" : null)">
+                                @item
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-3 d-flex align-items-end gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="bi bi-search me-1"></i>
+                        Search
+
+                    </button>
+
+
+                    <a asp-action="Trash"
+                       class="btn btn-secondary">
+
+                        Reset
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- Trash Table -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Module</th>
+
+                            <th>Item</th>
+
+                            <th>Item ID</th>
+
+                            <th>Deleted By</th>
+
+                            <th>Deleted At</th>
+
+                            <th class="text-center">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @if (Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @item.Id
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="badge bg-secondary">
+                                            @item.Module
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <strong>
+                                            @(item.ItemName ?? "-")
+                                        </strong>
+
+                                    </td>
+
+
+                                    <td>
+                                        @item.ItemId
+                                    </td>
+
+
+                                    <td>
+                                        @(item.DeletedBy ?? "-")
+                                    </td>
+
+
+                                    <td>
+                                        @item.DeletedAt.ToString("dd MMM yyyy hh:mm tt")
+                                    </td>
+
+
+                                    <td class="text-center">
+
+                                        <div class="btn-group">
+
+                                            <!-- Restore -->
+
+                                            <form asp-action="RestoreTrash"
+                                                  method="post"
+                                                  class="d-inline">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@item.Id" />
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-success"
+                                                        title="Restore">
+
+                                                    <i class="bi bi-arrow-counterclockwise"></i>
+
+                                                </button>
+
+                                            </form>
+
+
+                                            <!-- Permanent Delete -->
+
+                                            <form asp-action="PermanentDeleteTrash"
+                                                  method="post"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Are you sure you want to permanently delete this item?');">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@item.Id" />
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        title="Permanent Delete">
+
+                                                    <i class="bi bi-trash"></i>
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="7"
+                                    class="text-center py-5">
+
+                                    <i class="bi bi-trash3 fs-1 text-muted"></i>
+
+                                    <p class="text-muted mt-2 mb-0">
+                                        Trash is empty.
+                                    </p>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

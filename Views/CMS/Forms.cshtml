@@ -1,0 +1,377 @@
+﻿@model IEnumerable<CMSPanel.Models.Form>
+
+@{
+    ViewData["Title"] = "Forms";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold mb-1">Forms</h1>
+
+            <p class="text-muted mb-0">
+                Manage website forms.
+            </p>
+        </div>
+
+        <a asp-controller="CMS"
+           asp-action="CreateForm"
+           class="btn btn-primary">
+
+            <i class="bi bi-plus-lg me-1"></i>
+            Add Form
+
+        </a>
+
+    </div>
+
+
+    <!-- Success Message -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+
+            <i class="bi bi-check-circle me-2"></i>
+
+            @TempData["Success"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+
+        </div>
+    }
+
+
+    <!-- Search & Filter -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <form asp-controller="CMS"
+                  asp-action="Forms"
+                  method="get">
+
+                <div class="row g-3 align-items-end">
+
+                    <!-- Search -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Search
+                        </label>
+
+                        <input type="text"
+                               name="searchString"
+                               value="@ViewBag.SearchString"
+                               class="form-control"
+                               placeholder="Search form name, slug or description..." />
+
+                    </div>
+
+
+                    <!-- Status -->
+                    <div class="col-md-3">
+
+                        <label class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select name="status"
+                                class="form-select">
+
+                            @if (string.IsNullOrWhiteSpace(ViewBag.Status))
+                            {
+                                <option value="" selected>
+                                    All Status
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="">
+                                    All Status
+                                </option>
+                            }
+
+                            @if (ViewBag.Status == "Active")
+                            {
+                                <option value="Active" selected>
+                                    Active
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="Active">
+                                    Active
+                                </option>
+                            }
+
+                            @if (ViewBag.Status == "Inactive")
+                            {
+                                <option value="Inactive" selected>
+                                    Inactive
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="Inactive">
+                                    Inactive
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Search -->
+                    <div class="col-md-2">
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+
+                            <i class="bi bi-search me-1"></i>
+                            Search
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- Reset -->
+                    <div class="col-md-1">
+
+                        <a asp-controller="CMS"
+                           asp-action="Forms"
+                           class="btn btn-outline-secondary w-100"
+                           title="Reset">
+
+                            <i class="bi bi-arrow-clockwise"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- Forms Table -->
+    <div class="card shadow-sm border-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Form Name</th>
+
+                        <th>Slug</th>
+
+                        <th>Description</th>
+
+                        <th>Status</th>
+
+                        <th>Updated</th>
+
+                        <th class="text-end">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        var count = 1;
+
+                        foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @count
+                                </td>
+
+
+                                <td>
+                                    <div class="fw-semibold">
+                                        @item.Name
+                                    </div>
+                                </td>
+
+
+                                <td>
+                                    <code>
+                                        @item.Slug
+                                    </code>
+                                </td>
+
+
+                                <td>
+
+                                    @if (!string.IsNullOrWhiteSpace(item.Description))
+                                    {
+                                        @item.Description
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            Not set
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <td>
+
+                                    @if (item.Status == "Active")
+                                    {
+                                        <span class="badge bg-success">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            Inactive
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <td>
+
+                                    @if (item.UpdatedAt.HasValue)
+                                    {
+                                        <div class="fw-semibold">
+                                            @item.UpdatedAt.Value.ToString("dd MMM yyyy")
+                                        </div>
+
+                                        <small class="text-muted">
+                                            @item.UpdatedAt.Value.ToString("hh:mm tt")
+                                        </small>
+                                    }
+                                    else
+                                    {
+                                        <div class="fw-semibold">
+                                            @item.CreatedAt.ToString("dd MMM yyyy")
+                                        </div>
+
+                                        <small class="text-muted">
+                                            Created
+                                        </small>
+                                    }
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="d-flex justify-content-end gap-2">
+
+                                        <a asp-controller="CMS"
+                                           asp-action="FormDetails"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="View">
+
+                                            <i class="bi bi-eye"></i>
+
+                                        </a>
+
+
+                                        <a asp-controller="CMS"
+                                           asp-action="EditForm"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-warning"
+                                           title="Edit">
+
+                                            <i class="bi bi-pencil"></i>
+
+                                        </a>
+
+
+                                        
+                                        <form asp-controller="CMS"
+                                              asp-action="DeleteForm"
+                                              asp-route-id="@item.Id"
+                                              method="post"
+                                              class="d-inline"
+                                              onsubmit="return confirm('Are you sure you want to delete this form?');">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    title="Delete">
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </button>
+
+                                        </form>
+                                        
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            count++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="7"
+                                class="text-center py-5">
+
+                                <i class="bi bi-ui-checks-grid fs-1 text-muted"></i>
+
+                                <h5 class="mt-3">
+                                    No forms found
+                                </h5>
+
+                                <p class="text-muted mb-0">
+                                    Create your first form.
+                                </p>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+

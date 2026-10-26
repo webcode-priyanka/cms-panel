@@ -1,0 +1,210 @@
+﻿@model CMSPanel.Models.CareerApplication
+
+@{
+    ViewData["Title"] = "Edit Career Application";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Edit Career Application</h1>
+        <p class="text-muted">
+            Update applicant information and application status
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <form asp-action="EditCareerApplication"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="Id" />
+
+                <input type="hidden"
+                       asp-for="AppliedAt" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+
+                        <label asp-for="ApplicantName"
+                               class="form-label">
+                            Applicant Name
+                        </label>
+
+                        <input asp-for="ApplicantName"
+                               class="form-control" />
+
+                        <span asp-validation-for="ApplicantName"
+                              class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label asp-for="Email"
+                               class="form-label">
+                            Email
+                        </label>
+
+                        <input asp-for="Email"
+                               class="form-control" />
+
+                        <span asp-validation-for="Email"
+                              class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label asp-for="Phone"
+                               class="form-label">
+                            Phone
+                        </label>
+
+                        <input asp-for="Phone"
+                               class="form-control" />
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label asp-for="CareerId"
+                               class="form-label">
+                            Job Position
+                        </label>
+
+                        <select asp-for="CareerId"
+                                class="form-select">
+
+                            <option value="">
+                                Select Job Position
+                            </option>
+
+                            @{
+                                var careers = ViewBag.Careers as IEnumerable<dynamic>
+                                ?? Enumerable.Empty<dynamic>();
+                            }
+
+                            @foreach (var career in careers)
+                            {
+                                <option value="@career.Id">
+                                    @career.Title
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label asp-for="CareerTitle"
+                               class="form-label">
+                            Career Title
+                        </label>
+
+                        <input asp-for="CareerTitle"
+                               class="form-control" />
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label asp-for="Status"
+                               class="form-label">
+                            Status
+                        </label>
+
+                        <select asp-for="Status"
+                                class="form-select">
+
+                            @{
+                                var statuses = ViewBag.Statuses as IEnumerable<string>
+                                ?? new[] { "Pending", "Shortlisted", "Rejected", "Hired" };
+                            }
+
+                            @foreach (var status in statuses)
+                            {
+                                <option value="@status" selected="@(Model.Status == status ? "selected" : null)">
+                                    @status
+                                </option>
+                            }
+                        </select>
+
+                    </div>
+
+                    <div class="col-12">
+
+                        <label asp-for="ResumePath"
+                               class="form-label">
+                            Resume Path
+                        </label>
+
+                        <input asp-for="ResumePath"
+                               class="form-control" />
+
+                    </div>
+
+                    <div class="col-12">
+
+                        <label asp-for="CoverLetter"
+                               class="form-label">
+                            Cover Letter
+                        </label>
+
+                        <textarea asp-for="CoverLetter"
+                                  class="form-control"
+                                  rows="5"></textarea>
+
+                    </div>
+
+                    <div class="col-12">
+
+                        <label asp-for="Notes"
+                               class="form-label">
+                            Notes
+                        </label>
+
+                        <textarea asp-for="Notes"
+                                  class="form-control"
+                                  rows="4"></textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-4">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i>
+                        Update Application
+                    </button>
+
+                    <a asp-action="CareerApplications"
+                       class="btn btn-secondary ms-2">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

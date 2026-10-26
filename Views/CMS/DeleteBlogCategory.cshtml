@@ -1,0 +1,388 @@
+﻿@model CMSPanel.Models.BlogCategory
+
+@{
+    ViewData["Title"] = "Delete Blog Category";
+}
+
+<style>
+    .delete-page {
+        padding: 25px;
+    }
+
+    .delete-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 750;
+        color: #1e293b;
+        margin-bottom: 5px;
+    }
+
+    .page-subtitle {
+        color: #64748b;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .btn-back {
+        background: #fff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 17px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-back:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    .delete-card {
+        background: #fff;
+        border: 1px solid #fecaca;
+        border-radius: 14px;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
+        overflow: hidden;
+    }
+
+    .delete-card-header {
+        background: linear-gradient(135deg, #fff1f2, #fff7f7);
+        border-bottom: 1px solid #fecaca;
+        padding: 22px 26px;
+    }
+
+        .delete-card-header h5 {
+            color: #991b1b;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .delete-card-header p {
+            color: #b91c1c;
+            font-size: 13px;
+            margin: 0;
+        }
+
+    .delete-card-body {
+        padding: 28px;
+    }
+
+    .warning-box {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 18px;
+        margin-bottom: 28px;
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        border-radius: 10px;
+    }
+
+    .warning-icon {
+        color: #ea580c;
+        font-size: 25px;
+    }
+
+    .warning-title {
+        color: #9a3412;
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .warning-text {
+        color: #c2410c;
+        font-size: 13px;
+        margin: 0;
+    }
+
+    .section-title {
+        color: #334155;
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .detail-box {
+        height: 100%;
+        padding: 16px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+    }
+
+    .detail-label {
+        display: block;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 8px;
+    }
+
+    .detail-value {
+        color: #1e293b;
+        font-size: 15px;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .description-box {
+        padding: 17px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        color: #475569;
+        font-size: 14px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .status-active {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .status-inactive {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .delete-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding-top: 22px;
+        margin-top: 28px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .btn-delete {
+        background: #dc2626;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 11px 22px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-delete:hover {
+            background: #b91c1c;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .btn-cancel {
+        background: #fff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 11px 22px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .btn-cancel:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+    @@media (max-width: 768px) {
+        .delete-page {
+            padding: 15px;
+        }
+
+        .page-title {
+            font-size: 23px;
+        }
+
+        .delete-card-body {
+            padding: 18px;
+        }
+
+        .delete-actions {
+            flex-direction: column-reverse;
+        }
+
+            .delete-actions .btn {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="container-fluid delete-page">
+
+    <!-- Page Header -->
+    <div class="delete-header">
+        <div>
+            <h1 class="page-title">
+                <i class="bi bi-trash3 text-danger me-2"></i>
+                Delete Blog Category
+            </h1>
+            <p class="page-subtitle">
+                Review the category details before deleting.
+            </p>
+        </div>
+
+        <a asp-action="BlogCategories" class="btn-back">
+            <i class="bi bi-arrow-left me-2"></i>
+            Back to Categories
+        </a>
+    </div>
+
+    <!-- Delete Card -->
+    <div class="delete-card">
+
+        <div class="delete-card-header">
+            <h5>
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                Confirm Category Deletion
+            </h5>
+            <p>Please review the information below before proceeding.</p>
+        </div>
+
+        <div class="delete-card-body">
+
+            <!-- Warning -->
+            <div class="warning-box">
+                <div class="warning-icon">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+
+                <div>
+                    <div class="warning-title">
+                        Are you sure you want to delete this category?
+                    </div>
+                    <p class="warning-text">
+                        This action cannot be undone. Please make sure
+                        you want to permanently delete this category.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Category Details -->
+            <h6 class="section-title">
+                <i class="bi bi-info-circle text-primary me-2"></i>
+                Category Information
+            </h6>
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <span class="detail-label">Category Name</span>
+                        <div class="detail-value">
+                            @Model.Name
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <span class="detail-label">Slug</span>
+                        <div class="detail-value">
+                            @(string.IsNullOrWhiteSpace(Model.Slug)
+                                ? "Not set"
+                                : Model.Slug)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <span class="detail-label">Status</span>
+                        <div>
+                            @if (Model.IsActive)
+                            {
+                                <span class="status-badge status-active">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Active
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="status-badge status-inactive">
+                                    <i class="bi bi-x-circle me-1"></i>
+                                    Inactive
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <span class="detail-label">Created</span>
+                        <div class="detail-value">
+                            @Model.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <span class="detail-label">Description</span>
+                    <div class="description-box">
+                        @(string.IsNullOrWhiteSpace(Model.Description)
+                            ? "No description available."
+                            : Model.Description)
+                    </div>
+                </div>
+
+            </div>
+
+          
+            <!-- Action Buttons -->
+            <div class="delete-actions">
+
+                <a asp-action="BlogCategories" class="btn-cancel">
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Cancel
+                </a>
+
+                <form asp-controller="CMS"
+                      asp-action="DeleteBlogCategoryConfirmed"
+                      method="post"
+                      class="d-inline"
+                      onsubmit="return confirm('Are you sure you want to delete this category?');">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" name="id" value="@Model.Id" />
+
+                    <button type="submit" class="btn-delete">
+                        <i class="bi bi-trash me-1"></i>
+                        Confirm Delete
+                    </button>
+                </form>
+
+            </div>
+
+            
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,361 @@
+﻿@model CMSPanel.Models.Career
+
+@{
+    ViewData["Title"] = "Career Details";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Career Details</h1>
+            <p class="text-muted mb-0">View job opening information</p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-action="EditCareer"
+               asp-route-id="@Model.Id"
+               class="btn btn-primary">
+                <i class="bi bi-pencil me-1"></i>
+                Edit
+            </a>
+
+            <a asp-action="Careers"
+               class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back
+            </a>
+        </div>
+    </div>
+
+    <!-- Job Overview -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-briefcase me-2"></i>
+                Job Overview
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <!-- Job Title -->
+                <div class="col-md-6">
+                    <label class="text-muted small">
+                        Job Title
+                    </label>
+
+                    <div class="fw-semibold fs-5">
+                        @Model.JobTitle
+                    </div>
+                </div>
+
+                <!-- Department -->
+                <div class="col-md-6">
+                    <label class="text-muted small">
+                        Department
+                    </label>
+
+                    <div class="fw-semibold">
+                        @Model.Department
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Location
+                    </label>
+
+                    <div>
+                        <i class="bi bi-geo-alt me-1"></i>
+                        @Model.Location
+                    </div>
+                </div>
+
+                <!-- Job Type -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Job Type
+                    </label>
+
+                    <div>
+                        <span class="badge bg-light text-dark border">
+                            @Model.JobType
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Experience -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Experience
+                    </label>
+
+                    <div>
+                        @if (!string.IsNullOrWhiteSpace(Model.Experience))
+                        {
+                            @Model.Experience
+                        }
+                        else
+                        {
+                            <span class="text-muted">Not specified</span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Salary -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Salary
+                    </label>
+
+                    <div>
+                        @if (!string.IsNullOrWhiteSpace(Model.Salary))
+                        {
+                            @Model.Salary
+                        }
+                        else
+                        {
+                            <span class="text-muted">Not specified</span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Last Date -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Application Last Date
+                    </label>
+
+                    <div>
+                        @if (Model.LastDate.HasValue)
+                        {
+                            @Model.LastDate.Value.ToString("dd MMM yyyy")
+                        }
+                        else
+                        {
+                            <span class="text-muted">Not specified</span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Status
+                    </label>
+
+                    <div>
+                        @if (Model.Status == "Published")
+                        {
+                            <span class="badge bg-success">
+                                Published
+                            </span>
+                        }
+                        else if (Model.Status == "Closed")
+                        {
+                            <span class="badge bg-danger">
+                                Closed
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">
+                                Draft
+                            </span>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Job Description -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-file-text me-2"></i>
+                Job Description
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <div style="white-space: pre-line;">
+                    @Model.Description
+                </div>
+            }
+            else
+            {
+                <span class="text-muted">
+                    No description available.
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+    <!-- Requirements -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-check2-square me-2"></i>
+                Requirements
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            @if (!string.IsNullOrWhiteSpace(Model.Requirements))
+            {
+                <div style="white-space: pre-line;">
+                    @Model.Requirements
+                </div>
+            }
+            else
+            {
+                <span class="text-muted">
+                    No requirements specified.
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+    <!-- Responsibilities -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-list-check me-2"></i>
+                Responsibilities
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            @if (!string.IsNullOrWhiteSpace(Model.Responsibilities))
+            {
+                <div style="white-space: pre-line;">
+                    @Model.Responsibilities
+                </div>
+            }
+            else
+            {
+                <span class="text-muted">
+                    No responsibilities specified.
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+    <!-- Publishing Information -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-info-circle me-2"></i>
+                Publishing Information
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Published
+                    </label>
+
+                    <div>
+                        @if (Model.IsPublished)
+                        {
+                            <span class="badge bg-success">
+                                Yes
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                No
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Created At
+                    </label>
+
+                    <div>
+                        @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="text-muted small">
+                        Updated At
+                    </label>
+
+                    <div>
+                        @if (Model.UpdatedAt.HasValue)
+                        {
+                            @Model.UpdatedAt.Value.ToString("dd MMM yyyy, hh:mm tt")
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                Not updated
+                            </span>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div class="d-flex justify-content-end gap-2">
+
+        <a asp-action="Careers"
+           class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Careers
+        </a>
+
+        <a asp-action="EditCareer"
+           asp-route-id="@Model.Id"
+           class="btn btn-primary">
+            <i class="bi bi-pencil me-1"></i>
+            Edit Career
+        </a>
+
+        <a asp-action="DeleteCareer"
+           asp-route-id="@Model.Id"
+           class="btn btn-danger">
+            <i class="bi bi-trash me-1"></i>
+            Delete
+        </a>
+
+    </div>
+
+</div>

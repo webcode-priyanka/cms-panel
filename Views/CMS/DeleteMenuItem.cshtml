@@ -1,0 +1,188 @@
+﻿@model CMSPanel.Models.MenuItem
+
+@{
+    ViewData["Title"] = "Delete Menu Item";
+}
+
+<div class="container-fluid py-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Delete Menu Item</h1>
+        <p class="text-muted mb-0">
+            Review the menu item before deleting it.
+        </p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-4">
+
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+
+                <strong>Are you sure?</strong>
+                This menu item will be permanently deleted.
+            </div>
+
+            <div class="row g-4">
+
+                <!-- Title -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Menu Title
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.Title
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Menu Location
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.Location
+                    </div>
+                </div>
+
+                <!-- URL -->
+                <div class="col-md-8">
+                    <label class="form-label fw-semibold">
+                        URL
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.Url
+                    </div>
+                </div>
+
+                <!-- Target -->
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">
+                        Open Link
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @(string.IsNullOrWhiteSpace(Model.Target)
+                            ? "Same Tab"
+                            : "New Tab")
+                    </div>
+                </div>
+
+                <!-- Parent -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Parent Menu
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @if (Model.Parent != null)
+                        {
+                            @Model.Parent.Title
+                        }
+                        else
+                        {
+                            <span>Main Menu</span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Display Order -->
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">
+                        Display Order
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @Model.DisplayOrder
+                    </div>
+                </div>
+
+                <!-- Visibility -->
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">
+                        Visibility
+                    </label>
+
+                    <div class="form-control bg-light">
+                        @if (Model.IsVisible)
+                        {
+                            <span class="text-success">
+                                <i class="bi bi-eye me-1"></i>
+                                Visible
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-secondary">
+                                <i class="bi bi-eye-slash me-1"></i>
+                                Hidden
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="col-12">
+                    <label class="form-label fw-semibold">
+                        Description
+                    </label>
+
+                    <div class="border rounded p-3 bg-light">
+                        @if (!string.IsNullOrWhiteSpace(Model.Description))
+                        {
+                            @Html.Raw(Model.Description)
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                No description available.
+                            </span>
+                        }
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="my-4" />
+
+            <!-- Delete Form -->
+            <form asp-action="DeleteMenuItem"
+                  asp-controller="CMS"
+                  asp-route-id="@Model.Id"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-danger"
+                            onclick="return confirm('Are you sure you want to delete this menu item?');">
+
+                        <i class="bi bi-trash me-1"></i>
+                        Delete Menu Item
+
+                    </button>
+
+                    <a asp-action="MenuItems"
+                       asp-controller="CMS"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

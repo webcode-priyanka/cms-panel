@@ -1,0 +1,407 @@
+﻿@model IEnumerable<CMSPanel.Models.MenuItem>
+
+@{
+    ViewData["Title"] = "Menus / Navigation";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Menus / Navigation</h1>
+            <p class="text-muted mb-0">
+                Manage website navigation menus and menu items.
+            </p>
+        </div>
+
+        <a asp-action="CreateMenuItem"
+           asp-controller="CMS"
+           class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i>
+            Add Menu Item
+        </a>
+    </div>
+
+
+    <!-- SUCCESS MESSAGE -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"
+             role="alert">
+
+            <i class="bi bi-check-circle me-2"></i>
+
+            @TempData["Success"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+        </div>
+    }
+
+
+    <!-- ERROR MESSAGE -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show"
+             role="alert">
+
+            <i class="bi bi-exclamation-triangle me-2"></i>
+
+            @TempData["Error"]
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+            </button>
+        </div>
+    }
+
+
+    <!-- SEARCH / FILTER -->
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <form asp-action="MenuItems"
+                  asp-controller="CMS"
+                  method="get">
+
+                <div class="row g-3 align-items-end">
+
+                    <!-- SEARCH -->
+                    <div class="col-md-5">
+
+                        <label class="form-label fw-semibold">
+                            Search
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-search"></i>
+                            </span>
+
+                            <input type="text"
+                                   name="searchString"
+                                   value="@ViewBag.SearchString"
+                                   class="form-control"
+                                   placeholder="Search title or URL" />
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LOCATION -->
+                    <div class="col-md-3">
+
+                        <label class="form-label fw-semibold">
+                            Location
+                        </label>
+
+                        <select name="location"
+                                class="form-select">
+
+                            <option value="">
+                                All Locations
+                            </option>
+
+                            <option value="Header"
+                                    selected="@(ViewBag.Location == "Header")">
+                                Header
+                            </option>
+
+                            <option value="Footer"
+                                    selected="@(ViewBag.Location == "Footer")">
+                                Footer
+                            </option>
+
+                            <option value="Context"
+                                    selected="@(ViewBag.Location == "Context")">
+                                Context
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+                    <div class="col-md-4">
+
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bi bi-search me-1"></i>
+                                Search
+
+                            </button>
+
+
+                            <a asp-action="MenuItems"
+                               asp-controller="CMS"
+                               class="btn btn-outline-secondary">
+
+                                <i class="bi bi-arrow-counterclockwise me-1"></i>
+                                Reset
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- MENU TABLE -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th class="px-4">
+                                #
+                            </th>
+
+                            <th>
+                                Title
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                URL
+                            </th>
+
+                            <th>
+                                Parent
+                            </th>
+
+                            <th>
+                                Order
+                            </th>
+
+                            <th>
+                                Visibility
+                            </th>
+
+                            <th class="text-end px-4">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @if (Model != null && Model.Any())
+                        {
+                            int count = 1;
+
+                            foreach (var menu in Model)
+                            {
+                                <tr>
+
+                                    <!-- NUMBER -->
+                                    <td class="px-4 fw-semibold">
+                                        @count
+                                    </td>
+
+
+                                    <!-- TITLE -->
+                                    <td>
+
+                                        <div class="fw-semibold">
+                                            @menu.Title
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- LOCATION -->
+                                    <td>
+
+                                        @if (menu.Location == "Header")
+                                        {
+                                            <span class="badge bg-primary">
+                                                <i class="bi bi-layout-text-window me-1"></i>
+                                                Header
+                                            </span>
+                                        }
+                                        else if (menu.Location == "Footer")
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-layout-text-window-reverse me-1"></i>
+                                                Footer
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-info text-dark">
+                                                <i class="bi bi-grid me-1"></i>
+                                                @menu.Location
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- URL -->
+                                    <td>
+
+                                        <span class="text-muted">
+                                            @menu.Url
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- PARENT -->
+                                    <td>
+
+                                        @if (menu.Parent != null)
+                                        {
+                                            <span>
+                                                <i class="bi bi-arrow-return-right me-1 text-muted"></i>
+                                                @menu.Parent.Title
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                Main Menu
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- ORDER -->
+                                    <td>
+
+                                        <span class="badge bg-light text-dark border">
+                                            @menu.DisplayOrder
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- VISIBILITY -->
+                                    <td>
+
+                                        @if (menu.IsVisible)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-eye me-1"></i>
+                                                Visible
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-eye-slash me-1"></i>
+                                                Hidden
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- ACTIONS -->
+
+                                    <td class="text-end px-4">
+
+                                        <!-- View -->
+                                        <a asp-action="MenuItemDetails"
+                                           asp-controller="CMS"
+                                           asp-route-id="@menu.Id"
+                                           class="btn btn-sm btn-outline-primary me-1"
+                                           title="View">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        <!-- Edit -->
+                                        <a asp-action="EditMenuItem"
+                                           asp-controller="CMS"
+                                           asp-route-id="@menu.Id"
+                                           class="btn btn-sm btn-outline-warning me-1"
+                                           title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+
+                                        <!-- Delete -->
+                                        <a asp-action="DeleteMenuItem"
+                                           asp-controller="CMS"
+                                           asp-route-id="@menu.Id"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                                count++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="8"
+                                    class="text-center py-5">
+
+                                    <div class="text-muted">
+
+                                        <i class="bi bi-menu-button-wide fs-1"></i>
+
+                                        <h5 class="mt-3">
+                                            No Menu Items Found
+                                        </h5>
+
+                                        <p class="mb-0">
+                                            Create your first menu item to get started.
+                                        </p>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

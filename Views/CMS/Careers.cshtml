@@ -1,0 +1,322 @@
+﻿@model IEnumerable<CMSPanel.Models.Career>
+
+@{
+    ViewData["Title"] = "Careers";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Careers</h1>
+            <p class="text-muted mb-0">Manage job openings and career opportunities</p>
+        </div>
+
+        <a asp-action="CreateCareer" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i>
+            Add Career
+        </a>
+    </div>
+
+    <!-- Success Message -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            @TempData["Success"]
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Search & Filter -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+
+            <form asp-action="Careers" method="get">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            Search
+                        </label>
+
+                        <input type="text"
+                               name="searchString"
+                               value="@ViewBag.SearchString"
+                               class="form-control"
+                               placeholder="Search by job title, department, location..." />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select name="status" class="form-select">
+                            <option value="">All Status</option>
+
+                            @if (ViewBag.Status == "Draft")
+                            {
+                                <option value="Draft" selected>Draft</option>
+                            }
+                            else
+                            {
+                                <option value="Draft">Draft</option>
+                            }
+
+                            @if (ViewBag.Status == "Published")
+                            {
+                                <option value="Published" selected>Published</option>
+                            }
+                            else
+                            {
+                                <option value="Published">Published</option>
+                            }
+
+                            @if (ViewBag.Status == "Closed")
+                            {
+                                <option value="Closed" selected>Closed</option>
+                            }
+                            else
+                            {
+                                <option value="Closed">Closed</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+                            <i class="bi bi-search me-1"></i>
+                            Search
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Careers Table -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0 fw-bold">
+                Job Openings
+            </h5>
+        </div>
+
+        <div class="card-body p-0">
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Job Title</th>
+                                <th>Department</th>
+                                <th>Location</th>
+                                <th>Job Type</th>
+                                <th>Status</th>
+                                <th>Last Date</th>
+                                <th>Created</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @{
+                                int count = 1;
+                            }
+
+                            @foreach (var career in Model)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @count
+                                    </td>
+
+                                    <td>
+                                        <div class="fw-semibold">
+                                            @career.JobTitle
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        @career.Department
+                                    </td>
+
+                                    <td>
+                                        <i class="bi bi-geo-alt me-1"></i>
+                                        @career.Location
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-light text-dark border">
+                                            @career.JobType
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @if (career.Status == "Published")
+                                        {
+                                            <span class="badge bg-success">
+                                                Published
+                                            </span>
+                                        }
+                                        else if (career.Status == "Closed")
+                                        {
+                                            <span class="badge bg-danger">
+                                                Closed
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                Draft
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @if (career.LastDate.HasValue)
+                                        {
+                                            @career.LastDate.Value.ToString("dd MMM yyyy")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">—</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @career.CreatedAt.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        <div class="btn-group" role="group">
+
+                                            <a asp-action="CareerDetails"
+                                               asp-route-id="@career.Id"
+                                               class="btn btn-sm btn-outline-info"
+                                               title="View">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+
+                                            <a asp-action="EditCareer"
+                                               asp-route-id="@career.Id"
+                                               class="btn btn-sm btn-outline-primary"
+                                               title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+
+
+                                            <form asp-action="DeleteCareer"
+                                                  asp-route-id="@career.Id"
+                                                  method="post"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Are you sure you want to delete this career?');">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+
+
+                                            @if (career.Status == "Published")
+                                            {
+                                                <form asp-action="UnpublishCareer"
+                                                      asp-route-id="@career.Id"
+                                                      method="post"
+                                                      class="d-inline">
+
+                                                    @Html.AntiForgeryToken()
+
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-outline-warning"
+                                                            title="Unpublish"
+                                                            onclick="return confirm('Are you sure you want to unpublish this job?');">
+                                                        <i class="bi bi-eye-slash"></i>
+                                                    </button>
+
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form asp-action="PublishCareer"
+                                                      asp-route-id="@career.Id"
+                                                      method="post"
+                                                      class="d-inline">
+
+                                                    @Html.AntiForgeryToken()
+
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-outline-success"
+                                                            title="Publish"
+                                                            onclick="return confirm('Are you sure you want to publish this job?');">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+
+                                                </form>
+                                            }
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                                count++;
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+
+                    <i class="bi bi-briefcase fs-1 text-muted"></i>
+
+                    <h5 class="mt-3">
+                        No career openings found
+                    </h5>
+
+                    <p class="text-muted">
+                        Create your first job opening to get started.
+                    </p>
+
+                    <a asp-action="CreateCareer"
+                       class="btn btn-primary">
+                        <i class="bi bi-plus-lg me-1"></i>
+                        Add Career
+                    </a>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
