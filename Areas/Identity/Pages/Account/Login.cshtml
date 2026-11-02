@@ -1,0 +1,817 @@
+﻿
+@page
+@model CMSPanel.Areas.Identity.Pages.Account.LoginModel
+
+@{
+    ViewData["Title"] = "Admin Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CMS Panel | Login</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'DM Sans', sans-serif;
+            background: #f7f6fc;
+            color: #202039;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            height: 65px;
+            padding: 0 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border-bottom: 1px solid #f0edf7;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            color: #25233e;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .brand-icon {
+            height: 40px;
+            width: 40px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #6554eb, #9271f5);
+            color: white;
+            border-radius: 12px;
+            font-size: 22px;
+        }
+
+        .header-right {
+            font-size: 12px;
+            color: #9290a7;
+        }
+
+        .header-right span {
+            color: #6954e9;
+            font-weight: 700;
+        }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 25px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 1080px;
+            min-height: 0;
+            height: 590px;
+            background: #fff;
+            border-radius: 15px;
+            display: grid;
+            grid-template-columns: 1.08fr .92fr;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            border: 1px solid #f0edf7;
+        }
+
+        /* LEFT ARTWORK */
+
+        .art-section {
+            position: relative;
+            overflow: hidden;
+            padding: 55px;
+            background: linear-gradient(145deg, #eeeaff 0%, #e5dfff 45%, #d9d0ff 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .art-section::before {
+            content: "";
+            position: absolute;
+            width: 390px;
+            height: 390px;
+            background: rgba(255,255,255,.32);
+            border-radius: 50%;
+            top: -190px;
+            right: -100px;
+        }
+
+        .art-section::after {
+            content: "";
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border: 1px solid rgba(111,85,220,.15);
+            border-radius: 50%;
+            bottom: -190px;
+            left: -110px;
+        }
+
+        .art-content,
+        .art-footer {
+            position: relative;
+            z-index: 3;
+        }
+
+        .art-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: #6752d8;
+            background: rgba(255,255,255,.65);
+            padding: 9px 15px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .art-label span {
+            height: 7px;
+            width: 7px;
+            border-radius: 50%;
+            background: #7857ec;
+        }
+
+        .art-heading {
+            margin-top: 34px;
+            font-size: 45px;
+            line-height: 1.2;
+            font-weight: 800;
+            letter-spacing: -2px;
+            color: #292447;
+        }
+
+        .art-heading span {
+            color: #7658e9;
+        }
+
+        .art-description {
+            margin-top: 17px;
+            max-width: 380px;
+            color: #716b91;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* ABSTRACT ART */
+
+        .artwork {
+            height: 220px;
+            position: relative;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .art-circle {
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #a58af9, #7354e8);
+            box-shadow: 0 25px 50px rgba(105, 76, 211, .24);
+        }
+
+        .art-circle::before {
+            content: "";
+            position: absolute;
+            width: 165px;
+            height: 165px;
+            background: linear-gradient(135deg, #cbbaff, #9578f0);
+            border-radius: 50%;
+            top: 32px;
+            left: -28px;
+            opacity: .85;
+        }
+
+        .art-circle::after {
+            content: "";
+            position: absolute;
+            width: 115px;
+            height: 115px;
+            background: linear-gradient(135deg, #eee8ff, #b6a1ff);
+            border-radius: 50%;
+            top: 58px;
+            right: -28px;
+            box-shadow: 0 12px 30px rgba(54, 34, 120, .15);
+        }
+
+        .art-ring {
+            position: absolute;
+            width: 285px;
+            height: 285px;
+            border: 2px solid rgba(255,255,255,.75);
+            border-radius: 50%;
+            transform: rotate(-25deg) scaleY(.55);
+        }
+
+        .art-ring.second {
+            width: 310px;
+            height: 310px;
+            border-color: rgba(117, 87, 220, .25);
+            transform: rotate(35deg) scaleY(.6);
+        }
+
+        .floating-square {
+            position: absolute;
+            width: 54px;
+            height: 54px;
+            background: linear-gradient(145deg, #fff, #dcd2ff);
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(85, 61, 168, .16);
+            transform: rotate(20deg);
+        }
+
+        .square-one {
+            top: 28px;
+            right: 45px;
+        }
+
+        .square-two {
+            bottom: 25px;
+            left: 40px;
+            width: 37px;
+            height: 37px;
+            border-radius: 11px;
+            transform: rotate(-18deg);
+        }
+
+        .art-star {
+            position: absolute;
+            color: white;
+            font-size: 29px;
+            text-shadow: 0 4px 15px rgba(91, 66, 170, .3);
+        }
+
+        .star-one {
+            top: 25px;
+            left: 55px;
+        }
+
+        .star-two {
+            bottom: 35px;
+            right: 45px;
+            font-size: 21px;
+        }
+
+        .art-footer {
+            color: #777094;
+            font-size: 11px;
+        }
+
+        /* RIGHT FORM */
+
+        .form-section {
+            padding: 25px 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
+        }
+
+        .form-icon {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            background: #f0edff;
+            border-radius: 13px;
+            color: #7255e8;
+            font-size: 22px;
+            margin-bottom: 18px;
+        }
+
+        .form-label-top {
+            font-size: 10px;
+            color: #7759e8;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+            margin-bottom: 13px;
+        }
+
+        .form-heading {
+            color: #292641;
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 10px;
+        }
+
+        .form-subtitle {
+            color: #9996aa;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .form-label {
+            font-size: 12px;
+            color: #39364f;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #a09bb4;
+            font-size: 15px;
+            z-index: 2;
+        }
+
+        .form-control {
+            height: 52px;
+            border-radius: 10px;
+            border: 1px solid #e9e6f0;
+            background: #fbfaff;
+            padding: 10px 15px 10px 43px;
+            font-size: 12px;
+            color: #292641;
+        }
+
+        .form-control:focus {
+            border-color: #947bf0;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(117, 87, 232, .09);
+        }
+
+        .password-input {
+            padding-right: 65px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #7557e7;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 3;
+        }
+
+        .remember-row {
+            display: flex;
+            align-items: center;
+            margin: 3px 0 18px;
+        }
+
+        .remember-row label {
+            font-size: 11px;
+            color: #77748c;
+            cursor: pointer;
+        }
+
+        .form-check-input {
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: #7557e7;
+            border-color: #7557e7;
+        }
+
+        .login-btn {
+            width: 100%;
+            height: 53px;
+            background: linear-gradient(100deg, #7657e9, #9871f5);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .3s;
+            box-shadow: 0 8px 20px rgba(117, 87, 232, .18);
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(100deg, #6243d4, #815be8);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(117, 87, 232, .25);
+        }
+
+        .security-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 14px;
+            padding-top: 12px;
+            padding-bottom: 5px;
+            border-top: 1px solid #f0edf5;
+            color: #9996aa;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .security-info span {
+            color: #7759e8;
+            font-size: 17px;
+        }
+
+        .validation-summary-errors {
+            padding: 12px;
+            border-radius: 9px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            font-size: 12px;
+            margin-bottom: 18px;
+        }
+
+        .field-validation-error {
+            display: block;
+            color: #dc2626;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        /* FOOTER */
+
+        .login-container {
+            width: 100%;
+            max-width: 1080px;
+            min-height: 0;
+            height: 570px;
+            background: #fff;
+            border-radius: 15px;
+            display: grid;
+            grid-template-columns: 1.08fr .92fr;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            border: 1px solid #f0edf7;
+        }
+
+        .footer strong {
+            color: #7759e8;
+        }
+
+        /* RESPONSIVE */
+
+        @@media(max-width: 900px) {
+            .login-container {
+                grid-template-columns: 1fr;
+                max-width: 530px;
+            }
+
+            .art-section {
+                padding: 40px;
+            }
+
+            .art-heading {
+                font-size: 36px;
+            }
+
+            .artwork {
+                height: 230px;
+            }
+
+            .form-section {
+                padding: 45px 40px;
+            }
+        }
+
+        @@media(max-width: 520px) {
+            .header {
+                padding: 0 20px;
+            }
+
+            .header-right {
+                display: none;
+            }
+
+            .main {
+                padding: 18px 12px;
+            }
+
+            .art-section {
+                padding: 30px 24px;
+            }
+
+            .art-heading {
+                font-size: 30px;
+            }
+
+            .art-description {
+                font-size: 12px;
+            }
+
+            .artwork {
+                height: 200px;
+            }
+
+            .art-circle {
+                width: 170px;
+                height: 170px;
+            }
+
+            .art-circle::before {
+                width: 120px;
+                height: 120px;
+                top: 25px;
+            }
+
+            .art-circle::after {
+                width: 85px;
+                height: 85px;
+                top: 43px;
+            }
+
+            .art-ring {
+                width: 220px;
+                height: 220px;
+            }
+
+            .art-ring.second {
+                width: 240px;
+                height: 240px;
+            }
+
+            .form-section {
+                padding: 38px 24px;
+            }
+
+            .form-heading {
+                font-size: 29px;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="brand">
+            <div class="brand-icon">C</div>
+            <span>CMS PANEL</span>
+        </div>
+
+        <div class="header-right">
+            <span>●</span> Secure Admin Workspace
+        </div>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main">
+
+        <div class="login-container">
+
+            <!-- LEFT ART SECTION -->
+
+            <section class="art-section">
+
+                <div class="art-content">
+
+                    <div class="art-label">
+                        <span></span>
+                        CREATIVE CONTENT MANAGEMENT
+                    </div>
+
+                    <h1 class="art-heading">
+                        Bring your ideas<br />
+                        to <span>life.</span>
+                    </h1>
+
+                    <p class="art-description">
+                        One powerful workspace for your digital
+                        content. Create, manage and organize
+                        everything with simplicity and control.
+                    </p>
+
+                    <!-- ABSTRACT ARTWORK -->
+
+                    <div class="artwork">
+
+                        <div class="art-ring"></div>
+                        <div class="art-ring second"></div>
+
+                        <div class="art-circle"></div>
+
+                        <div class="floating-square square-one"></div>
+                        <div class="floating-square square-two"></div>
+
+                        <div class="art-star star-one">✦</div>
+                        <div class="art-star star-two">✧</div>
+
+                    </div>
+
+                </div>
+
+                    <div class="art-footer">
+                        © 2026 CMS Panel. All rights reserved.
+                    </div>
+            </section>
+
+
+            <!-- RIGHT LOGIN SECTION -->
+
+            <section class="form-section">
+
+                <div class="form-icon">✦</div>
+
+                <div class="form-label-top">
+                    ADMINISTRATOR PORTAL
+                </div>
+
+                <h2 class="form-heading">
+                    Welcome back!
+                </h2>
+
+                <p class="form-subtitle">
+                    Please enter your account details to access
+                    your CMS dashboard.
+                </p>
+
+
+                <form method="post">
+
+                    <input type="hidden" asp-for="ReturnUrl" />
+
+                    <div asp-validation-summary="ModelOnly"></div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="mb-4">
+
+                        <label asp-for="Input.Email" class="form-label">
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">✉</span>
+
+                            <input asp-for="Input.Email"
+                                   class="form-control"
+                                   placeholder="Enter your email address"
+                                   autocomplete="username" />
+
+                        </div>
+
+                        <span asp-validation-for="Input.Email"
+                              class="field-validation-error"></span>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="mb-3">
+
+                        <label asp-for="Input.Password" class="form-label">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">♙</span>
+
+                            <input asp-for="Input.Password"
+                                   id="passwordInput"
+                                   class="form-control password-input"
+                                   placeholder="Enter your password"
+                                   autocomplete="current-password" />
+
+                            <button type="button"
+                                    class="toggle-password"
+                                    id="togglePassword">
+                                Show
+                            </button>
+
+                        </div>
+
+                        <span asp-validation-for="Input.Password"
+                              class="field-validation-error"></span>
+
+                    </div>
+
+
+                    <!-- REMEMBER ME -->
+
+                    <div class="remember-row">
+
+                        <input asp-for="Input.RememberMe"
+                               class="form-check-input me-2" />
+
+                        <label asp-for="Input.RememberMe">
+                            Remember me
+                        </label>
+
+                    </div>
+
+
+                    <!-- LOGIN BUTTON -->
+
+                    <button type="submit" class="login-btn">
+                        Sign In to Dashboard →
+                    </button>
+
+                </form>
+
+
+                <div class="security-info">
+                    <span>♧</span>
+                    <div>
+                        Secure authentication · Protected admin access
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <span>© 2026 CMS Panel. All rights reserved.</span>
+
+        <span>Powered by <strong>CMS Panel</strong></span>
+
+    </footer>
+
+</div>
+
+
+<!-- PASSWORD SHOW / HIDE -->
+
+<script>
+
+    const passwordInput = document.getElementById("passwordInput");
+    const togglePassword = document.getElementById("togglePassword");
+
+    togglePassword.addEventListener("click", function () {
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePassword.textContent = "Hide";
+        }
+        else {
+            passwordInput.type = "password";
+            togglePassword.textContent = "Show";
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

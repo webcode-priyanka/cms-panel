@@ -769,41 +769,39 @@
             </div>
 
            
-<div class="user-info">
+          <div class="user-info">
 
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <div class="user-avatar">
+           @if (SignInManager.IsSignedIn(User))
+           {
+           <div class="user-avatar">
             <i class="bi bi-person-fill"></i>
-        </div>
+           </div>
 
-        <div>
-            <div class="fw-semibold">
+          <div>
+              <div class="fw-semibold">
                 @UserManager.GetUserName(User)
-            </div>
+              </div>
 
             <small class="text-muted">
                 Admin
             </small>
-        </div>
+          </div>
 
-        <form asp-controller="Auth"
-              asp-action="Logout"
-              method="post"
-              class="ms-3">
+          <form action="/Identity/Account/Logout?returnUrl=%2FIdentity%2FAccount%2FLogin"
+      method="post"
+      class="ms-3">
 
-            @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
-            <button type="submit" class="btn btn-outline-danger btn-sm">
-                <i class="bi bi-box-arrow-right me-1"></i>
-                Logout
-            </button>
+    <button type="submit" class="btn btn-outline-danger btn-sm">
+        <i class="bi bi-box-arrow-right me-1"></i>
+        Logout
+    </button>
 
-        </form>
-    }
+</form>
+        }
 
-</div>
-
+         
         </header>
 
 
